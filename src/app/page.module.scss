@@ -1,0 +1,432 @@
+/* ===== HERO ===== */
+
+.hero {
+  z-index: 1;
+  position: relative;
+  height: calc(100dvh - 80px);
+  min-height: 620px;
+  padding: 0 6% 0 8%;
+  background-image: url('../assets/images/1000034631.jpg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Overlay sombre */
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.58);
+  z-index: 1;
+}
+
+/* Lueur orangée subtile côté pizza */
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 75% 50%, rgba(255, 160, 70, 0.09), transparent 40%);
+  z-index: 1;
+}
+
+/* ===== CONTENT TEXT ===== */
+
+.hero__content {
+  position: relative;
+  z-index: 3;
+  color: #fff;
+}
+
+.hero__text h1 {
+  font-size: clamp(2.6rem, 4.2vw, 5rem);
+  line-height: 1;
+  margin-bottom: 1.4rem;
+  letter-spacing: -1px;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.hero__text p {
+  max-width: 420px;
+  margin-bottom: 2.2rem;
+  line-height: 1.8;
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== BOUTON ===== */
+
+.btnHero {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.9rem 1.8rem;
+  background: #d62828;
+  color: #fff;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 12px 28px rgba(214, 40, 40, 0.38);
+  transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          background 0.22s ease;
+}
+
+.btnHero:hover {
+  background: #e33434;
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px rgba(214, 40, 40, 0.48);
+}
+
+.btnHero:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ===== IMAGE PIZZA ===== */
+
+.heroPizza {
+  position: relative;
+  z-index: 2;
+  width: clamp(360px, 42vw, 680px);
+  max-width: 100%;
+  justify-self: end;
+  pointer-events: none;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 38px 55px rgba(0, 0, 0, 0.55));
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at 70% 50%, rgba(255, 160, 70, 0.08), transparent 30%);
+}
+
+/* RESPONSIVE */
+
+/* ===== RESPONSIVE 1280px ===== */
+
+@media (max-width: 1600px) {
+  .hero {
+    padding: 0 0 0 100px;
+  }
+  .hero__text h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 0.9rem;
+  }
+  .heroPizza {
+    width: 500px;
+    justify-self: center;
+    position: relative;
+    left: 50px;
+  }
+}
+
+/* ===== RESPONSIVE 1280px ===== */
+
+@media (max-width: 1280px) {
+  .hero {
+    padding: 60px 20px 40px;
+  }
+  .heroPizza {
+    width: clamp(320px, 38vw, 560px);
+    left: 0;
+  }
+}
+
+/* ===== RESPONSIVE TABLETTE (1024px) ===== */
+
+@media (max-width: 1024px) {
+  .hero {
+    height: auto;
+    min-height: calc(100dvh - 80px);
+    padding: 60px 20px 40px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    text-align: center;
+    row-gap: 2rem;
+  }
+
+  .hero::after {
+    display: none;
+  }
+
+  .hero__content {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .hero__text p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .heroPizza {
+    width: min(340px, 70vw);
+    transform: rotate(0deg);
+  }
+}
+
+/* ===== RESPONSIVE MOBILE (768px) ===== */
+
+@media (max-width: 768.98px) {
+  .hero {
+    min-height: calc(100svh - 80px);
+    padding: 40px 16px 32px;
+    row-gap: 1.2rem;
+    align-content: center;
+  }
+
+  .hero__text h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 0.9rem;
+  }
+
+  .hero__text p {
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 1.4rem;
+    max-width: 300px;
+  }
+
+  .heroPizza {
+    width: min(280px, 80vw);
+  }
+}
+
+@media (max-width: 430px) {
+  .hero {
+    padding: 50px 14px 24px 14px;
+    row-gap: 1rem;
+  }
+  .hero__text h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+
+  .hero__text p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    max-width: 260px;
+  }
+
+  .heroPizza {
+    width: min(240px, 72vw);
+  }
+
+  /* ===== BOUTON ===== */
+  .btnHero {
+    gap: 8px;
+    padding: 1rem 1.8rem;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero {
+    padding: 50px 14px 24px 14px;
+    row-gap: 1rem;
+  }
+
+  .hero__text h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+
+  .hero__text p {
+    font-size: 0.76rem;
+  }
+
+  .btnHero {
+    padding: 12px 18px;
+
+    font-size: 11px;
+  }
+
+  .heroPizza {
+    width: min(210px, 68vw);
+  }
+
+  /* ===== BOUTON ===== */
+
+  .btnHero {
+    gap: 8px;
+    padding: 1rem 1.8rem;
+    font-size: 13px;
+  }
+}
+
+/*=====================
+ABOUT
+=====================*/
+
+.aboutSection {
+  background: #f8f6f2;
+  padding: 110px 20px 90px 20px;
+}
+
+.about-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.aboutIntro {
+  max-width: 760px;
+  margin: 0 auto 50px;
+}
+
+.aboutSubtitle {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #d62828;
+}
+
+.aboutIntro h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  color: #1f1f1f;
+  margin-bottom: 22px;
+}
+
+.aboutIntro p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #5a5a5a;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.aboutSignature {
+  margin: 35px 0 55px;
+}
+
+.signatureText {
+  display: inline-block;
+  font-size: 2rem;
+  font-style: italic;
+  color: #b8b0a8;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  padding: 14px 28px;
+}
+
+.aboutStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  margin-top: 20px;
+}
+
+.statItem {
+  padding: 10px;
+}
+
+.statItem h3 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  color: #1f1f1f;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.statItem p {
+  font-size: 0.9rem;
+  color: #7a7a7a;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+@media (max-width: 1600px) {
+  .about-section {
+    padding: 70px 20px 60px 20px;
+  }
+
+  .about-intro h2 {
+    font-size: 49px;
+    line-height: 1.1;
+    color: #1f1f1f;
+    margin-bottom: 22px;
+  }
+  .about-stats .stat-item h3 {
+    font-size: 34px;
+  }
+  .about-stats .stat-item p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .about-section {
+    padding: 70px 20px 70px 20px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768.98px) {
+  .about-section {
+    padding: 50px 20px 50px 20px;
+    h2 {
+      font-size: 30px;
+      line-height: 1.2;
+    }
+  }
+  .about-stats {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .about-signature {
+    margin: -10px 0 50px 0;
+  }
+  .signature-text {
+    font-size: 1.2rem;
+    padding: 12px 22px;
+  }
+  .about-intro p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .about-stats {
+    margin-top: 0;
+  }
+  .about-stats .stat-item h3 {
+    font-size: 26px;
+  }
+  .about-stats .stat-item p {
+    font-size: 14px;
+  }
+}

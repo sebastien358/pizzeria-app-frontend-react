@@ -1,0 +1,18 @@
+.layout {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
+  grid-template-rows: 80px 1fr auto;
+  height: 100dvh;
+  &__header {
+    grid-area: header;
+  }
+  &__main {
+    grid-area: main;
+  }
+  &__footer {
+    grid-area: footer;
+  }
+}
