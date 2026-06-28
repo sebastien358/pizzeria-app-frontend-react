@@ -12,6 +12,8 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
     const [ cartOpen, setCartOpen ] = useState(false)
 
+    const [ menuAdmin, setMenuAdmin ] = useState(false)
+
     return (
         <header className={`${styles.header} ${className || ''}`} {...rest}>
             <div className={styles.header__container}>
@@ -32,6 +34,35 @@ export default function Header({ className, ...rest }: HeaderProps) {
                         <NavLink href="/">Accueil</NavLink>
                         <NavLink href="/carte">La carte</NavLink>
                         <NavLink href="/contact">Contact</NavLink>
+
+                        {/* role admin */}
+
+                        {token && isAdmin() ? (
+                            <>
+                                <div className={styles.headerAdmin} onMouseEnter={() => setMenuAdmin(true)} onMouseLeave={() => setMenuAdmin(false)}>
+                                    <a className={styles.nav__link} href="#">Espace pro</a>
+                                    <div className={`${styles.headerAdmin__menu} ${menuAdmin ? styles.headerAdmin__menu__open : ''}`}>
+                                        <NavLink
+                                            href="/admin/add-product"
+                                            dropdown
+                                        >
+                                            Ajouter une pizza
+                                        </NavLink>
+                                    </div>
+                                </div>
+
+                            </>
+                        ) : null}
+
+                        {/* role user */}
+
+                        {token && isUser() && !isAdmin ? (
+                            <>
+                                <NavLink href="/">Espace Client</NavLink>
+                            </>
+                        ) : null}
+
+                        {/* token connected */}
 
                         {token ? (
                             <>

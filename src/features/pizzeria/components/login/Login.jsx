@@ -1,12 +1,13 @@
 'use client'
-import { useAuthStore } from "@/store/auth";
+
 import { z } from "zod";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import styles from '@/components/Login/Login.module.scss'
+import styles from './Login.module.scss'
 import Link from "next/link";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {useAuthStore} from "@/store/auth";
 
 const schema = z.object({
     email: z.string()

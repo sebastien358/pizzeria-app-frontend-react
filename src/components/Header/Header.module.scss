@@ -83,6 +83,43 @@ $rouge: #dc2626;
 }
 
 /*====================
+  HEADER ADMIN
+====================*/
+
+.headerAdmin {
+  position: relative;
+  &__menu {
+    position: absolute;
+    top: 42px;
+    right: 0;
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    white-space: nowrap;
+    font-size: 13px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 150ms ease;
+    &__open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  &__link {
+    //font-size: 12px;
+    text-transform: lowercase;
+    font-size: 12px;
+
+    &__active {
+      text-transform: lowercase;
+      font-size: 12px;
+      text-decoration: underline;
+    }
+  }
+}
+
+/*====================
   PANIER
 ====================*/
 

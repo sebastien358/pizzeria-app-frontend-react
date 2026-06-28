@@ -1,5 +1,5 @@
 'use client'
-import styles from '@/components/Contact/Contact.module.scss'
+import styles from '@/features/pizzeria/components/contact/Contact.module.scss'
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import { z } from "zod";

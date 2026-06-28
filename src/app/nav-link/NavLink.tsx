@@ -4,12 +4,17 @@ import { usePathname } from "next/navigation"
 
 import styles from '@/components/Header/Header.module.scss'
 
-export default function NavLink({ href, children }) {
-    const pathname = usePathname()
+export default function NavLink({ href, children, dropdown = false }) {
+    const pathName = usePathname()
+    const isActive = pathName === href
+
+    const baseClass = dropdown ? styles.headerAdmin__link : styles.nav__link
+    const activeClass = dropdown ? styles.headerAdmin__link__active : styles.nav__link__active
+
     return (
         <Link
             href={href}
-            className={`${styles.nav__link} ${pathname === href ? styles.nav__link__active : ''}`}
+            className={`${baseClass} ${isActive ? activeClass : ''}`}
         >
             {children}
         </Link>

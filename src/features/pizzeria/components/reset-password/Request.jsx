@@ -1,11 +1,10 @@
 'use client'
-import styles from '@/components/Request/Request.module.scss'
-import Link from "next/link";
+import styles from '@/features/pizzeria/components/reset-password/Request.module.scss'
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useRouter} from "next/navigation"
-import { z } from "zod"
 import {useState} from "react";
+import Link from "next/link";
+import { z } from "zod"
 
 const schema = z.object({
     email: z.string().email({message: 'Email invalide'})

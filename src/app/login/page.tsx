@@ -1,4 +1,4 @@
-import Login from "@/components/Login/Login";
+import Login from "@/features/pizzeria/components/login/Login";
 
 export default function Page() {
    return <Login />

@@ -36,6 +36,8 @@ export async function infoMe() {
     }
 }
 
+axios.defaults.withCredentials = true
+
 axios.interceptors.request.use((config) => {
     const token = useAuthStore.getState().token
     if (token) {
@@ -48,3 +50,4 @@ axios.interceptors.request.use((config) => {
 },
     (error) => Promise.reject(error)
 )
+
