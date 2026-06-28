@@ -4,18 +4,24 @@ import {productList} from "@/shared/services/product.service";
 
 export const useProductStore = create()(
     persist((set, get) => ({
-        products: [],
+            products: [],
+            loading: false,
+            offset: 0,
+            limit: 3,
 
-        productList: async () => {
-            try {
-                const data = await productList()
-                set({ products: data })
-            } catch(err) {
-                console.error(err)
-                throw err
+            productList: async () => {
+                try {
+                    const { offset, limit } = get()
+                    set({ loading: true, products: [] })
+                    const data = await productList(offset, limit)
+                    set({ products: data, loading: false })
+                } catch(err) {
+                    set({ loading: false, products: [] })
+                    console.error(err)
+                    throw err
+                }
             }
-        }
 
-    }), {name: 'product-storage'}
+        }), {name: 'product-storage'}
     )
 )

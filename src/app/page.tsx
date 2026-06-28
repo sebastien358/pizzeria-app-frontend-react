@@ -4,9 +4,10 @@ import Image from 'next/image'
 import hero from "@/assets/images/hero-pizza.png"
 import {useProductStore} from "@/store/product";
 import {useEffect} from "react";
+import NotFound from "@/assets/images/not-found.webp"
 
 export default function Home() {
-    const { products, productList } = useProductStore()
+    const { products, loading, productList } = useProductStore()
 
     useEffect(() => {
         productList()
@@ -18,7 +19,7 @@ export default function Home() {
 
     return (
         <main className={styles.boutique}>
-
+            {/* hero */}
             <section className={styles.hero}>
                 <div className={styles.hero__content}>
                     <div className={styles.hero__text}>
@@ -27,9 +28,9 @@ export default function Home() {
                         <button className={styles.btnHero}>Commander maintenant</button>
                     </div>
                 </div>
-                <Image src={hero} alt="Pizza" className="heroPizza"/>
+                <Image src={hero} alt="Pizza" width={680} height={680} className={styles.heroPizza}/>
             </section>
-
+            {/* about */}
             <section className={styles.aboutSection}>
                 <div className={styles.aboutContainer}>
                     <div className={styles.aboutIntro}>
@@ -71,12 +72,87 @@ export default function Home() {
                 </div>
             </section>
 
-            {products.length > 0 && products.map((p) => (
-                <div key={p.id}>
-                    <p>{p.title}</p>
-                    <button onClick={() => deleteProduct(p.id)}>supprimer</button>
-                </div>
-            ))}
+            {/* loading */}
+
+            {loading && (
+                <section className={styles.spinner}>
+                    <div className={styles.spinner__loader}></div>
+                </section>
+            )}
+
+            {/* products */}
+
+            {!loading && products.length > 0 && (
+                <section className={styles.pizza}>
+                    <div className={styles.pizza__grid}>
+                        {products.map((p) => {
+                            return (
+                                <div key={p.id}>
+                                    <section className={styles.pizzaDisplay}>
+                                        <div className={styles['pizzaDisplay__card']}>
+                                            <div className={styles['pizzaDisplay__image']}>
+                                                {p.pictures.length > 0 ? (
+                                                    <>
+                                                        <Image src={p.pictures[0].filename} alt={p.name} width={300} height={300} />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Image src={NotFound} alt={p.name} width={300} height={300} />
+                                                    </>
+                                                )}
+                                            </div>
+
+                                            <div className={styles['pizzaDisplay__content']}>
+                                                <h3>{p.name}</h3>
+                                                <p className={styles['pizzaDisplay__description']}></p>
+                                                <div className={styles['pizzaDisplay__sizes']}>
+                                                    <p className={styles['pizzaDisplay__sizesTitle']}>Choisissez une taille</p>
+                                                    <div className={styles['pizzaDisplay__options']}>
+                                                        <label>
+                                                            <input type="radio" />
+                                                            <span>option name price</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className={styles['pizzaDisplay__button']}>
+                                                <button className={styles.btnCart}>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="20"
+                                                        height="20"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    >
+                                                        <circle cx="9" cy="21" r="1"></circle>
+                                                        <circle cx="20" cy="21" r="1"></circle>
+                                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                                    </svg>
+                                                    <span>Ajouter au panier</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+
+                            )
+                        })}
+                    </div>
+                </section>
+            )}
+
+            {/* empty product */}
+
+            {!loading && products.length === 0 && (
+                <section className={styles.emptyPizza}>
+                    <p className={styles.emptyPizza__text}>Aucun produit pour le moment.</p>
+                </section>
+            )}
         </main>
     )
 }

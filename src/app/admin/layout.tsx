@@ -6,13 +6,13 @@ import {useAuthStore} from "@/store/auth";
 
 export default function AdminLayout({ children }) {
     const router = useRouter()
-    const { token, isAdmin } = useAuthStore()
+    const { isAdmin, token } = useAuthStore()
 
     useEffect(() => {
-        if (!token || !isAdmin()) {
+        if (!token || !isAdmin) {
             router.push('/')
         }
-    }, [token])
+    }, [token]);
 
     return <>{children}</>
 }

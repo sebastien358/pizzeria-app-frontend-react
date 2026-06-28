@@ -9,7 +9,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="fr">
         <body className={styles.layout}>
           <Header className={styles.layout__header} />
-            {children}
+            <main className={styles.layout__main}>
+                {children}
+            </main>
           <Footer className={styles.layout__footer} />
         </body>
       </html>
