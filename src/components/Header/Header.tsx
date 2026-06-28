@@ -3,10 +3,13 @@ import styles from '@/components/Header/Header.module.scss'
 import Link from "next/link";
 import {useState} from "react";
 import NavLink from "@/app/nav-link/NavLink";
+import {useAuthStore} from "@/store/auth";
 
 type HeaderProps = { className: string }
 
 export default function Header({ className, ...rest }: HeaderProps) {
+    const { token, isAdmin, isUser, logout } = useAuthStore()
+
     const [ cartOpen, setCartOpen ] = useState(false)
 
     return (
@@ -29,8 +32,17 @@ export default function Header({ className, ...rest }: HeaderProps) {
                         <NavLink href="/">Accueil</NavLink>
                         <NavLink href="/carte">La carte</NavLink>
                         <NavLink href="/contact">Contact</NavLink>
-                        <NavLink href="/login">Connexion</NavLink>
-                        <NavLink href="/inscription">Inscription</NavLink>
+
+                        {token ? (
+                            <>
+                                <a onClick={(e) => { e.preventDefault(); logout() }} className={styles.nav__link} href="#">Déconnexion</a>
+                            </>
+                        ) : (
+                            <>
+                                <NavLink href="/login">Connexion</NavLink>
+                                <NavLink href="/inscription">Inscription</NavLink>
+                            </>
+                        )}
                     </nav>
 
                     <div className={styles.header__cart} onMouseEnter={() => setCartOpen(true)} onMouseLeave={() => setCartOpen(false)}>

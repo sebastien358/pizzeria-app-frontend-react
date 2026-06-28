@@ -14,13 +14,27 @@ const schema = z.object({
     password: z.string()
         .min(1, { message: 'Mot de passe requis' })
         .min(6, { message: '6 caractères minimum' })
+        .max(50, { message: '50 caractères maximum' })
 })
 
-
 export default function Login() {
-    const { login, loading, error } = useAuthStore()
+    const { login, error, clearError } = useAuthStore()
+
+    const displayError = () => {
+        setTimeout(() => {
+            clearError()
+        }, 2000)
+    }
 
     const [ success, setSuccess ] = useState(null)
+
+    const handleReset = () => {
+        setSuccess('Connexion réussie !')
+        setTimeout(() => {
+            reset()
+            router.push('/')
+        }, 2000)
+    }
 
     const {register, handleSubmit, reset, formState: {errors, isSubmitting}} = useForm({
         resolver: zodResolver(schema)
@@ -31,14 +45,10 @@ export default function Login() {
     const onSubmit = async (data) => {
         setSuccess(null)
         try {
-            //await login(data)
-            setSuccess('Connexion réussie !')
-            setTimeout(() => {
-                reset()
-                router.push('/')
-            }, 2000)
+            await login(data)
+            handleReset()
         } catch (err) {
-            console.error(err)
+            displayError()
             throw err
         }
     }
@@ -47,23 +57,24 @@ export default function Login() {
         <section className={styles.login}>
             <div className={styles.login__container}>
                 <h2 className={styles.login__title}>Connexion</h2>
+                {/* form */}
                 <form onSubmit={handleSubmit(onSubmit)} className={styles.login__form}>
                     <div className={styles.formGroup}>
                         <input {...register('email')} />
                         {errors.email && <span>{errors.email.message}</span>}
                     </div>
-
                     <div className={styles.formGroup}>
                         <input type="password" {...register('password')} />
-                        {errors.email && <span>{errors.email.message}</span>}
+                        {errors.password && <span>{errors.password.message}</span>}
                     </div>
-
-                    <p className={styles.success}>{success}</p>
-
                     <div className={ styles.login__forgot }>
                         <Link href="/request">Mot de passe oublié ?</Link>
                     </div>
-
+                    {/* success */}
+                    <p className={styles.successMessage}>{success}</p>
+                    {/* error */}
+                    {error && <p className={styles.errorMessage}>{error}</p>}
+                    {/* button */}
                     <button disabled={isSubmitting} className={styles.btnPrimary}>
                         {isSubmitting ? 'Chargement...' : 'Soumettre'}
                     </button>

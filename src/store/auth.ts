@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { axiosLogin } from "@/shared/services/auth.service";
+import {infoMe, login} from "@/shared/services/auth.service";
 
 type User = { id: number; email: string; roles: string[] }
 
@@ -14,7 +14,7 @@ type AuthState = {
 }
 
 export const useAuthStore = create<AuthState>()(
-    persist((set) => ({
+    persist((set, get) => ({
         token: null,
         user: null,
         loading: false,
@@ -22,16 +22,36 @@ export const useAuthStore = create<AuthState>()(
 
         login: async (data) => {
             try {
-                set({ loading: true, error: null })
-                const { token, user } = await axiosLogin(data)
-                set({ token, user, loading: false })
+                set({ error: null })
+                const { token } = await login(data)
+                set({ token: token })
+                await get().infoMe()
             } catch (err: any) {
-                set({ error: err.response?.data?.message || err.message, loading: false })
+                set({ error: 'La connexion a échouée' })
                 throw  err
             }
         },
 
-        logout: () => set({ token: null, user: null, error: null }),
+        infoMe: async () => {
+            try {
+                set({ user: null, error: null })
+                const response = await infoMe()
+                set({ user: response })
+            } catch(err) {
+                console.error(err)
+                throw err
+            }
+        },
+
+        isAdmin: () => get().user?.roles.includes('ROLE_ADMIN') ?? false,
+
+        isUser: () => get().user?.roles.includes('ROLE_USER') ?? false,
+
+        logout: () => {
+            set({ token: null, user: null, error: null })
+        },
+
+        clearError: () => set({ error: null })
     }),
         { name: 'auth-storage' }
     )

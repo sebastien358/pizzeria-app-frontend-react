@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   height: calc(100dvh - 80px);
+
   padding: 0 16px;
   box-sizing: border-box;
 
@@ -77,11 +78,16 @@
       display: block;
     }
 
-    .success {
+    .successMessage {
       color: green;
       font-size: 14px;
       text-align: center;
-      margin-top: 10px;
+    }
+
+    .errorMessage {
+      color: red;
+      font-size: 14px;
+      text-align: center;
     }
   }
 

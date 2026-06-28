@@ -1,9 +1,21 @@
+'use client'
 import styles from './page.module.scss'
 import Image from 'next/image'
-
 import hero from "@/assets/images/hero-pizza.png"
+import {useProductStore} from "@/store/product";
+import {useEffect} from "react";
 
 export default function Home() {
+    const { products, productList } = useProductStore()
+
+    useEffect(() => {
+        productList()
+    }, [])
+
+    const deleteProduct = (id) => {
+        console.log(id)
+    }
+
     return (
         <main className={styles.boutique}>
 
@@ -58,6 +70,13 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            {products.length > 0 && products.map((p) => (
+                <div key={p.id}>
+                    <p>{p.title}</p>
+                    <button onClick={() => deleteProduct(p.id)}>supprimer</button>
+                </div>
+            ))}
         </main>
     )
 }

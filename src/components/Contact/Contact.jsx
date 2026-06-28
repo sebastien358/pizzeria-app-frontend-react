@@ -36,20 +36,29 @@ export default function Contact() {
 
     const [ success, setSuccess ] = useState(null)
 
-    const contact = useContactStore((state) => state)
+    const handleReset = () => {
+        setTimeout(() => {
+            setSuccess(null)
+            reset()
+        }, 2000)
+    }
+
+    const { addContact, error, clearError } = useContactStore()
+
+    const displayError = () => {
+        setTimeout(() => {
+            clearError()
+        }, 2000)
+    }
 
     const onSubmit = async (data) => {
         try {
             setSuccess(null)
-            await contact.addContact(data)
+            await addContact(data)
             setSuccess('Votre message a bien été envoyé.')
-
-            setTimeout(() => {
-                setSuccess(null)
-                reset()
-            }, 2000)
+            handleReset()
         } catch(err) {
-            console.error(err)
+            displayError()
             throw err
         }
     }
@@ -60,6 +69,7 @@ export default function Contact() {
                 <div className={styles.contact__form}>
                     <h2 className={styles.contact__title}>Contactez-nous</h2>
                     <p className={styles.contact__subtitle}>Une question ?</p>
+                    {/* form */}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className={styles.formGroup}>
                             <input {...register('firstname')} placeholder="Prénom" />
@@ -77,7 +87,10 @@ export default function Contact() {
                             <textarea {...register('message')} placeholder="Votre message..." />
                             {errors.message && <span className={styles.errorField}>{errors.message.message}</span>}
                         </div>
-                        <p className={styles.success}>{success}</p>
+                        {/* success message */}
+                        <p className={styles.successMessage}>{success}</p>
+                        {/* error message */}
+                        {error && <p className={styles.errorMessage}>{error}</p>}
                         <div className={styles.formSubmit}>
                             <button type="submit" className={styles.btnSubmit} disabled={isSubmitting}>
                                 {isSubmitting ? 'Chargement...' : 'Soumettre'}
@@ -85,7 +98,7 @@ export default function Contact() {
                         </div>
                     </form>
                 </div>
-
+                {/* info */}
                 <div className={styles.contact__info}>
                     <h3>La pizzéria</h3>
                     <p className={styles.contact__address}>
@@ -102,6 +115,7 @@ export default function Contact() {
                         <span className={styles.badgeGreen}>Réponse sous 24h</span>
                         <span className={styles.badgeYellow}>🍕 Commande en ligne 7j/7</span>
                     </div>
+                    {/* iframe */}
                     <div className={styles.contact__map}>
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12294.319109934564!2d-0.24133006287153588!3d49.28515163344128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480a6156d5655ba5%3A0x1eb3a9d9ae79f46a!2sPlage%20de%20Ouistreham!5e0!3m2!1sfr!2sfr!4v1765478462795!5m2!1sfr!2sfr"
