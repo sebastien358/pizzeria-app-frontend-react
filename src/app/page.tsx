@@ -19,7 +19,9 @@ export default function Home() {
 
     return (
         <main className={styles.boutique}>
+
             {/* hero */}
+
             <section className={styles.hero}>
                 <div className={styles.hero__content}>
                     <div className={styles.hero__text}>
@@ -30,7 +32,9 @@ export default function Home() {
                 </div>
                 <Image src={hero} alt="Pizza" width={680} height={680} className={styles.heroPizza}/>
             </section>
+
             {/* about */}
+
             <section className={styles.aboutSection}>
                 <div className={styles.aboutContainer}>
                     <div className={styles.aboutIntro}>
@@ -93,11 +97,11 @@ export default function Home() {
                                             <div className={styles['pizzaDisplay__image']}>
                                                 {p.pictures.length > 0 ? (
                                                     <>
-                                                        <Image src={p.pictures[0].filename} alt={p.name} width={300} height={300} />
+                                                        <Image src={p.pictures?.[0]?.filename} width={300} height={300} />
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <Image src={NotFound} alt={p.name} width={300} height={300} />
+                                                        <Image src={NotFound} width={300} height={300} />
                                                     </>
                                                 )}
                                             </div>
@@ -139,7 +143,6 @@ export default function Home() {
                                         </div>
                                     </section>
                                 </div>
-
                             )
                         })}
                     </div>

@@ -32,7 +32,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
                 <section className={styles.header__right}>
                     <nav className={styles.header__nav}>
                         <NavLink href="/">Accueil</NavLink>
-                        <NavLink href="/carte">La carte</NavLink>
+                        <NavLink href="/pizzas">La carte</NavLink>
                         <NavLink href="/contact">Contact</NavLink>
 
                         {/* role admin */}
