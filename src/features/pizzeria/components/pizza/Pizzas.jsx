@@ -13,7 +13,7 @@ export default function Pizzas() {
 
     const { productToCart } = useProductToCart()
 
-    const [selectedOptions, setSelectedOptions] = useState({})
+    const [ selectedOptions, setSelectedOptions ] = useState({})
 
     useEffect(() => {
         const defaults = {}
@@ -40,8 +40,7 @@ export default function Pizzas() {
     {/* Add product to cart */}
 
     const addPizzaToCart = (id) => {
-        productToCart(id)
-        console.log(selectedOptions)
+        productToCart(id, selectedOptions[id])
     }
 
     return (
@@ -89,9 +88,10 @@ export default function Pizzas() {
                                                     <div key={option.id} className={styles['pizzaCard__sizeRow']}>
                                                         <input
                                                             type="radio"
+                                                            name={`size-${pizza.id}`}
                                                             value={option.id}
                                                             checked={selectedOptions[pizza.id]?.id === option.id}
-                                                            onChange={() => setSelectedOptions(prev => ({...prev, [pizza.id]: option}))}
+                                                            onChange={() => setSelectedOptions( prev => ({...prev, [pizza.id]: option}) )}
                                                         />
                                                         <label>
                                                             <span>{option.name}</span>

@@ -6,18 +6,40 @@ import NavLink from "@/app/nav-link/NavLink";
 import {useAuthStore} from "@/store/auth";
 import {useProductToCart} from "@/store/cartProduct";
 import Image from "next/image";
+import NotFound from "@/assets/images/not-found.webp"
+import {useRouter} from "next/navigation";
 
 type HeaderProps = { className: string }
 
 export default function Header({ className, ...rest }: HeaderProps) {
     const { token, isAdmin, isUser, logout } = useAuthStore()
-    const { cart, deleteProductToCart } = useProductToCart()
+    const { cart, deleteProductToCart, totalCartPrice } = useProductToCart()
 
     const [ cartOpen, setCartOpen ] = useState(false)
     const [ menuAdmin, setMenuAdmin ] = useState(false)
 
+    {/* Delete product to cart */}
+
     const deleteProduct = (id: number) => {
         deleteProductToCart(id)
+    }
+
+    const router = useRouter()
+
+    {/* Redirect to cart */}
+
+    const redirectToCart = () => {
+        if (cart.length > 0) {
+            router.push('/cart')
+        }
+    }
+
+    {/* Redirect to payment */}
+
+    const redirectToCheckout = () => {
+        if (cart.length > 0) {
+            router.push('/checkout')
+        }
     }
 
     return (
@@ -102,10 +124,9 @@ export default function Header({ className, ...rest }: HeaderProps) {
                             ) : null}
 
                             {cart.map((p) => (
-                                <div key={p.id}>
+                                <div key={p.id} className={styles['header__menu__list']}>
                                     <div className={styles.header__menu__content}>
-                                        <Image src={p.pictures?.[0]?.filename} alt={''} height={45} width={45} />
-
+                                        <Image src={p.pictures?.[0]?.filename || NotFound} alt={''} height={45} width={45} />
                                         <div className={styles.header__menu__text}>
                                             <p className={styles.productPrice}>
                                                  € <span className={styles.productQuantity}>x{p.quantity}</span>
@@ -143,13 +164,17 @@ export default function Header({ className, ...rest }: HeaderProps) {
                             <div className={styles.header__menu__total}>
                                 <p>Total : </p>
                                 <p>
-                                    <strong> 6 €</strong>
+                                    <strong>{totalCartPrice()} €</strong>
                                 </p>
                             </div>
 
                             <div className={styles.header__menu__buttons}>
-                                <button  className={styles.btnCart}>Voir le panier</button>
-                                <button className={styles.btnPayment}>Commander</button>
+                                <button onClick={() => redirectToCart()} disabled={cartOpen.length === 0} className={styles.btnCart}>
+                                    Voir le panier
+                                </button>
+                                <button onClick={() => redirectToCheckout()} disabled={cartOpen.length === 0} className={styles.btnPayment}>
+                                    Commander
+                                </button>
                             </div>
                         </div>
                     </div>

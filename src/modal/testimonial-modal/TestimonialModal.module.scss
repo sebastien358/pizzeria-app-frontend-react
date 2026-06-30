@@ -1,0 +1,151 @@
+
+.modal-testimonial {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  padding: 20px;
+  left: 0;
+  top: 0;
+  &__container {
+    width: 100%;
+    max-width: 460px;
+    background: white;
+    padding: 20px 15px 15px 15px;
+    border-radius: 6px;
+    @media (max-width: 768px) {
+      padding: 15px 15px 15px 15px;
+    }
+  }
+  &__container h3 {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
+  }
+  &__close {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #999;
+    line-height: 1;
+    transition: all 150ms ease;
+    &:hover {
+      color: #1a1a1a;
+    }
+  }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    .form-group input,
+    textarea,
+    select {
+      width: 100%;
+      border-radius: 6px;
+      padding: 14px 10px;
+      font-size: 12px;
+      outline: none;
+      color: #191818;
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      resize: none;
+      @media (max-width: 768px) {
+        font-size: 11px;
+      }
+      &:hover {
+        border-color: #e63946;
+        color: #e63946;
+      }
+    }
+    .form-group textarea {
+      height: 150px;
+      @media (max-width: 768px) {
+        height: 140px;
+      }
+    }
+
+    .form-group select {
+      color: #919191;
+    }
+    .error-fields {
+      font-size: 11px;
+      color: red;
+      margin-top: 6px;
+      margin-left: 2px;
+    }
+
+    .input-file {
+      &__input {
+        display: none;
+      }
+
+      &__label {
+        display: block;
+        width: 100%;
+        padding: 14px 10px;
+        background: #f8f8f8;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 13px;
+        color: #999;
+        cursor: pointer;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+        @media (max-width: 768px) {
+          font-size: 12px;
+        }
+        &:hover {
+          border-color: #e63946;
+          color: #e63946;
+        }
+      }
+      &__optional {
+        font-style: italic;
+        font-size: 10px;
+        position: relative;
+        bottom: 2px;
+        left: 2px;
+        color: #999;
+        font-weight: 600;
+      }
+    }
+  }
+  .alert-message {
+    text-align: center;
+    margin-top: 10px;
+  }
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    .btn-testimonial {
+      background: #e63946;
+      color: white;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      &:hover {
+        background: #c1121f;
+      }
+    }
+  }
+}

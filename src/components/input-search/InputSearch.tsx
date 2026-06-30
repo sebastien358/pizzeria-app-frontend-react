@@ -10,7 +10,7 @@ export default function InputSearch({ searchProduct, term, countProduct, activeS
                 searchProduct(e.target.value)
                 break
             default:
-                return  null
+                return null
         }
     }
 

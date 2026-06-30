@@ -5,13 +5,31 @@ import hero from "@/assets/images/hero-pizza.png"
 import {useProductStore} from "@/store/product";
 import {useEffect} from "react";
 import NotFound from "@/assets/images/not-found.webp"
+import Link from "next/link";
+import {useTestimonialList} from "@/store/testimonial";
 
 export default function Home() {
+    {/* products */}
+
     const { productsHome, loading, productListHome } = useProductStore()
 
     useEffect(() => {
         productListHome()
     }, [])
+
+    {/* testimonials */}
+
+    const { testimonialListHome, testimonials, loadingTestimonial } = useTestimonialList()
+
+    useEffect(() => {
+        testimonialListHome()
+    }, [])
+
+    const displayDate = (date: Date) => {
+        if (!date) return
+        const d = new Date(date)
+        return new Intl.DateTimeFormat('fr-FR').format(d)
+    }
 
     return (
         <main className={styles.boutique}>
@@ -144,6 +162,74 @@ export default function Home() {
                     <p className={styles.emptyPizza__text}>Aucun produit pour le moment.</p>
                 </section>
             )}
+
+
+            {/* REVIEWS */}
+
+            <section className={styles['reviews']}>
+                <div className={styles['reviews__header']}>
+                    <span className={styles['reviews__label']}>Témoignages</span>
+                    <h2 className={styles['reviews__title']}>Ce que disent nos clients</h2>
+                    <p className={styles['reviews__subtitle']}>Plus de 150 commandes, des clients satisfaits.</p>
+
+                    <div className={styles['reviews__summary']}>
+                        <span className={styles['reviews__score']}>5</span>
+                        <div className={styles['reviews__summary-detail']}>
+                            <div className={styles['reviews__stars']}>
+                                {[1, 2, 3, 4, 5].map((n, index) => (
+                                    <span key={index}>{n <= n.rating ? '★' : '☆'}</span>
+                                ))}
+                            </div>
+                            <span className={styles['reviews__count']}>Basé sur { testimonials.length } avis</span>
+                        </div>
+                    </div>
+                </div>
+
+                {loadingTestimonial ? (
+                    <div className={styles['spinner']}>
+                        <div className={styles['loader']}></div>
+                    </div>
+                ) : testimonials.length > 0 ? (
+                    <div className={styles['reviews__grid']}>
+                        {testimonials.slice(0, 3).map((t) => (
+                            <div key={t.id} className={styles['reviews__card']}>
+                                <div className={styles['reviews__card-stars']}>
+                                    {[1, 2, 3, 4, 5].map((n, index) => (
+                                        <span key={index}>{n <= t.rating ? '★' : '☆'}</span>
+                                    ))}
+                                </div>
+                                <p className={styles['reviews__card-text']}>"{t.message}"</p>
+                                <div className={styles['reviews__card-author']}>
+                                    <div className={styles['reviews__card-avatar']}>
+                                        {t.pictures[0]?.filename ? (
+                                            <img src={t.pictures[0].filename} className={styles['img-avatar']} alt="" />
+                                        ) : (
+                                            <span>{t.firstname.slice(0, 1)} {t.lastname.slice(0, 1)}</span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <p className={styles['reviews__card-name']}>
+                                            {t.firstname} {t.lastname.slice(0, 1)}.
+                                        </p>
+                                        <p className={styles['reviews__card-date']}>{displayDate(t.createdAt)}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles['reviews__empty']}>
+                        <p>Aucun témoignage pour le moment.</p>
+                    </div>
+                )}
+
+                <div className={styles['reviews__link']}>
+                    <Link href="/testimonials">Liste des commentaires</Link>
+                </div>
+            </section>
+
+
+
         </main>
     )
 }

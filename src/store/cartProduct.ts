@@ -10,7 +10,14 @@ export const useProductToCart = create()(
     persist((set, get) => ({
         cart: [],
 
-        productToCart: (id: number) => {
+        totalCartPrice: () => {
+            const cart = get().cart
+            const initialValue = 0;
+            return cart.reduce((acc, product) => acc + product.productOption.price * product.quantity, initialValue)
+        },
+
+        productToCart: (id: number, option) => {
+
             const products = useProductStore.getState().products
             const productExist = products.find((p) => p.id === id)
 
@@ -20,19 +27,18 @@ export const useProductToCart = create()(
             }
 
             const cart = get().cart
-            const productInCart = cart.find((p) => p.id === id)
+            const productInCart = cart.find((p) => p.id === id && p.productOption.id === option.id)
 
             if (productInCart) {
                 set({
-                    cart: cart.map((p) => p.id === id ? { ...p, quantity: p.quantity + 1 } : p)
+                    cart: cart.map((p) => p.id === id && p.productOption.id === option.id ? { ...p, quantity: p.quantity + 1 } : p)
                 })
             } else {
                 set({
-                    cart: [...cart, { ...productExist, quantity: 1 }]
+                    cart: [...cart, { ...productExist, productOption: option, quantity: 1 }]
+
                 })
             }
-
-            //console.log(productOption)
         },
 
         deleteProductToCart: (id: number) => {
@@ -44,11 +50,15 @@ export const useProductToCart = create()(
             if (productInCart.quantity > 1) {
                 set({
                     cart: cart.map((p) =>
-                        p.id === id ? { ...p, quantity: p.quantity - 1 } : p
+                        p.id === id
+                            ? { ...p, quantity: p.quantity - 1 }
+                            : p
                     )
                 })
             } else {
-                set({ cart: cart.filter((p) => p.id !== id) })
+                set({
+                    cart: cart.filter((p) => !(p.id === id))
+                })
             }
         }
     }), {
