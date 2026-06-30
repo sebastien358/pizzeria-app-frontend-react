@@ -5,14 +5,25 @@ import {useProductStore} from "../../../../store/product"
 import InputSearch from "../../../../components/input-search/InputSearch";
 import NotFound from "@/assets/images/not-found.webp"
 import Image from "next/image";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {useProductToCart} from "../../../../store/cartProduct";
 
 export default function Pizzas() {
-    const { productList, products, term, searchProduct, loading, lazyLoad, hasMore } = useProductStore()
+    const { productList, products, term, searchProduct, loading, lazyLoad, countProduct, hasMore } = useProductStore()
+
+    const { productToCart } = useProductToCart()
+
+    const [selectedOptions, setSelectedOptions] = useState({})
 
     useEffect(() => {
-        productList()
-    }, [])
+        const defaults = {}
+        products.forEach(pizza => {
+            defaults[pizza.id] = pizza.productOption.find(o => o.name === 'Grande') || pizza.productOption[0]
+        })
+        setSelectedOptions(defaults)
+    }, [products])
+
+    useEffect(() => { productList()}, [])
 
     useEffect(() => {
         if (products.length === 0) return
@@ -26,6 +37,13 @@ export default function Pizzas() {
         return () => observer.disconnect()
     }, [])
 
+    {/* Add product to cart */}
+
+    const addPizzaToCart = (id) => {
+        productToCart(id)
+        console.log(selectedOptions)
+    }
+
     return (
         <>
             {loading ? (
@@ -36,7 +54,7 @@ export default function Pizzas() {
             ) : (
                 <div className={styles['page']}>
                     <div className={styles['inputSearch']}>
-                        <InputSearch term={term} searchProduct={searchProduct} />
+                        <InputSearch term={term} searchProduct={searchProduct} countProduct={countProduct} activeSearch={"search-product"} />
                     </div>
                     {products && products.length > 0 ? (
                         <section className={styles.pizza}>
@@ -46,8 +64,8 @@ export default function Pizzas() {
                                         <div className={styles.pizzaCard}>
                                             {pizza.pictures.length > 0 ? (
                                                 <Image
-                                                    src={pizza.pictures[0].filename}
-                                                    alt='dedeefefe'
+                                                    src={pizza.pictures[0]?.filename}
+                                                    alt={''}
                                                     width={380}
                                                     height={380}
                                                     className={styles['pizzaCard__image']}
@@ -55,7 +73,7 @@ export default function Pizzas() {
                                             ) : (
                                                 <Image
                                                     src={NotFound}
-                                                    alt='sefefefzefze'
+                                                    alt={''}
                                                     width={380}
                                                     height={380}
                                                     className={styles['pizzaCard__image']}
@@ -71,7 +89,8 @@ export default function Pizzas() {
                                                     <div key={option.id} className={styles['pizzaCard__sizeRow']}>
                                                         <input
                                                             type="radio"
-                                                            value={option}
+                                                            value={option.id}
+                                                            checked={selectedOptions[pizza.id]?.id === option.id}
                                                             onChange={() => setSelectedOptions(prev => ({...prev, [pizza.id]: option}))}
                                                         />
                                                         <label>

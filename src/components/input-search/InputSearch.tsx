@@ -2,13 +2,24 @@
 
 import styles from './InputSearch.module.scss'
 
-export default function InputSearch({ searchProduct, term }: { searchProduct: (term: string) => void, term: string }) {
+export default function InputSearch({ searchProduct, term, countProduct, activeSearch }: { searchProduct: (term: string) => void, term: string, countProduct: number, activeSearch: string }) {
+
+    const search = (e: any) => {
+        switch (activeSearch) {
+            case "search-product":
+                searchProduct(e.target.value)
+                break
+            default:
+                return  null
+        }
+    }
+
     return (
         <section className={styles['search']}>
             <div className={styles['search__container']}>
             {/* Filtration search */}
             <div className={styles['search__input']}>
-                <input type={"text"} onChange={(e) => searchProduct(e.target.value)} value={term} />
+                <input type={"text"} onChange={(e) => search(e)} value={term} />
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="19"
@@ -26,7 +37,7 @@ export default function InputSearch({ searchProduct, term }: { searchProduct: (t
             </div>
             {/* Counter */}
             <div className={styles['search__counter']}>
-                <span className="search__total"> au total</span>
+                <span className="search__total">{countProduct} au total</span>
             </div>
         </div>
 </section>

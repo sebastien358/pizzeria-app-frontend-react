@@ -4,30 +4,75 @@ import {productList, productSearch} from "@/shared/services/product.service";
 
 export interface ProductState {
     products: object,
+    productsHome: object,
     loading: boolean,
     offset: number,
     limit: number,
     term: string,
     hasMore: boolean
+    countProduct: number
 }
 
 export const useProductStore = create<ProductState>()(
     persist((set, get) => ({
             products: [],
+            productsHome: [],
             loading: false,
             offset: 0,
             limit: 4,
             term: "",
             hasMore: true,
+            countProduct: 0,
+
+            itemsPerPagePizzas: () => {
+                if (window.innerWidth >= 1400) {
+                    return 12
+                } else if (window.innerWidth >= 1024) {
+                    return 9
+                } else if (window.innerWidth >= 767) {
+                    return 6
+                } else {
+                    return 4
+                }
+            },
+
+            itemsPerPageHome: () => {
+                if (window.innerWidth >= 1600) {
+                    return 4
+                } else if (window.innerWidth >= 1024) {
+                    return 3
+                } else {
+                    return 2
+                }
+            },
+
+            productListHome: async () => {
+                try {
+                    const { itemsPerPageHome, limit } = get()
+                    set({ limit: itemsPerPageHome() })
+
+                    set({ productsHome: [], loading: true, offset: 0 })
+                    const data = await productList(0, limit)
+
+                    set({ productsHome: data.products, loading: false })
+                } catch (err) {
+                    set({ productsHome: [], loading: true, offset: 0 })
+                    console.error(err)
+                    throw err
+                }
+            },
 
             productList: async () => {
                 try {
-                    set({ products: [], loading: true, offset: 0 })
-                    const { limit } = get()
-                    const data = await productList(0, limit)
-                    set({ products: data, loading: false })
+                    const { itemsPerPagePizzas, limit } = get()
 
-                    if (data.length <= limit -1) {
+                    set({ limit: itemsPerPagePizzas() })
+                    set({ products: [], loading: true, offset: 0 })
+
+                    const data = await productList(0, limit)
+                    set({ products: data.products, countProduct: data.countProduct, loading: false })
+
+                    if (data.countProduct < get().limit) {
                         set({ hasMore: false })
                     } else {
                         set({ hasMore: true })
@@ -41,10 +86,10 @@ export const useProductStore = create<ProductState>()(
 
             lazyLoad: async () => {
                 try {
-                    const { offset, limit } = get()
+                    const { products, offset, limit } = get()
                     set({ offset: offset + limit })
                     const data = await productList(get().offset, limit)
-                    set({ products: [...get().products, ...data] })
+                    set({ products: [...products, ...data.products] })
                 } catch(err) {
                     console.error(err)
                     throw err
@@ -55,7 +100,7 @@ export const useProductStore = create<ProductState>()(
                 const trimmed = term.toLowerCase().trim()
 
                 if (!trimmed) {
-                    set({ term: "", offset: 0 })
+                    set({ term: "", offset: 0, hasMore: false })
                     get().productList()
                     return
                 }

@@ -4,15 +4,21 @@ import Link from "next/link";
 import {useState} from "react";
 import NavLink from "@/app/nav-link/NavLink";
 import {useAuthStore} from "@/store/auth";
+import {useProductToCart} from "@/store/cartProduct";
+import Image from "next/image";
 
 type HeaderProps = { className: string }
 
 export default function Header({ className, ...rest }: HeaderProps) {
     const { token, isAdmin, isUser, logout } = useAuthStore()
+    const { cart, deleteProductToCart } = useProductToCart()
 
     const [ cartOpen, setCartOpen ] = useState(false)
-
     const [ menuAdmin, setMenuAdmin ] = useState(false)
+
+    const deleteProduct = (id: number) => {
+        deleteProductToCart(id)
+    }
 
     return (
         <header className={`${styles.header} ${className || ''}`} {...rest}>
@@ -76,6 +82,8 @@ export default function Header({ className, ...rest }: HeaderProps) {
                         )}
                     </nav>
 
+                    {/* Cart */}
+
                     <div className={styles.header__cart} onMouseEnter={() => setCartOpen(true)} onMouseLeave={() => setCartOpen(false)}>
                         <div className={styles.cart}>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -83,34 +91,57 @@ export default function Header({ className, ...rest }: HeaderProps) {
                                     d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.44C7.52 17.37 8.48 19 10 19h9v-2h-9l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03L23 6H6.21l-.94-2z"
                                 />
                             </svg>
-                            <span className={styles.cartBadge}>6</span>
+                            <span className={styles.cartBadge}>{cart.length}</span>
                         </div>
 
                         <div className={`${styles.header__menu} ${cartOpen ? styles.header__menu__open : ''}`}>
-                            <div className={styles.emptyCart}>
-                                <p>Le panier est vide</p>
-                            </div>
+                            {!cart.length ? (
+                                <div className={styles.emptyCart}>
+                                    <p>Le panier est vide</p>
+                                </div>
+                            ) : null}
 
-                            <div v-for="cart in cartStore.cart">
-                                <div className={styles.header__menu__content}>
-                                    <p>xsxs</p>
+                            {cart.map((p) => (
+                                <div key={p.id}>
+                                    <div className={styles.header__menu__content}>
+                                        <Image src={p.pictures?.[0]?.filename} alt={''} height={45} width={45} />
 
-                                    <div className={styles.header__menu__text}>
-                                        <p className={styles.productPrice}>
-                                            8€ <span className={styles.productQuantity}>x4</span>
-                                        </p>
-                                        <p className={styles.productTitle}>tttt</p>
+                                        <div className={styles.header__menu__text}>
+                                            <p className={styles.productPrice}>
+                                                 € <span className={styles.productQuantity}>x{p.quantity}</span>
+                                            </p>
+
+                                            <p className={styles.productTitle}>{p.title}</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.header__menu__delete}>
+                                        <svg
+                                            onClick={() => deleteProduct(p.id)}
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                                            <path d="M10 11v6"></path>
+                                            <path d="M14 11v6"></path>
+                                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                                        </svg>
                                     </div>
                                 </div>
-                                <div className={styles.header__menu__delete}>
-
-                                </div>
-                            </div>
+                                )
+                            )}
 
                             <div className={styles.separator}></div>
 
                             <div className={styles.header__menu__total}>
-                                <p>Total : 10€</p>
+                                <p>Total : </p>
                                 <p>
                                     <strong> 6 €</strong>
                                 </p>

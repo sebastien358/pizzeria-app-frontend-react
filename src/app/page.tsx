@@ -7,15 +7,11 @@ import {useEffect} from "react";
 import NotFound from "@/assets/images/not-found.webp"
 
 export default function Home() {
-    const { products, loading, productList } = useProductStore()
+    const { productsHome, loading, productListHome } = useProductStore()
 
     useEffect(() => {
-        productList()
+        productListHome()
     }, [])
-
-    const deleteProduct = (id) => {
-        console.log(id)
-    }
 
     return (
         <main className={styles.boutique}>
@@ -76,20 +72,16 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* loading */}
+            {/* loading, pizzas, empty pizza  */}
 
-            {loading && (
+            {loading ? (
                 <section className={styles.spinner}>
                     <div className={styles.spinner__loader}></div>
                 </section>
-            )}
-
-            {/* products */}
-
-            {!loading && products.length > 0 && (
+            ) : !loading && productsHome.length > 0 ? (
                 <section className={styles.pizza}>
                     <div className={styles.pizza__grid}>
-                        {products.map((p) => {
+                        {productsHome.map((p) => {
                             return (
                                 <div key={p.id}>
                                     <section className={styles.pizzaDisplay}>
@@ -97,11 +89,11 @@ export default function Home() {
                                             <div className={styles['pizzaDisplay__image']}>
                                                 {p.pictures.length > 0 ? (
                                                     <>
-                                                        <Image src={p.pictures?.[0]?.filename} width={300} height={300} />
+                                                        <Image src={p.pictures?.[0]?.filename} alt={''} width={300} height={300} />
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <Image src={NotFound} width={300} height={300} />
+                                                        <Image src={NotFound} alt={''} width={300} height={300} />
                                                     </>
                                                 )}
                                             </div>
@@ -147,11 +139,7 @@ export default function Home() {
                         })}
                     </div>
                 </section>
-            )}
-
-            {/* empty product */}
-
-            {!loading && products.length === 0 && (
+            ) : (
                 <section className={styles.emptyPizza}>
                     <p className={styles.emptyPizza__text}>Aucun produit pour le moment.</p>
                 </section>
