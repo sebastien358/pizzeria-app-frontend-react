@@ -49,7 +49,12 @@
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+
+    }
     .form-group input,
     textarea,
     select {
@@ -122,10 +127,6 @@
         font-weight: 600;
       }
     }
-  }
-  .alert-message {
-    text-align: center;
-    margin-top: 10px;
   }
   &__button {
     display: flex;
