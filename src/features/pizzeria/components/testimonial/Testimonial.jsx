@@ -4,9 +4,11 @@ import TestimonialModal from "@/modal/testimonial-modal/TestimonialModal";
 import styles from './Testimonial.module.scss'
 import {useTestimonial} from "@/store/testimonial";
 import {useEffect, useState} from "react";
+import Pagination from "@/components/pagination/Pagination";
+import Image from "next/image";
 
 export default function Testimonial() {
-    const { testimonialList, testimonials, loadingTestimonial } = useTestimonial()
+    const { testimonialList, testimonials, loadingTestimonial, countTestimonials, currentPage, pages, averageRating, previousPage, nextPage } = useTestimonial()
 
     useEffect(() => {
         testimonialList()
@@ -30,7 +32,7 @@ export default function Testimonial() {
                 <div className={styles['spinner']}>
                     <div className={styles['loader']}></div>
                 </div>
-            ) : testimonials.length > 0 ? (
+            ) : testimonials && testimonials.length > 0 ? (
                 <div className={styles['testimonials']}>
                     <div className={styles['testimonials__header']}>
                         <span className={styles['testimonials__label']}>Avis clients</span>
@@ -42,15 +44,13 @@ export default function Testimonial() {
 
                     <div className={styles['testimonials__summary']}>
                         <div className={styles['testimonials__summary-item']}>
-                    <span className={styles['testimonials__summary-number']}>
-
-                    </span>
+                            <span className={styles['testimonials__summary-number']}>{averageRating}</span>
                             <span className={styles['testimonials__summary-label']}>Note moyenne</span>
                         </div>
                         <div className={styles['testimonials__summary-item']}>
-                    <span className={`${styles['testimonials__summary-number']} ${styles['testimonials__summary-number--red']}`}>
-
-                    </span>
+                            <span className={styles['testimonials__summary-number testimonials__summary-number--red']}>
+                                {countTestimonials}
+                            </span>
                             <span className={styles['testimonials__summary-label']}>Avis clients</span>
                         </div>
                         <div className={styles['testimonials__summary-item']}>
@@ -78,11 +78,9 @@ export default function Testimonial() {
                                     <div className={styles['testimonials__card-author']}>
                                         <div className={styles['testimonials__card-avatar']}>
                                             {t.pictures?.[0]?.filename ? (
-                                                <img src={t.pictures[0].filename} className={styles.img} alt="" />
+                                                <Image src={t.pictures?.[0]?.filename} className={styles.img} alt="" />
                                             ) : (
-                                                <span>
-                                            {t.firstname?.slice(0, 1)} {t.lastname?.slice(0, 1)}
-                                        </span>
+                                                <span>{t.firstname?.slice(0, 1)} {t.lastname?.slice(0, 1)}</span>
                                             )}
                                         </div>
                                         <div>
@@ -100,7 +98,7 @@ export default function Testimonial() {
                     </div>
 
                     <div className={styles['testimonials__pagination']}>
-                        Pagination
+                       <Pagination currentPage={currentPage} pages={pages} previousPage={previousPage} nextPage={nextPage} />
                     </div>
                 </div>
             ) : (

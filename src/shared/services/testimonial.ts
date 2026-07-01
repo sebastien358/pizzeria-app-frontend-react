@@ -15,9 +15,14 @@ export async function testimonialListHome() {
     }
 }
 
-export async function testimonialList() {
+export async function testimonialList(currentPage: number, limit: number) {
     try {
-        const response = await axios.get(`${BASE_URL}/api/testimonial/list`)
+        const response = await axios.get(`${BASE_URL}/api/testimonial/list`, {
+            params: {
+                currentPage,
+                limit
+            }
+        })
         if (response.status >= 200 && response.status < 300) {
             return response.data
         }
@@ -28,7 +33,7 @@ export async function testimonialList() {
     }
 }
 
-export async function newTestimonial(formData) {
+export async function newTestimonial(formData: FormData) {
     try {
         const response = await axios.post(`${BASE_URL}/api/testimonial/add`, formData)
         if (response.status >= 200 && response.status < 300) {

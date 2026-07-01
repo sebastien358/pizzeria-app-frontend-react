@@ -3,24 +3,36 @@ import {persist} from "zustand/middleware";
 import {newTestimonial, testimonialList, testimonialListHome} from "@/shared/services/testimonial";
 
 export interface TestimonialState {
+    testimonialsHome: object,
     testimonials: object,
     loadingTestimonial: boolean,
     error: string | null,
+    countTestimonials: number | null,
+    averageRating: number | null,
+    currentPage: number,
+    limit: number,
+    pages: number | null,
 }
 
 export const useTestimonial = create<TestimonialState>()(
     persist((set, get) => ({
+        testimonialsHome: [],
         testimonials: [],
         loadingTestimonial: false,
         error: null,
+        countTestimonials: 0,
+        averageRating: 0,
+        currentPage: 1,
+        limit: 3,
+        pages: 0,
 
         testimonialListHome: async () => {
             try {
-                set({ testimonials: [], loadingTestimonial: true })
+                set({ testimonialsHome: [], loadingTestimonial: true })
                 const data = await testimonialListHome()
-                set({ testimonials: data, loadingTestimonial: false })
+                set({ testimonialsHome: data, loadingTestimonial: false })
             } catch(err) {
-                set({ testimonials: [], loadingTestimonial: false })
+                set({ testimonialsHome: [], loadingTestimonial: false })
                 console.error(err)
                 throw err
             }
@@ -29,12 +41,50 @@ export const useTestimonial = create<TestimonialState>()(
         testimonialList: async () => {
             try {
                 set({ testimonials: [], loadingTestimonial: true })
-                const data = await testimonialList()
-                set({ testimonials: data, loadingTestimonial: false })
+                const currentPage = get().currentPage
+                const limit = get().limit
+                const data = await testimonialList(currentPage, limit)
+                set({ testimonials: data.testimonials, loadingTestimonial: false, countTestimonials: data.countTestimonials, pages: data.pages, averageRating: data.averageRating })
             } catch(err) {
                 set({ testimonials: [], loadingTestimonial: false })
                 console.error(err)
                 throw err
+            }
+        },
+
+        previousPage: () => {
+            const { currentPage } = get()
+            if (currentPage > 1) {
+                set({ currentPage: currentPage - 1 })
+                get().testimonialList()
+            }
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        nextPage: () => {
+            const { currentPage, pages } = get()
+            if (currentPage < pages) {
+                set({ currentPage: currentPage + 1 })
+                get().testimonialList()
             }
         },
 
