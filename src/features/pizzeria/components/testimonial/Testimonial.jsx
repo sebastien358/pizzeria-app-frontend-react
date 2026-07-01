@@ -26,11 +26,16 @@ export default function Testimonial() {
         setOpenModal(false)
     }
 
+    const displayDate = (date) => {
+        const d = new Date(date)
+        return Intl.DateTimeFormat('fr-FR').format(d)
+    }
+
     return (
         <section className={styles['testimonials-page']}>
             {loadingTestimonial ? (
                 <div className={styles['spinner']}>
-                    <div className={styles['loader']}></div>
+                    <div className={styles['spinner__loader']}></div>
                 </div>
             ) : testimonials && testimonials.length > 0 ? (
                 <div className={styles['testimonials']}>
@@ -88,7 +93,7 @@ export default function Testimonial() {
                                                 {t.firstname} {t.lastname?.slice(0, 1)}.
                                             </p>
                                             <p className={styles['testimonials__card-date']}>
-
+                                                {displayDate(t.createdAt)}
                                             </p>
                                         </div>
                                     </div>

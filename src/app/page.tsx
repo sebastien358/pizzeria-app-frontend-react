@@ -7,6 +7,8 @@ import {useEffect} from "react";
 import NotFound from "@/assets/images/not-found.webp"
 import Link from "next/link";
 import {useTestimonial} from "@/store/testimonial";
+import Newsletter from "@/components/newsletter/Newsletter";
+import Ingredients from '@/assets/images/ingredients.png'
 
 export default function Home() {
     {/* products */}
@@ -163,8 +165,130 @@ export default function Home() {
                 </section>
             )}
 
+            {/* INGREDIENTS SECTION */}
 
-            {/* REVIEWS */}
+            <section className={styles['ingredients']}>
+                <div className={styles['ingredients__container']}>
+                    <div className={styles['ingredients__heading']}>
+                        <span className={styles['ingredients__subtitle']}>NOS SAVEURS</span>
+                        <h2>Nos ingrédients</h2>
+                        <div className={styles['ingredients__line']}></div>
+                    </div>
+                    <div className={styles['ingredients__content']}>
+                        <div className={styles['ingredients__visual']}>
+                            <Image
+                                src={Ingredients}
+                                alt="Illustration d'ingrédients"
+                                className={styles['ingredients-img']}
+                            />
+                        </div>
+                        <div className={styles['ingredients__text']}>
+                            <p>
+                                Nous sélectionnons avec soin des ingrédients de qualité pour proposer des pizzas
+                                généreuses, savoureuses et préparées avec attention à chaque commande.
+                            </p>
+                            <p>
+                                Poivrons, tomates, olives, huile d'olive, herbes aromatiques, fromage et charcuterie
+                                s'associent pour créer des recettes gourmandes et équilibrées, inspirées d'un vrai
+                                savoir-faire.
+                            </p>
+                            <div className={styles['ingredients__button']}>
+                                <Link href="/pizzas" className={styles['ingredients-button']}>Découvrir la carte</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* BENEFITS SECTION */}
+
+            <section className={styles['benefits']}>
+                <section className={styles['benefits__list']}>
+                    <article className={styles['benefits__item']}>
+                        <div className={styles['benefits__item__icon']}>
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path
+                                    d="M12 10C27 8 41 11 54 18L35 54C30 49 24 46 18 44L12 10Z"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinejoin="round"
+                                />
+                                <circle cx="28" cy="24" r="2.5" fill="currentColor" />
+                                <circle cx="36" cy="30" r="2.5" fill="currentColor" />
+                                <circle cx="24" cy="35" r="2.5" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <h3>Recettes généreuses</h3>
+                        <p>Des compositions gourmandes pensées pour le plaisir et la simplicité.</p>
+                    </article>
+
+                    <article className={styles['benefits__item']}>
+                        <div className={styles['benefits__item__icon']}>
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path
+                                    d="M10 42L28 20H54V48H10V42Z"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinejoin="round"
+                                />
+                                <circle cx="40" cy="30" r="3" fill="currentColor" />
+                                <circle cx="28" cy="37" r="2.5" fill="currentColor" />
+                                <circle cx="47" cy="40" r="2" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <h3>Produits sélectionnés</h3>
+                        <p>Des ingrédients choisis avec soin pour garantir goût et qualité.</p>
+                    </article>
+
+                    <article className={styles['benefits__item']}>
+                        <div className={styles['benefits__item__icon']}>
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path
+                                    d="M50 14C31 14 16 26 16 42C16 50 22 54 30 54C46 54 50 39 50 14Z"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M24 46C30 38 38 30 48 22"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                />
+                            </svg>
+                        </div>
+                        <h3>Saveurs fraîches</h3>
+                        <p>Des associations équilibrées avec une vraie attention portée aux saveurs.</p>
+                    </article>
+
+                    <article className={styles['benefits__item']}>
+                        <div className={styles['benefits__item__icon']}>
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path
+                                    d="M34 10C36 18 46 21 46 34C46 45 40 54 30 54C21 54 16 47 16 39C16 29 23 24 28 18C29 24 32 27 36 30C37 24 35 18 34 10Z"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </div>
+                        <h3>Cuisson maîtrisée</h3>
+                        <p>Une cuisson soignée pour une pâte savoureuse et une texture réussie.</p>
+                    </article>
+                </section>
+            </section>
+
+            {/* newsletter */}
+
+            <Newsletter />
+
+
+            {/* reviews */}
 
             <section className={styles['reviews']}>
                 <div className={styles['reviews__header']}>

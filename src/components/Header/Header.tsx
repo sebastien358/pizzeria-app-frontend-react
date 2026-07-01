@@ -99,7 +99,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
                         ) : (
                             <>
                                 <NavLink href="/login">Connexion</NavLink>
-                                <NavLink href="/inscription">Inscription</NavLink>
+                                <NavLink href="/register">Inscription</NavLink>
                             </>
                         )}
                     </nav>
