@@ -53,7 +53,6 @@
     .form-group {
       display: flex;
       flex-direction: column;
-
     }
     .form-group input,
     textarea,
@@ -84,6 +83,16 @@
 
     .form-group select {
       color: #919191;
+    }
+    .error-message {
+      font-size: 14px;
+      color: red;
+      text-align: center;
+    }
+    .success-message {
+      font-size: 14px;
+      color: green;
+      text-align: center;
     }
     .error-fields {
       font-size: 11px;
@@ -132,7 +141,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    //margin-top: 10px;
     .btn-testimonial {
       background: #e63946;
       color: white;

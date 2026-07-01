@@ -2,11 +2,11 @@
 
 import TestimonialModal from "@/modal/testimonial-modal/TestimonialModal";
 import styles from './Testimonial.module.scss'
-import {useTestimonialList} from "@/store/testimonial";
+import {useTestimonial} from "@/store/testimonial";
 import {useEffect, useState} from "react";
 
 export default function Testimonial() {
-    const { testimonialList, testimonials, loadingTestimonial } = useTestimonialList()
+    const { testimonialList, testimonials, loadingTestimonial } = useTestimonial()
 
     useEffect(() => {
         testimonialList()

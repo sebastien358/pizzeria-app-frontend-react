@@ -6,7 +6,7 @@ import {useProductStore} from "@/store/product";
 import {useEffect} from "react";
 import NotFound from "@/assets/images/not-found.webp"
 import Link from "next/link";
-import {useTestimonialList} from "@/store/testimonial";
+import {useTestimonial} from "@/store/testimonial";
 
 export default function Home() {
     {/* products */}
@@ -19,7 +19,7 @@ export default function Home() {
 
     {/* testimonials */}
 
-    const { testimonialListHome, testimonials, loadingTestimonial } = useTestimonialList()
+    const { testimonialListHome, testimonials, loadingTestimonial } = useTestimonial()
 
     useEffect(() => {
         testimonialListHome()

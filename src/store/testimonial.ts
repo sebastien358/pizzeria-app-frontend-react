@@ -1,16 +1,18 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
-import {testimonialList, testimonialListHome} from "@/shared/services/testimonial";
+import {newTestimonial, testimonialList, testimonialListHome} from "@/shared/services/testimonial";
 
 export interface TestimonialState {
     testimonials: object,
     loadingTestimonial: boolean,
+    error: string | null,
 }
 
-export const useTestimonialList = create<TestimonialState>()(
-    persist((set) => ({
+export const useTestimonial = create<TestimonialState>()(
+    persist((set, get) => ({
         testimonials: [],
         loadingTestimonial: false,
+        error: null,
 
         testimonialListHome: async () => {
             try {
@@ -34,7 +36,28 @@ export const useTestimonialList = create<TestimonialState>()(
                 console.error(err)
                 throw err
             }
-        }
+        },
+
+        addTestimonial: async (data) => {
+            try {
+                const formData = new FormData()
+
+                formData.append('firstname', data.firstname)
+                formData.append('lastname', data.lastname)
+                formData.append('rating', data.rating)
+                formData.append('message', data.message)
+                formData.append('image', data?.image)
+
+                const response = await newTestimonial(formData)
+                set({ testimonials: response })
+            } catch(err) {
+                set({ error: "Le témoignage n'a pas pu être envoyé" })
+                throw err
+            }
+        },
+
+        clearError: () => set({ error: null }),
+
     }), {
         name: 'testimonial-state'
     })

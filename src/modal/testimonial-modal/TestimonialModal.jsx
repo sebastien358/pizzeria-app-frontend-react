@@ -7,8 +7,15 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import z from 'zod'
+import {useTestimonial} from "@/store/testimonial";
+
 
 export default function TestimonialModal({ openModal, closeModal }) {
+
+    const { addTestimonial, error, clearError } = useTestimonial()
+
+    const [ success, setSuccess ] = useState(null)
+
     useEffect(() => {
         document.body.style.overflow = openModal ? 'hidden' : 'auto'
     }, [openModal])
@@ -53,11 +60,28 @@ export default function TestimonialModal({ openModal, closeModal }) {
 
     const onSubmit = async (data) => {
         try {
-            console.log(data)
+            await addTestimonial(data)
+            setSuccess('Le témoignage a bien été envoyé ✨')
+            handleReset()
         } catch(err) {
-            console.error(err)
+            handleError()
             throw err
         }
+    }
+
+    const handleReset = () => {
+        setTimeout(() => {
+            closeModal()
+            setSuccess(null)
+            setFilename(null)
+            reset()
+        }, 2000)
+    }
+
+    const handleError = () => {
+        setTimeout(() => {
+            clearError()
+        }, 2000)
     }
 
     return (
@@ -110,6 +134,10 @@ export default function TestimonialModal({ openModal, closeModal }) {
                                     </label>
                                 </div>
                             </div>
+
+                            {success && <p className={styles['success-message']}>{success}</p>}
+
+                            {error && <p className={styles['error-message']}>{error}</p>}
 
                             <div className={styles['modal-testimonial__button']}>
                                 <button type="submit" className={`${styles.btn} ${styles['btn-testimonial']}`} disabled={isSubmitting}>

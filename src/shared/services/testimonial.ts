@@ -27,3 +27,16 @@ export async function testimonialList() {
         throw err
     }
 }
+
+export async function newTestimonial(formData) {
+    try {
+        const response = await axios.post(`${BASE_URL}/api/testimonial/add`, formData)
+        if (response.status >= 200 && response.status < 300) {
+            return response.data
+        }
+        throw new Error(`Erreur de l'ajout d'un témoignage : ${response.status}`)
+    } catch(err) {
+        console.error(err)
+        throw err
+    }
+}

@@ -60,21 +60,27 @@ export default function Login() {
                 <h2 className={styles.login__title}>Connexion</h2>
                 {/* form */}
                 <form onSubmit={handleSubmit(onSubmit)} className={styles.login__form}>
+
                     <div className={styles.formGroup}>
                         <input {...register('email')} />
                         {errors.email && <span>{errors.email.message}</span>}
                     </div>
+
                     <div className={styles.formGroup}>
                         <input type="password" {...register('password')} />
                         {errors.password && <span>{errors.password.message}</span>}
                     </div>
+
                     <div className={ styles.login__forgot }>
                         <Link href="/request">Mot de passe oublié ?</Link>
                     </div>
+
                     {/* success */}
                     <p className={styles.successMessage}>{success}</p>
+
                     {/* error */}
                     {error && <p className={styles.errorMessage}>{error}</p>}
+
                     {/* button */}
                     <button disabled={isSubmitting} className={styles.btnPrimary}>
                         {isSubmitting ? 'Chargement...' : 'Soumettre'}
