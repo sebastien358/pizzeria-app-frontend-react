@@ -1,0 +1,154 @@
+/* NEWSLETTER */
+
+.newsletter {
+  overflow-x: hidden;
+  background: #df2f2f;
+  padding: 100px 20px;
+  &__container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    column-gap: 40px;
+    row-gap: 3.5rem;
+    flex-wrap: wrap;
+  }
+  &__text span {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 10px;
+  }
+  &__text h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.3rem);
+    color: white;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  &__form {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex: 1;
+    justify-content: flex-end;
+    width: 520px;
+  }
+  &__form input {
+    width: 340px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+    padding: 14px 4px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+  }
+  &__form input::placeholder {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  &__form button {
+    border: none;
+    background: white;
+    color: #df2f2f;
+    padding: 14px 32px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+    font-size: 12px;
+  }
+  &__form button:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 1600px) {
+  .newsletter {
+    padding: 80px 60px;
+    &__container {
+      max-width: 1000px;
+      row-gap: 25px;
+    }
+    &__text h2 {
+      font-size: 40px;
+    }
+    &__form input {
+      width: 260px;
+      background: transparent;
+      padding: 15px 4px;
+      font-size: 13px;
+    }
+    &__form button {
+
+      padding: 12px 30px;
+      font-size: 12px;
+
+
+    }
+  }
+}
+
+@media (max-width: 991.98px) {
+  .newsletter {
+    padding: 70px 30px;
+    &__text h2 {
+      font-size: 35px;
+    }
+    &__form {
+      //margin-top: 150px;
+    }
+    &__form input {
+      width: 280px;
+      background: transparent;
+      padding: 15px 4px;
+      font-size: 13px;
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .newsletter {
+    padding: 45px 20px;
+    &__container {
+      width: 100%;
+      column-gap: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      row-gap: 20px;
+    }
+
+    &__text h2 {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    &__form {
+      width: 100%;
+      flex-wrap: nowrap;
+      gap: 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    &__form input {
+      flex: 1; /* ← prend tout l'espace dispo */
+      padding: 11px 4px;
+      width: 100%;
+      max-width: 190px;
+      font-size: 12px;
+    }
+
+    &__form button {
+      flex-shrink: 0; /* ← ne rétrécit pas */
+      padding: 12px 20px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+  }
+}

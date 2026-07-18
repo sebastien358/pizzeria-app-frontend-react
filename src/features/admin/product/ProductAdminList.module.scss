@@ -1,0 +1,236 @@
+//Spinner
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  &__loader {
+    width: 35px;
+    height: 35px;
+    border: 5px solid black;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    @media (max-width: 767.98px) {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Product Search
+
+.input-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+// Pages
+
+.page {
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  @media (max-width: 768.98px) {
+    padding: 30px 16px;
+  }
+}
+
+// Products
+
+.product {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  .product__list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid #e7e3dc;
+    border-radius: 10px;
+    transition:
+            box-shadow 0.2s ease,
+            transform 0.2s ease,
+            border-color 0.2s ease;
+  }
+  &__list:hover {
+    border-color: #ddd6cc;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  }
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .img-product {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  &__content h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c2c2c;
+    line-height: 1.3;
+  }
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  &__buttons .btn-success,
+  &__buttons .btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    height: 36px;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 11px;
+    cursor: pointer;
+    transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+  }
+  &__buttons .btn-success {
+    background: #f3f3f3;
+    color: #2c2c2c;
+  }
+  &__buttons .btn-success:hover {
+    background: #e8e8e8;
+    transform: translateY(-1px);
+  }
+  &__buttons .btn-danger {
+    background: #df2f2f;
+    color: #fff;
+  }
+  &__buttons .btn-danger:hover {
+    background: #c62828;
+    transform: translateY(-1px);
+  }
+}
+
+.product :deep(.pagination) {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 768.98px) {
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 1600px) {
+  .product {
+    gap: 12px;
+    .product__list {
+      padding: 10px;
+      gap: 15px;
+    }
+  }
+}
+
+@media (max-width: 768.98px) {
+  .product {
+    gap: 10px;
+    &__list {
+      padding: 10px;
+      gap: 15px;
+    }
+    .img-product {
+      width: 60px;
+      height: 60px;
+    }
+    &__content h4 {
+      font-size: 13px;
+    }
+    &__buttons {
+      gap: 6px;
+    }
+    &__buttons .btn-success,
+    &__buttons .btn-danger {
+      min-width: 72px;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 11px;
+    }
+  }
+
+  .product :deep(.pagination) {
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 560px) {
+  .product {
+    &__list {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__content {
+      width: 100%;
+    }
+
+    &__buttons {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    &__buttons .btn-success,
+    &__buttons .btn-danger {
+      min-width: 72px;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 9px;
+    }
+  }
+}
+
+/* NO PRODUCT */
+
+.no-product {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  p {
+    font-size: 15px;
+    @media (max-width: 991.98px) {
+      font-size: 14px;
+    }
+    @media (max-width: 767.98px) {
+      font-size: 13px;
+    }
+  }
+}

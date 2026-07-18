@@ -1,0 +1,132 @@
+// ORDER SUMMARY
+
+.order-summary {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  width: 100%;
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #111827;
+    text-align: start;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  &__status {
+    padding: 3px 5px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    background: #e0f2fe;
+    color: #0369a1;
+    display: inline-block;
+    width: fit-content;
+  }
+  &__client {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    color: #374151;
+    font-size: 14px;
+  }
+  &__item span:first-child {
+    color: #6b7280;
+  }
+  &__divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 0.8rem 0;
+  }
+  &__total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    color: #111827;
+    margin-top: 10px;
+  }
+  &__total span {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 1600px) {
+  .order-summary {
+    &__title {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+    &__column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: flex-start;
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .order-summary {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    &__title {
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+    &__content {
+      gap: 0.5rem;
+    }
+    &__column {
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+    }
+    &__client {
+      gap: 9px;
+    }
+    &__content {
+      gap: 8px;
+    }
+    &__items {
+      gap: 8px;
+    }
+    &__item {
+      font-size: 13px;
+    }
+    &__divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 0.8rem 0;
+    }
+    &__total span {
+      font-size: 14px;
+    }
+  }
+}

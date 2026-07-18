@@ -1,0 +1,204 @@
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100dvh - 80px);
+  padding: 2rem 16px;
+  box-sizing: border-box;
+
+  &__container {
+    background: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 440px;
+    padding: 2.5rem 2rem;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 6px;
+  }
+
+  &__subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 5px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .form-group {
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .input-wrap {
+      position: relative;
+      i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 15px;
+        color: #aaa;
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 12px 11px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #f9f9f9;
+        font-size: 14px;
+        color: #111;
+        outline: none;
+        transition:
+                border-color 0.15s,
+                box-shadow 0.15s,
+                background 0.15s;
+
+        &::placeholder {
+          color: #ccc;
+        }
+
+        &[type='password']::placeholder {
+          letter-spacing: 2px;
+        }
+
+        &:focus {
+          border-color: #e63946;
+          box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+          background: #fff;
+        }
+      }
+    }
+
+    .error-field {
+      color: #e63946;
+      font-size: 12px;
+      margin: 4px 0 0 2px;
+      display: block;
+    }
+  }
+
+  .success-message {
+    color: green;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .btn-primary {
+    //margin-top: 15px;
+    width: 100%;
+    padding: 11px;
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+            background 0.2s,
+            transform 0.15s;
+
+    &:hover {
+      background: #d62839;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  &__login {
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    margin-top: 1.25rem;
+
+    a {
+      color: #e63946;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .register {
+    padding: 0 16px 0 16px;
+    &__container {
+      padding: 2rem 1.25rem;
+    }
+    &__title {
+      font-size: 1.2rem;
+      margin: 0 0 4px;
+    }
+    &__subtitle {
+      font-size: 12px;
+    }
+    .form-group {
+      margin-top: 12px;
+    }
+    .form-group .error-field {
+      font-size: 11px;
+      margin: 3px 0 0 2px;
+    }
+    .form-group label {
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+    &__forgot {
+      margin-top: -3px;
+      a {
+        font-size: 11px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    &__alert .alert {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .btn-primary {
+      padding: 11px;
+      font-size: 12px;
+    }
+  }
+}

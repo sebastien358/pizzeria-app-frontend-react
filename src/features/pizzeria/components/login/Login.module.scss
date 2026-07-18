@@ -1,0 +1,186 @@
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100dvh - 80px);
+  padding: 0 16px;
+  box-sizing: border-box;
+
+  &__container {
+    background: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 440px;
+    padding: 2.5rem 2rem;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 6px;
+  }
+
+  &__subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    line-height: 1.6;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .input-wrap label {
+      font-size: 13px;
+    }
+
+    .input-wrap i {
+      font-size: 13px;
+    }
+
+     .formGroup input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 11px 12px 11px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #f9f9f9;
+      font-size: 14px;
+      color: #111;
+      outline: none;
+      transition:
+              border-color 0.15s,
+              box-shadow 0.15s,
+              background 0.15s;
+
+      &::placeholder {
+        color: #ccc;
+      }
+
+      &[type='password']::placeholder {
+        letter-spacing: 2px;
+      }
+
+      &:focus {
+        border-color: #e63946;
+        box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+        background: #fff;
+      }
+    }
+
+    .errorField {
+      color: #e63946;
+      font-size: 12px;
+      margin: 4px 0 0 2px;
+      display: block;
+    }
+
+    .successMessage {
+      color: green;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .errorMessage {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+    }
+  }
+
+  &__forgot {
+    text-align: right;
+    a {
+      font-size: 12px;
+      color: #e63946;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .btnPrimary {
+    padding: 11px;
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+
+    &:hover {
+      background: #d62839;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .login {
+    padding: 0 16px 0 16px;
+    &__title {
+      font-size: 1.2rem;
+      margin: 0 0 4px;
+    }
+    &__subtitle {
+      font-size: 12px;
+    }
+    &__container {
+      padding: 2rem 1.25rem;
+    }
+    .formGroup {
+      margin-top: 12px;
+    }
+    .formGroup .errorField {
+      font-size: 11px;
+      margin: 3px 0 0 2px;
+    }
+    .success {
+      font-size: 12px;
+    }
+    &__forgot {
+      margin-top: -3px;
+      a {
+        font-size: 10px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    .btnPrimary {
+      padding: 11px;
+      font-size: 12px;
+    }
+  }
+}

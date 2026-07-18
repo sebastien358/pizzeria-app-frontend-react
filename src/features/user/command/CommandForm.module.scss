@@ -1,0 +1,225 @@
+.address {
+  height: calc(100dvh - 80px);
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+
+  &__form {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 650px;
+    padding: 3rem 2rem 2rem 2rem;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 2.2rem;
+
+    &__subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: #e63946;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    &__title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0.5rem 0;
+      font-family: 'Georgia', serif;
+    }
+
+    &__line {
+      width: 45px;
+      height: 3px;
+      background: #e63946;
+      margin: 0.8rem auto 0;
+      border-radius: 2px;
+    }
+  }
+
+  &__button {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
+
+.form-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__input,
+  &__select {
+    padding: 0.85rem 1rem;
+    border: 1.5px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #fafafa;
+    color: #1a1a1a;
+    transition:
+            border-color 0.2s,
+            background 0.2s;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #e63946;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.08);
+    }
+
+    &--error {
+      border-color: #e63946;
+    }
+  }
+
+  &__select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23999' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-color: #fafafa;
+    padding-right: 2.5rem;
+  }
+}
+
+.successMessage {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: green;
+}
+
+.errorMessage {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: red;
+}
+
+.error-field {
+  font-size: 12px;
+  color: #e63946;
+}
+
+.btn-command {
+  background: #e63946;
+  color: white;
+  border: none;
+  padding: 20px 30px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background 0.2s, transform 0.1s;
+  &:hover {
+    background: #c1121f;
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 1600px) {
+  .address {
+    &__header {
+      &__title {
+        font-size: 1.8rem;
+      }
+    }
+
+    &__form {
+      max-width: 650px;
+      padding: 3rem 2rem 2rem 2rem;
+    }
+
+    .form-group {
+      label {
+        font-size: 0.65rem;
+      }
+    }
+    &__button {
+      margin-top: 15px;
+    }
+  }
+  .btn-command {
+    font-size: 10px;
+    padding: 17px 25px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .address {
+    height: 100%;
+    padding: 30px 15px;
+    &__header {
+      margin-bottom: 1.8rem;
+      &__title {
+        font-size: 19px;
+        margin: 0.5rem 0 0 0;
+      }
+    }
+
+    &__form {
+      padding: 1rem;
+    }
+
+    .form-group {
+      &__input,
+      &__select {
+        padding: 11px;
+        font-size: 13px;
+        border: 1px solid #ddd;
+      }
+    }
+
+    .form-column {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group {
+      gap: 0.2rem;
+      label {
+        font-size: 0.55rem;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+    }
+  }
+
+  .btn-command {
+    font-size: 9px;
+    padding: 17px 25px;
+  }
+}

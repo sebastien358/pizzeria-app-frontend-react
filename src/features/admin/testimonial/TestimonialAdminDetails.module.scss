@@ -1,0 +1,222 @@
+// Spinner
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100dvh - 80px);
+  .loader {
+    width: 35px;
+    height: 35px;
+    border: 5px solid black;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    @media (max-width: 767.98px) {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Contact
+
+.contact {
+  position: relative;
+  padding: 70px 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  &__item {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition:
+            transform 0.15s ease,
+            box-shadow 0.15s ease;
+    overflow: hidden;
+    border-left: 4px solid #e63946;
+    min-height: auto;
+  }
+
+  &__item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+  }
+  &__infos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  &__name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #2c2c2c;
+    text-transform: capitalize;
+  }
+  &__email {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.85rem;
+    color: #888;
+    overflow-wrap: anywhere;
+    text-transform: capitalize;
+  }
+  &__buttons {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    gap: 6px;
+  }
+  &__message {
+    color: #444;
+    line-height: 1.6;
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    text-transform: capitalize;
+  }
+
+  &__response {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2e7d32;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  &__delete {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  &__isread {
+    background: blue;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    &.active {
+      background: black;
+    }
+  }
+  &__delete:hover {
+    background: #c92f3c;
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 1600px) {
+  .contact {
+    padding: 60px 20px;
+    &__item {
+      max-width: 700px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .contact {
+    &__list {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .contact {
+    padding: 30px 15px;
+    &__search {
+      margin-bottom: 25px;
+    }
+    &__list {
+      gap: 15px;
+    }
+    &__item {
+      padding: 0.8rem 0.9rem;
+      border-radius: 10px;
+    }
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.1rem;
+      height: auto;
+    }
+    &__response {
+      width: 100%;
+      text-align: center;
+      margin-top: 5px;
+      padding: 0.4rem 0.7rem;
+    }
+    &__delete {
+      width: 100%;
+      text-align: center;
+      margin-top: 5px;
+      padding: 0.4rem 0.7rem;
+    }
+    &__isread {
+      width: 100%;
+      text-align: center;
+      margin-top: 5px;
+      padding: 0.4rem 0.7rem;
+    }
+    &__name {
+      font-size: 14px;
+    }
+    &__email {
+      font-size: 13px;
+    }
+    &__message {
+      max-height: 100px;
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 12px;
+    }
+  }
+}
