@@ -48,7 +48,7 @@ export const useAuthStore = create<AuthState>()(
                 set({ token: token })
 
                 // Écrit le token dans un cookie pour que le middleware puisse le lire
-                document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax`
+                document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`
 
                 await get().infoMe()
             } catch (err: any) {
@@ -129,7 +129,7 @@ export const useAuthStore = create<AuthState>()(
         logout: () => {
             set({ token: null, user: null, error: null })
             // Supprime le cookie au logout
-            document.cookie = 'token=; path=/; max-age=0'
+            document.cookie = 'token=; path=/; max-age=0; Secure'
         },
 
         clearError: () => set({ error: null })

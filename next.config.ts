@@ -2,11 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     images: {
-        unoptimized: process.env.NODE_ENV === 'development',
+        unoptimized: true,  // true tout le temps, plus de condition NODE_ENV
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'pizzeria.sebastien-petit.fr',
+                hostname: 'api-pizzeria.sebastien-petit.fr',
                 pathname: '/images/**',
             }
         ]
