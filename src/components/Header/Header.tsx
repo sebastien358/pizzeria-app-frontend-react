@@ -1,13 +1,17 @@
 'use client'
 import styles from '@/components/Header/Header.module.scss'
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import NavLink from "@/app/nav-link/NavLink";
 import {useAuthStore} from "@/store/auth";
 import {useProductToCart} from "@/store/cartProduct";
 import Image from "next/image";
 import NotFound from "@/assets/images/not-found.webp"
 import {useRouter} from "next/navigation";
+import gsap from 'gsap'
+
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+gsap.registerPlugin(ScrollTrigger)
 
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -20,9 +24,15 @@ export default function Header({ className, ...rest }: HeaderProps) {
     const { token, isAdmin, isUser, logout } = useAuthStore()
     const { cart, deleteProductToCart, totalCartPrice } = useProductToCart()
 
+    {/* Panier */}
+
     const [ cartOpen, setCartOpen ] = useState(false)
 
+    {/* Menu admin */}
+
     const [ menuAdmin, setMenuAdmin ] = useState(false)
+
+    {/* Menu user */}
 
     const [ menuUser, setMenuUser ] = useState(false)
 
@@ -56,8 +66,22 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
     const [ openMenuMobile, setOpenMenuMobile ] = useState(false)
 
+    {/* Animation GSAP */}
+
+    const headerRef = useRef(null)
+
+    useEffect(() => {
+        const isDesktop = window.innerWidth >= 786.98
+
+        gsap.from(headerRef.current, {
+            opacity: isDesktop ? 0 : 1,
+            y: isDesktop ? -20 : 0,
+            duration: isDesktop ? 0.6 : 0
+        })
+    }, []);
+
     return (
-        <header className={`${styles.header} ${className || ''}`} {...rest}>
+        <header className={`${styles.header} ${className || ''}`} {...rest} ref={headerRef}>
             <div className={styles.header__container}>
 
                 <Link href="/" className={styles.header__logo}>

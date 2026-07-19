@@ -100,7 +100,8 @@ $rouge: #dc2626;
   &__menu {
     position: absolute;
     top: 42px;
-    right: 0;
+    left: 50%;
+    transform: translate(-50%);
     padding: 16px 25px;
     background: #fff;
     border-radius: 10px;
@@ -144,7 +145,8 @@ $rouge: #dc2626;
   &__menu {
     position: absolute;
     top: 42px;
-    right: 0;
+    left: 50%;
+    transform: translate(-50%);
     padding: 16px 25px;
     background: #fff;
     border-radius: 10px;

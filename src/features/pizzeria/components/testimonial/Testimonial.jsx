@@ -83,7 +83,7 @@ export default function Testimonial() {
                                     <div className={styles['testimonials__card-author']}>
                                         <div className={styles['testimonials__card-avatar']}>
                                             {t.pictures?.[0]?.filename ? (
-                                                <Image src={t.pictures?.[0]?.filename} className={styles.img} alt="" />
+                                                <Image src={t.pictures?.[0]?.filename} className={styles.img} alt="Image client témoignage" height={100} width={100} />
                                             ) : (
                                                 <span>{t.firstname?.slice(0, 1)} {t.lastname?.slice(0, 1)}</span>
                                             )}

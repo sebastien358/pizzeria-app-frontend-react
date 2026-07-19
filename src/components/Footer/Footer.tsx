@@ -1,4 +1,7 @@
 import styles from '@/components/Footer/Footer.module.scss'
+import Image from "next/image";
+
+import Pizza from '@/assets/images/hero-pizza.png'
 
 type FooterProps = { className: string }
 
@@ -8,10 +11,12 @@ export default function Footer({ className, ...rest }: FooterProps) {
             <section className={styles.footerMain}>
                 <div className={styles.footerMain__logo}>
                     <div className={styles.footerBrand}>
-                        <img
-                            src="../../assets/images/hero-pizza.png"
+                        <Image
+                            src={Pizza}
                             alt="Logo Pizzeria"
-                            className="footer-brand__icon"
+                            className={styles.footerBrand__icon}
+                            width={52}
+                            height={52}
                         />
                         <h3>Pizzeria</h3>
                         <p>COMMANDE EN LIGNE</p>

@@ -6,7 +6,6 @@
   height: calc(100dvh - 80px);
   padding: 0 16px;
   box-sizing: border-box;
-
   &__container {
     background: #fff;
     border: 1px solid #eee;
@@ -52,7 +51,7 @@
       font-size: 13px;
     }
 
-    .input-wrap i {
+    .input-wrap svg {
       font-size: 13px;
     }
 
@@ -165,6 +164,9 @@
     .formGroup .errorField {
       font-size: 11px;
       margin: 3px 0 0 2px;
+    }
+    .input-wrap svg {
+      font-size: 12px;
     }
     .success {
       font-size: 12px;

@@ -5,8 +5,12 @@ import {useProductStore} from "../../../../store/product"
 import InputSearch from "../../../../components/input-search/InputSearch";
 import NotFound from "@/assets/images/not-found.webp"
 import Image from "next/image";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useProductToCart} from "../../../../store/cartProduct";
+import gsap from 'gsap'
+
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Pizzas() {
     const { productList, products, term, searchProduct, loading, lazyLoad, countProduct, hasMore } = useProductStore()
@@ -41,6 +45,51 @@ export default function Pizzas() {
         productToCart(id, selectedOptions[id])
     }
 
+    {/* Animation GSAP */}
+
+    const searchRef = useRef(null)
+    const pizzasRef = useRef(null)
+    const cardRefs = useRef([])
+
+    const pizzaGsapAnimation = () => {
+        const search = searchRef.current
+        const cards = cardRefs.current.filter(Boolean)
+
+        if (!search || cards.length === 0) return
+
+        const isDesktop = window.innerWidth >= 767.98
+
+        const tl = gsap.timeline()
+
+        tl.from(search, {
+            opacity: 0,
+            y: isDesktop ? 20 : 7,
+            filter: isDesktop ? 'blur(8px)' : 'blur(2px)',
+            duration: isDesktop ? 0.6 : 0.8,
+            ease: 'power3.out',
+        })
+
+        tl.from(cards, {
+            opacity: 0,
+            y: isDesktop ? 15 : 5,
+            filter: isDesktop ? 'blur(8px)' : 'blur(1px)',
+            duration: isDesktop ? 0.6 : 0.8,
+            ease: 'power3.out',
+            stagger: isDesktop ? 0.2 : 0.4,
+            clearProps: 'filter',
+        })
+    }
+
+    useEffect(() => { productList() }, [])
+
+    useEffect(() => {
+        if (!loading && products.length > 0) {
+            requestAnimationFrame(() => {
+                pizzaGsapAnimation()
+            })
+        }
+    }, [loading])
+
     return (
         <>
             {loading ? (
@@ -50,9 +99,9 @@ export default function Pizzas() {
 
             ) : (
                 <div className={styles['page']}>
-                    <div className={styles['inputSearch']}>
+                    <div className={styles['inputSearch']} ref={searchRef}>
                         <InputSearch
-                            placeholder={'Rechercher un produit...'}
+                            placeholder={'Rechercher une pizza...'}
                             activeSearch={'search-products'}
                             search={searchProduct}
                             count={null}
@@ -60,10 +109,14 @@ export default function Pizzas() {
                         />
                     </div>
                     {products && products.length > 0 ? (
-                        <section className={styles.pizza}>
+                        <section className={styles.pizza} ref={pizzasRef}>
                             <div className={styles.cardsGrid}>
-                                {products.map((pizza) => (
-                                    <div key={pizza.id} className={styles.gridPizzas}>
+                                {products.map((pizza, index) => (
+                                    <div
+                                        key={pizza.id}
+                                        className={styles.gridPizzas}
+                                        ref={(el) => { cardRefs.current[index] = el }}
+                                    >
                                         <div className={styles.pizzaCard}>
                                             {pizza.pictures.length > 0 ? (
                                                 <Image
@@ -150,11 +203,6 @@ export default function Pizzas() {
         </>
     )
 }
-
-
-
-
-
 
 
 

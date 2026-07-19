@@ -75,7 +75,6 @@
 
 .pizza-display {
   background: #fff;
-
   &__card {
     padding: 90px 18px 90px 18px;
     background: transparent;
@@ -402,9 +401,6 @@
 
 /* ===== HERO ===== */
 
-
-
-
 .hero {
   z-index: 1;
   position: relative;
@@ -420,6 +416,11 @@
   align-items: center;
   width: 100%;
   box-sizing: border-box;
+
+
+  justify-items: start;
+  justify-content: start;
+
 }
 
 /* Overlay sombre */
@@ -506,14 +507,18 @@
   position: relative;
   z-index: 2;
   width: clamp(360px, 42vw, 680px);
-  max-width: 100%;
 
-  object-fit: cover;
 
   justify-self: end;
   pointer-events: none;
   transform: rotate(-8deg);
   filter: drop-shadow(0 38px 55px rgba(0, 0, 0, 0.55));
+
+
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
 }
 
 .hero::before {
@@ -607,7 +612,7 @@
     min-height: calc(100svh - 80px);
     padding: 40px 16px 32px;
     row-gap: 1.2rem;
-    align-content: center;
+    //align-content: center;
   }
 
   .hero__text h1 {
@@ -649,6 +654,7 @@
   }
 
   /* ===== BOUTON ===== */
+
   .btnHero {
     gap: 8px;
     padding: 1rem 1.8rem;
@@ -935,10 +941,7 @@ ABOUT
     border-radius: 12px;
     padding: 24px;
     text-align: left;
-    transition:
-            transform 0.2s,
-            box-shadow 0.2s;
-
+    transition: transform 0.2s, box-shadow 0.2s;
     &:hover {
       transform: translateY(-4px);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
@@ -1017,7 +1020,7 @@ ABOUT
   }
 
   &__link {
-    margin-top: 60px;
+    margin-top: 30px;
     a {
       font-size: 14px;
       color: #e63946;
@@ -1031,6 +1034,7 @@ ABOUT
     }
   }
 }
+
 @media (max-width: 1600px) {
   .reviews {
     &__header {
@@ -1068,7 +1072,7 @@ ABOUT
       font-size: 17px;
     }
     &__link {
-      margin-top: 60px;
+      margin-top: 30px;
       a {
         font-size: 14px;
       }
@@ -1103,7 +1107,7 @@ ABOUT
     padding: 50px 15px 30px 15px;
 
     &__header {
-      margin: 0 auto 0 auto;
+      margin: 0 auto 35px auto;
     }
 
     &__title {
@@ -1175,10 +1179,10 @@ ABOUT
     }
 
     &__link {
-      margin-top: 35px;
-      a {
-        font-size: 12px;
-      }
+      margin-top: 20px;
+    }
+    &__link a {
+      font-size: 12px;
     }
   }
 }

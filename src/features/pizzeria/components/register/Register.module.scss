@@ -47,18 +47,12 @@
       margin-bottom: 6px;
     }
 
-    .input-wrap {
-      position: relative;
-      i {
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 15px;
-        color: #aaa;
-        pointer-events: none;
-      }
+    svg {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
 
+    .input-wrap {
       input {
         width: 100%;
         box-sizing: border-box;
@@ -111,7 +105,6 @@
   }
 
   .btn-primary {
-    //margin-top: 15px;
     width: 100%;
     padding: 11px;
     background: #e63946;
@@ -174,6 +167,9 @@
     }
     .form-group {
       margin-top: 12px;
+      svg {
+        font-size: 12px;
+      }
     }
     .form-group .error-field {
       font-size: 11px;
@@ -191,10 +187,6 @@
           text-decoration: underline;
         }
       }
-    }
-    &__alert .alert {
-      margin-top: 10px;
-      font-size: 14px;
     }
     .btn-primary {
       padding: 11px;

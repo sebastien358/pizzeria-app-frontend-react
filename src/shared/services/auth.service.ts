@@ -87,15 +87,30 @@ export async function axiosResetPassword(data: any, token: string) {
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use((config) => {
-    const token = useAuthStore.getState().token
-    if (token) {
-        config.headers = {
-            ...config.headers,
-            Authorization: `Bearer ${token}`
-        } as any
-    }
-    return config
-},
+        const token = useAuthStore.getState().token
+        if (token) {
+            config.headers = {
+                ...config.headers,
+                Authorization: `Bearer ${token}`
+            } as any
+        }
+        return config
+    },
     (error) => Promise.reject(error)
 )
 
+axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        const authStore = useAuthStore.getState()
+        const hasAuthHeader = Boolean(
+            error.config?.headers?.Authorization ||
+            error.config?.headers?.authorization
+        )
+        if (error.response?.status === 401 && hasAuthHeader) {
+            authStore.logout()
+            window.location.href = '/'
+        }
+        return Promise.reject(error)
+    }
+)

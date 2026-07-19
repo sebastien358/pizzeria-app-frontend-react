@@ -3,14 +3,20 @@ import styles from './page.module.scss'
 import Image from 'next/image'
 import hero from "@/assets/images/hero-pizza.png"
 import {useProductStore} from "@/store/product";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import NotFound from "@/assets/images/not-found.webp"
 import Link from "next/link";
 import {useTestimonial} from "@/store/testimonial";
 import Newsletter from "@/components/newsletter/Newsletter";
 import Ingredients from '@/assets/images/ingredients.png'
+import gsap from 'gsap'
+
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import {usePathname} from "next/navigation";
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
+
     {/* Products */}
     const { productsHome, loading, productListHome } = useProductStore()
 
@@ -43,6 +49,263 @@ export default function Home() {
     const addProductToCart = (id: string | number) => {
         console.log(id, selectedOptions[id])
     }
+
+    {/* Hero GSAP */}
+
+    const heroTitleRef = useRef(null)
+    const heroTextRef = useRef(null)
+    const btnHeroRef = useRef(null)
+    const heroPizzaRef = useRef(null)
+
+    const heroGsapAnimation = () => {
+        const desktop = window.innerWidth >= 768
+
+        const tl = gsap.timeline()
+
+        tl.from(heroTitleRef.current, {
+            opacity: 0,
+            y: desktop ? 40 : 30,
+            duration: 1,
+        })
+
+        .from(
+            heroTextRef.current,
+            {
+                opacity: 0,
+                y: desktop ? 30 : 20,
+                duration: 0.8,
+            },
+            '-=0.6',
+        )
+
+        .from(
+            btnHeroRef.current,
+            {
+                opacity: 0,
+                y: 20,
+                duration: 0.8,
+            },
+            '-=0.5',
+        )
+
+        .from(
+            heroPizzaRef.current,
+            {
+                opacity: 0,
+                x: desktop ? 80 : 40,
+                rotate: desktop ? -20 : -10,
+                duration: 1,
+                ease: 'power3.out',
+            },
+            '-=1',
+        )
+    }
+
+    {/* ABOUT GSAP  */}
+
+    const aboutRef = useRef(null)
+
+    const aboutSubtitleRef = useRef(null)
+    const aboutTitleRef = useRef(null)
+    const aboutIntroRef = useRef(null)
+    const aboutSignatureRef = useRef(null)
+
+    const aboutGsapAnimation = () => {
+        const desktop = window.innerWidth >= 768
+
+        if (!aboutRef) return
+
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: aboutRef.current,
+                start: 'top 75%',
+                once: true,
+            },
+        })
+
+        tl.from(aboutSubtitleRef.current, {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            ease: 'power3.out',
+        })
+
+        .from(aboutTitleRef.current, {
+                opacity: 0,
+                y: desktop ? 35 : 15,
+                duration: 0.8,
+                ease: 'power3.out',
+            },
+            '-=0.3',
+        )
+
+        .from(aboutIntroRef.current, {
+                opacity: 0,
+                y: desktop ? 25 : 15,
+                duration: 0.7,
+                ease: 'power3.out',
+            },
+            '-=0.35',
+        )
+
+        .from(aboutSignatureRef.current,
+            {
+                opacity: 0,
+                scale: desktop ? 0.85 : 0.7,
+                duration: 0.7,
+                ease: 'back.out(1.7)',
+            },
+            '-=0.2',
+        )
+
+        .from(document.querySelectorAll(`.${styles.statItem}`), {
+                opacity: 0,
+                y: 30,
+                duration: 0.6,
+                stagger: desktop ? 0.12 : 0.08,
+                ease: 'power3.out',
+            },
+            '-=0.25',
+        )
+    }
+
+    {/* Pizzas GSAP */}
+
+    const pizzasRef = useRef(null)
+    const pizzasItemsRef = useRef(null)
+
+    const pizzasAnimationGsap = () => {
+        const desktop = window.innerWidth > 768
+
+        const pizzas = pizzasItemsRef.current
+        const cards = pizzas.children
+
+        if (!pizzasRef && !cards) return
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: pizzasRef.current,
+                start: 'top 75%',
+                once: true,
+            },
+        })
+
+        tl.from(cards, {
+            opacity: 0,
+            y: desktop ? 20 : 20,
+            duration: 0.6,
+            stagger: 0.2,
+            ease: 'power3.out',
+        })
+    }
+
+    {/* Ingrédients GSAP */}
+
+    const ingredientsRef = useRef(null)
+    const ingredientsSubtitleRef = useRef(null)
+    const ingredientsTitleRef = useRef(null)
+    const ingredientsLineRef = useRef(null)
+    const ingredientsVisualRef = useRef(null)
+    const ingredientsTextRef = useRef(null)
+
+    const ingredientsGsap = () => {
+
+        const desktop = window.innerWidth > 768
+
+        if (!ingredientsRef.current) return
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ingredientsRef.current,
+                start: 'top 75%',
+                once: true,
+            }
+        })
+
+        tl.from(ingredientsSubtitleRef.current, {
+            opacity: 0,
+            y: desktop ? 20 : 15,
+            duration: 0.8,
+            ease: 'power2.out',
+        }, '-=0.35')
+
+        tl.from(ingredientsTitleRef.current, {
+            opacity: 0,
+            y: desktop ? 25 : 15,
+            duration: 0.6,
+            ease: 'power3.out',
+        }, '-=0.35')
+
+        tl.from(ingredientsLineRef.current, {
+            opacity: 0,
+            y: 20,
+            duration: 0.7,
+        },  '-=0.35')
+
+        .from(ingredientsVisualRef.current, {
+                opacity: 0,
+                x: desktop ? -40 : -20,
+                duration: 1,
+                ease: 'power3.out',
+            }, '-=0.25')
+
+        .from(ingredientsTextRef.current, {
+                opacity: 0,
+                x: desktop ? 40 : 20,
+                duration: 1,
+                ease: 'power3.out',
+            }, '-=0.9')
+
+    }
+
+    {/* Benefits GSAP */}
+
+    const benefitsRef = useRef(null)
+
+    const benefitsGsap = () => {
+
+        const desktop = window.innerWidth > 768
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: benefitsRef.current,
+                start: 'top 70%',
+                once: true
+            }
+        })
+
+        tl.from(document.querySelectorAll(`.${styles['benefits__item']}`), {
+            opacity: 0,
+            y: desktop ? 25 : 20,
+            duration: 0.6,
+            stagger: 0.12,
+            ease: 'power3.out',
+        })
+    }
+
+    const pathname = usePathname()
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            heroGsapAnimation()
+            aboutGsapAnimation()
+            ingredientsGsap()
+            benefitsGsap()
+        })
+
+        return () => ctx.revert()
+    }, [pathname])
+
+    useEffect(() => {
+        if (productsHome.length === 0) return
+
+        const ctx = gsap.context(() => {
+            pizzasAnimationGsap()
+        })
+
+        return () => ctx.revert()
+    }, [productsHome])
     return (
         <main className={styles.boutique}>
 
@@ -51,29 +314,29 @@ export default function Home() {
             <section className={styles.hero}>
                 <div className={styles.hero__content}>
                     <div className={styles.hero__text}>
-                        <h1>Des pizzas artisanales, livrées chez vous 🍕</h1>
-                        <p>Commandez en quelques clics et savourez une vraie pizza italienne.</p>
-                        <button className={styles.btnHero}>Commander maintenant</button>
+                        <h1 ref={heroTitleRef}>Des pizzas artisanales, livrées chez vous 🍕</h1>
+                        <p ref={heroTextRef}>Commandez en quelques clics et savourez une vraie pizza italienne.</p>
+                        <button ref={btnHeroRef} className={styles.btnHero}>Commander maintenant</button>
                     </div>
                 </div>
-                <Image src={hero} alt="Pizza" width={680} height={680} className={styles.heroPizza}/>
+                <Image ref={heroPizzaRef} src={hero} alt="Pizza" width={680} height={680} sizes="(max-width: 768px) 60vw, 680px" className={styles.heroPizza}/>
             </section>
 
             {/* about */}
 
-            <section className={styles.aboutSection}>
+            <section className={styles.aboutSection} ref={aboutRef}>
                 <div className={styles.aboutContainer}>
                     <div className={styles.aboutIntro}>
-                        <span className={styles.aboutSubtitle}>PIZZERIA ARTISANALE</span>
-                        <h2>Le goût de l’Italie,<br/>à deux pas de chez vous</h2>
-                        <p>
+                        <span className={styles.aboutSubtitle} ref={aboutSubtitleRef}>PIZZERIA ARTISANALE</span>
+                        <h2 ref={aboutTitleRef}>Le goût de l’Italie,<br/>à deux pas de chez vous</h2>
+                        <p ref={aboutIntroRef}>
                             Nous préparons des pizzas généreuses avec des ingrédients soigneusement sélectionnés,
                             une pâte travaillée avec attention et une cuisson maîtrisée pour un résultat savoureux à
                             chaque commande.
                         </p>
                     </div>
 
-                    <div className={styles.aboutSignature}>
+                    <div className={styles.aboutSignature} ref={aboutSignatureRef}>
                         <span className={styles.signatureText}>Fait avec passion</span>
                     </div>
 
@@ -109,13 +372,13 @@ export default function Home() {
                     <div className={styles.spinner__loader}></div>
                 </section>
             ) : !loading && productsHome.length > 0 ? (
-                <section className={styles.pizza}>
-                    <div className={styles.pizza__grid}>
+                <section className={styles.pizza} ref={pizzasRef}>
+                    <div className={styles.pizza__grid} ref={pizzasItemsRef}>
                         {productsHome.map((p) => {
                             return (
                                 <div key={p.id}>
                                     <section className={styles['pizza-display']}>
-                                        <div className={styles['pizza-display__card']}>
+                                        <div className={styles['pizza-display__card']} >
                                             <div className={styles['pizza-display__image']}>
                                                 {p.pictures.length > 0 ? (
                                                     <>
@@ -189,22 +452,22 @@ export default function Home() {
             )}
 
             {/* INGREDIENTS SECTION */}
-            <section className={styles['ingredients']}>
+            <section className={styles['ingredients']} ref={ingredientsRef}>
                 <div className={styles['ingredients__container']}>
                     <div className={styles['ingredients__heading']}>
-                        <span className={styles['ingredients__subtitle']}>NOS SAVEURS</span>
-                        <h2>Nos ingrédients</h2>
-                        <div className={styles['ingredients__line']}></div>
+                        <span className={styles['ingredients__subtitle']} ref={ingredientsSubtitleRef}>NOS SAVEURS</span>
+                        <h2 ref={ingredientsTitleRef}>Nos ingrédients</h2>
+                        <div className={styles['ingredients__line']} ref={ingredientsLineRef}></div>
                     </div>
                     <div className={styles['ingredients__content']}>
-                        <div className={styles['ingredients__visual']}>
+                        <div className={styles['ingredients__visual']} ref={ingredientsVisualRef}>
                             <Image
                                 src={Ingredients}
                                 alt="Illustration d'ingrédients"
                                 className={styles['ingredients-img']}
                             />
                         </div>
-                        <div className={styles['ingredients__text']}>
+                        <div className={styles['ingredients__text']} ref={ingredientsTextRef}>
                             <p>
                                 Nous sélectionnons avec soin des ingrédients de qualité pour proposer des pizzas
                                 généreuses, savoureuses et préparées avec attention à chaque commande.
@@ -223,7 +486,7 @@ export default function Home() {
             </section>
 
             {/* BENEFITS SECTION */}
-            <section className={styles['benefits']}>
+            <section className={styles['benefits']} ref={benefitsRef}>
                 <section className={styles['benefits__list']}>
                     <article className={styles['benefits__item']}>
                         <div className={styles['benefits__item__icon']}>
@@ -344,7 +607,7 @@ export default function Home() {
                                 <div className={styles['reviews__card-author']}>
                                     <div className={styles['reviews__card-avatar']}>
                                         {t.pictures[0]?.filename ? (
-                                            <Image src={t.pictures[0]?.filename} className={styles['img-avatar']} alt="" height={100} width={100} />
+                                            <Image src={t.pictures[0]?.filename} className={styles['img-avatar']} alt="Image client témoignage" height={100} width={100} />
                                         ) : (
                                             <span>{t.firstname.slice(0, 1)} {t.lastname.slice(0, 1)}</span>
                                         )}

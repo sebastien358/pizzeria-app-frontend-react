@@ -21,6 +21,7 @@ export interface TestimonialState {
     limit: number
     pages: number | null
 
+    getItemsPerPage: () => number
     testimonialListHome: () => Promise<void>
     testimonialList: () => Promise<void>
     previousPage: () => void
@@ -38,8 +39,14 @@ export const useTestimonial = create<TestimonialState>()(
         countTestimonials: 0,
         averageRating: 0,
         currentPage: 1,
-        limit: 3,
+        limit: 0,
         pages: 0,
+
+        getItemsPerPage() {
+            if (window.innerWidth >= 1600) return 6
+            if (window.innerWidth >= 767) return 6
+            return 4
+        },
 
         testimonialListHome: async () => {
             try {
@@ -55,7 +62,7 @@ export const useTestimonial = create<TestimonialState>()(
 
         testimonialList: async () => {
             try {
-                set({ testimonials: [], loadingTestimonial: true })
+                set({ testimonials: [], limit: get().getItemsPerPage(), loadingTestimonial: true })
                 const currentPage = get().currentPage
                 const limit = get().limit
                 const data = await testimonialList(currentPage, limit)
