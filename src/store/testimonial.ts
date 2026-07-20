@@ -21,6 +21,7 @@ export interface TestimonialState {
     limit: number
     pages: number | null
 
+    getItemsHomePerPage: () => number
     getItemsPerPage: () => number
     testimonialListHome: () => Promise<void>
     testimonialList: () => Promise<void>

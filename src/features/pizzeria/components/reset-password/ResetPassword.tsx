@@ -5,12 +5,13 @@ import { faLock } from '@fortawesome/free-solid-svg-icons'
 import styles from './ResetPassword.module.scss'
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Link from "next/link";
 import { z } from "zod"
 import {useAuthStore} from "@/store/auth";
 import {setTimeout} from "node:timers";
 import {useRouter} from "next/navigation";
+import gsap from "gsap";
 
 const schema = z.object({
     password: z.string().min(1, { message: 'Veuillez renseigner un mot de passe' }),
@@ -68,9 +69,26 @@ export function ResetPassword({ token }: { token: string }) {
         }, 2000)
     }
 
+    const resetPasswordRef = useRef(null)
+    const resetPasswordFormRef = useRef(null)
+
+    const registerGsap = () => {
+        if (!resetPasswordRef.current) return
+
+        gsap.from(resetPasswordFormRef.current, {opacity: 0, y: 40, duration: 0.8, ease: 'power3.out'})
+    }
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            registerGsap()
+        })
+
+        return () => ctx.revert()
+    }, [])
+
     return (
-        <div className={styles.reset}>
-            <div className={styles.reset__container}>
+        <div className={styles.reset} ref={resetPasswordRef}>
+            <div className={styles.reset__container} ref={resetPasswordFormRef}>
                 <div className={styles.reset__icon}>
                     <FontAwesomeIcon icon={faLock} />
                 </div>

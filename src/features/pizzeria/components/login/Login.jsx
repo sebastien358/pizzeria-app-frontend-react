@@ -1,7 +1,7 @@
 'use client'
 
 import { z } from "zod";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import styles from './Login.module.scss'
 import Link from "next/link";
@@ -13,6 +13,7 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLock, faUser} from "@fortawesome/free-solid-svg-icons";
+import gsap from 'gsap'
 config.autoAddCss = false
 
 const schema = z.object({
@@ -61,9 +62,26 @@ export default function Login() {
         }
     }
 
+    const loginRef = useRef(null)
+    const loginFormRef = useRef(null)
+
+    const loginGsap = () => {
+        if (!loginRef.current) return
+
+        gsap.from(loginFormRef.current, {opacity: 0, y: 40, duration: 0.8, ease: 'power3.out'})
+    }
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            loginGsap()
+        })
+
+        return () => ctx.revert()
+    }, [])
+
     return (
-        <section className={styles.login}>
-            <div className={styles.login__container}>
+        <section className={styles.login} ref={loginRef}>
+            <div className={styles.login__container} ref={loginFormRef}>
                 <h2 className={styles.login__title}>Connexion</h2>
                 {/* form */}
                 <form onSubmit={handleSubmit(onSubmit)} className={styles.login__form}>

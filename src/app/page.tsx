@@ -586,7 +586,7 @@ export default function Home() {
                 )}
 
                 <div className={styles['reviews__link']} ref={reviewsLinkRef}>
-                    <Link href="/testimonials">Liste des commentaires</Link>
+                    <a href="/testimonials">Liste des commentaires</a>
                 </div>
             </section>
         </main>

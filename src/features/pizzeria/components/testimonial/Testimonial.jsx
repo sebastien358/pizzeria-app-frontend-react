@@ -7,6 +7,7 @@ import {useEffect, useRef, useState} from "react";
 import Pagination from "@/components/pagination/Pagination";
 import Image from "next/image";
 import gsap from 'gsap'
+import { usePathname } from "next/navigation"
 
 export default function Testimonial() {
     const { testimonialList, testimonials, loadingTestimonial, countTestimonials, currentPage, pages, averageRating, previousPage, nextPage } = useTestimonial()
@@ -33,6 +34,8 @@ export default function Testimonial() {
     }
 
     {/* Reviews GSAP */}
+
+    const pathname = usePathname()
 
     const reviewsRef = useRef(null)
     const reviewsLabelRef = useRef(null)
@@ -67,6 +70,10 @@ export default function Testimonial() {
     const hasAnimated = useRef(false)
 
     useEffect(() => {
+        hasAnimated.current = false
+    }, [pathname])
+
+    useEffect(() => {
         if (testimonials.length > 0 && !hasAnimated.current) {
             hasAnimated.current = true
             const ctx = gsap.context(() => {
@@ -77,7 +84,7 @@ export default function Testimonial() {
     }, [testimonials])
 
     return (
-        <section className={styles['testimonials-page']}>
+        <section key={pathname} className={styles['testimonials-page']}>
             {loadingTestimonial ? (
                 <div className={styles['spinner']}>
                     <div className={styles['spinner__loader']}></div>

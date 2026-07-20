@@ -7,9 +7,10 @@ import {useAuthStore} from "@/store/auth";
 import {setTimeout} from "node:timers";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Link from "next/link";
 import { z } from "zod"
+import gsap from "gsap";
 
 const schema = z.object({
     email: z.string().email({message: 'Email invalide'})
@@ -52,9 +53,26 @@ export default function RequestPassword() {
         }, 2000)
     }
 
+    const resetPasswordRef = useRef(null)
+    const resetPasswordFormRef = useRef(null)
+
+    const registerGsap = () => {
+        if (!resetPasswordRef.current) return
+
+        gsap.from(resetPasswordFormRef.current, {opacity: 0, y: 40, duration: 0.8, ease: 'power3.out'})
+    }
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            registerGsap()
+        })
+
+        return () => ctx.revert()
+    }, [])
+
     return (
-        <div className={styles.request}>
-            <div className={styles.request__container}>
+        <div className={styles.request} ref={resetPasswordRef}>
+            <div className={styles.request__container} ref={resetPasswordFormRef}>
                 <div className={styles.request__icon}>
                     <FontAwesomeIcon icon={faLock} />
                 </div>
