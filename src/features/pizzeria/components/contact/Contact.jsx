@@ -3,8 +3,10 @@ import styles from '@/features/pizzeria/components/contact/Contact.module.scss'
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useContactStore} from "@/store/contact";
+import {usePathname} from "next/navigation";
+import gsap from 'gsap'
 
 const schema = z.object({
     firstname: z
@@ -63,10 +65,35 @@ export default function Contact() {
         }
     }
 
+    {/* Contact Form GSAP */}
+
+    const contactRef = useRef(null)
+    const contactFormRef = useRef(null)
+    const contactInfoRef = useRef(null)
+
+    const contactGsap = () => {
+        if (!contactRef.current) return
+
+        const desktop = window.innerWidth >= 768
+
+        gsap.from(contactFormRef.current, {opacity: 0, x: desktop ? 100 : 40, duration: 0.6, ease: 'power3.out'})
+        gsap.from(contactInfoRef.current, {opacity: 0, x: desktop ? -100 : 40, duration: 0.6, ease: 'power3.out'})
+    }
+
+    const pathname = usePathname()
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            contactGsap()
+        })
+
+        return () => ctx.revert()
+    }, [pathname])
+
     return (
-        <section className={styles.contact}>
+        <main className={styles.contact} ref={contactRef}>
             <div className={styles.contact__container}>
-                <div className={styles.contact__form}>
+                <section className={styles.contact__form} ref={contactFormRef}>
                     <h2 className={styles.contact__title}>Contactez-nous</h2>
                     <p className={styles.contact__subtitle}>Une question ?</p>
                     {/* form */}
@@ -97,9 +124,9 @@ export default function Contact() {
                             </button>
                         </div>
                     </form>
-                </div>
+                </section>
                 {/* info */}
-                <div className={styles.contact__info}>
+                <section className={styles.contact__info} ref={contactInfoRef}>
                     <h3>La pizzéria</h3>
                     <p className={styles.contact__address}>
                         18 rue de la Sérénité <br />
@@ -127,8 +154,8 @@ export default function Contact() {
                             referrerPolicy="no-referrer-when-downgrade"
                         ></iframe>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
+        </main>
     )
 }

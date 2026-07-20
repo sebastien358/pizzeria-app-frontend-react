@@ -3,9 +3,10 @@
 import TestimonialModal from "@/modal/testimonial-modal/TestimonialModal";
 import styles from './Testimonial.module.scss'
 import {useTestimonial} from "@/store/testimonial";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Pagination from "@/components/pagination/Pagination";
 import Image from "next/image";
+import gsap from 'gsap'
 
 export default function Testimonial() {
     const { testimonialList, testimonials, loadingTestimonial, countTestimonials, currentPage, pages, averageRating, previousPage, nextPage } = useTestimonial()
@@ -31,6 +32,50 @@ export default function Testimonial() {
         return Intl.DateTimeFormat('fr-FR').format(d)
     }
 
+    {/* Reviews GSAP */}
+
+    const reviewsRef = useRef(null)
+    const reviewsLabelRef = useRef(null)
+    const reviewsTitleRef = useRef(null)
+    const reviewsSubtitleRef = useRef(null)
+    const reviewsSummaryRef = useRef (null)
+    const reviewsCardRef = useRef(null)
+    const reviewsLinkRef = useRef(null)
+    const reviewsPaginationRef = useRef(null)
+
+    const reviewsGsap = () => {
+        if (!reviewsRef.current) return
+
+        const desktop = window.innerWidth >= 768
+
+        const tl = gsap.timeline({})
+
+        const reviews = reviewsCardRef.current
+        const cards = reviews?.children
+
+        if (!cards || !cards.length) return;
+
+        tl.from(reviewsLabelRef.current, { opacity: 0, y: desktop ? 30 : 20, duration: 0.6, ease: 'power3.out' })
+        .from(reviewsTitleRef.current, { opacity: 0, y: 0, x: desktop ? -60 : -30, duration: 0.6, ease: 'power3.out' }, '-=0.25')
+        .from(reviewsSubtitleRef.current, { opacity: 0, y: 0, x: desktop ? 60 : 30, duration: 0.6, ease: 'power3.out' }, '-=0.25')
+        .from(reviewsSummaryRef.current, { opacity: 0, y: desktop ? 30 : 20, x: 0, duration: 0.6, ease: 'power3.out' }, '-=0.35')
+        .from(reviewsLinkRef.current, {opacity: 0, y: 20, stagger: 0.1, duration: 0.4, ease: 'power3.out'}, '-=0.35')
+        .from(cards, {opacity: 0, y: desktop ? 40 : 20, stagger: 0.15, duration: 0.6, ease: 'power3.out'}, '-=0.25')
+        .from(reviewsPaginationRef.current, {opacity: 0, y: desktop ? 20 : 10, duration: 1.2, ease: 'power3.out'}, '-=0.15')
+    }
+
+    const hasAnimated = useRef(false)
+
+    useEffect(() => {
+        if (testimonials.length > 0 && !hasAnimated.current) {
+            hasAnimated.current = true
+            const ctx = gsap.context(() => {
+                reviewsGsap()
+            })
+            return () => ctx.revert()
+        }
+    }, [testimonials])
+
     return (
         <section className={styles['testimonials-page']}>
             {loadingTestimonial ? (
@@ -38,16 +83,16 @@ export default function Testimonial() {
                     <div className={styles['spinner__loader']}></div>
                 </div>
             ) : testimonials && testimonials.length > 0 ? (
-                <div className={styles['testimonials']}>
+                <div className={styles['testimonials']} ref={reviewsRef}>
                     <div className={styles['testimonials__header']}>
-                        <span className={styles['testimonials__label']}>Avis clients</span>
-                        <h1 className={styles['testimonials__title']}>Tous les témoignages</h1>
-                        <p className={styles['testimonials__subtitle']}>
+                        <span className={styles['testimonials__label']} ref={reviewsLabelRef}>Avis clients</span>
+                        <h1 className={styles['testimonials__title']} ref={reviewsTitleRef}>Tous les témoignages</h1>
+                        <p className={styles['testimonials__subtitle']} ref={reviewsSubtitleRef}>
                             Découvrez ce que nos clients pensent de nos pizzas.
                         </p>
                     </div>
 
-                    <div className={styles['testimonials__summary']}>
+                    <div className={styles['testimonials__summary']} ref={reviewsSummaryRef}>
                         <div className={styles['testimonials__summary-item']}>
                             <span className={styles['testimonials__summary-number']}>{averageRating}</span>
                             <span className={styles['testimonials__summary-label']}>Note moyenne</span>
@@ -64,13 +109,13 @@ export default function Testimonial() {
                         </div>
                     </div>
 
-                    <div className={styles['testimonials__modal']}>
+                    <div className={styles['testimonials__modal']} ref={reviewsLinkRef}>
                         <button onClick={() => openModalTestimonial()} className={`${styles.btn} ${styles['btn-testimonial']}`}>
                             Ajouter un témoignage
                         </button>
                     </div>
 
-                    <div className={styles['testimonials__grid']}>
+                    <div className={styles['testimonials__grid']} ref={reviewsCardRef}>
                         {testimonials.map((t) => (
                             <div key={t.id} className={styles['testimonials__list']}>
                                 <div className={styles['testimonials__card']}>
@@ -102,7 +147,7 @@ export default function Testimonial() {
                         ))}
                     </div>
 
-                    <div className={styles['testimonials__pagination']}>
+                    <div className={styles['testimonials__pagination']} ref={reviewsPaginationRef}>
                        <Pagination currentPage={currentPage} pages={pages} previousPage={previousPage} nextPage={nextPage} />
                     </div>
                 </div>

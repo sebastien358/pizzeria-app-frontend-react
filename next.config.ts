@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    reactStrictMode: false,
     images: {
-        unoptimized: true,  // true tout le temps, plus de condition NODE_ENV
+        unoptimized: true,
         remotePatterns: [
             {
                 protocol: 'https',

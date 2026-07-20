@@ -1,4 +1,5 @@
 'use client'
+
 import styles from './page.module.scss'
 import Image from 'next/image'
 import hero from "@/assets/images/hero-pizza.png"
@@ -9,8 +10,8 @@ import Link from "next/link";
 import {useTestimonial} from "@/store/testimonial";
 import Newsletter from "@/components/newsletter/Newsletter";
 import Ingredients from '@/assets/images/ingredients.png'
-import gsap from 'gsap'
 import {usePathname} from "next/navigation";
+import gsap from 'gsap'
 
 export default function Home() {
 
@@ -86,8 +87,7 @@ export default function Home() {
 
         const tl = gsap.timeline({ paused: true })
 
-        tl.from(aboutSubtitleRef.current, {opacity: 0, y: 20, duration: 0.6, ease: 'power3.out',})
-
+        tl.from(aboutSubtitleRef.current, {opacity: 0, y: 20, duration: 0.6, ease: 'power3.out'})
         .from(aboutTitleRef.current, {opacity: 0, y: desktop ? 35 : 15, duration: 0.8, ease: 'power3.out'}, '-=0.3')
         .from(aboutIntroRef.current, {opacity: 0, y: desktop ? 25 : 15, duration: 0.7, ease: 'power3.out'}, '-=0.35')
         .from(aboutSignatureRef.current, {opacity: 0, scale: desktop ? 0.85 : 0.7, duration: 0.7, ease: 'back.out(1.7)'}, '-=0.2')
@@ -147,10 +147,10 @@ export default function Home() {
         const tl = gsap.timeline({ paused: true })
 
         tl.from(ingredientsSubtitleRef.current, {opacity: 0, y: desktop ? 20 : 15, duration: 0.8, ease: 'power2.out'}, '-=0.35')
-        tl.from(ingredientsTitleRef.current, {opacity: 0, y: desktop ? 25 : 15, duration: 0.6, ease: 'power3.out'}, '-=0.35')
-        tl.from(ingredientsLineRef.current, {opacity: 0, y: 20, duration: 0.7},  '-=0.35')
-        tl.from(ingredientsVisualRef.current, {opacity: 0, x: desktop ? -40 : -20, duration: 1, ease: 'power3.out'}, '-=0.25')
-        tl.from(ingredientsTextRef.current, {opacity: 0, x: desktop ? 40 : 20, duration: 1, ease: 'power3.out'}, '-=0.9')
+        .from(ingredientsTitleRef.current, {opacity: 0, y: desktop ? 25 : 15, duration: 0.6, ease: 'power3.out'}, '-=0.35')
+        .from(ingredientsLineRef.current, {opacity: 0, y: 20, duration: 0.7},  '-=0.35')
+        .from(ingredientsVisualRef.current, {opacity: 0, x: desktop ? -40 : -20, duration: 1, ease: 'power3.out'}, '-=0.25')
+        .from(ingredientsTextRef.current, {opacity: 0, x: desktop ? 40 : 20, duration: 1, ease: 'power3.out'}, '-=0.9')
 
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
@@ -189,7 +189,7 @@ export default function Home() {
         observer.observe(el)
     }
 
-    // Gsap animation reviews
+    {/* Gsap animation reviews */}
 
     const reviewsRef = useRef<HTMLDivElement | null>(null)
     const reviewsLabelRef = useRef<HTMLDivElement | null>(null)
