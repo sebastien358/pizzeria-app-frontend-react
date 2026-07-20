@@ -10,10 +10,7 @@ import {useTestimonial} from "@/store/testimonial";
 import Newsletter from "@/components/newsletter/Newsletter";
 import Ingredients from '@/assets/images/ingredients.png'
 import gsap from 'gsap'
-
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {usePathname} from "next/navigation";
-gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
 
@@ -21,7 +18,7 @@ export default function Home() {
     const { productsHome, loading, productListHome } = useProductStore()
 
     {/* Testimonials */}
-    const { testimonialListHome, testimonials, loadingTestimonial } = useTestimonial()
+    const { testimonialListHome, testimonialsHome, loadingTestimonial } = useTestimonial()
 
     useEffect(() => {
         productListHome()
@@ -57,7 +54,7 @@ export default function Home() {
     const btnHeroRef = useRef(null)
     const heroPizzaRef = useRef(null)
 
-    const heroGsapAnimation = () => {
+    const heroGsap = () => {
         const desktop = window.innerWidth >= 768
 
         const tl = gsap.timeline()
@@ -68,37 +65,9 @@ export default function Home() {
             duration: 1,
         })
 
-        .from(
-            heroTextRef.current,
-            {
-                opacity: 0,
-                y: desktop ? 30 : 20,
-                duration: 0.8,
-            },
-            '-=0.6',
-        )
-
-        .from(
-            btnHeroRef.current,
-            {
-                opacity: 0,
-                y: 20,
-                duration: 0.8,
-            },
-            '-=0.5',
-        )
-
-        .from(
-            heroPizzaRef.current,
-            {
-                opacity: 0,
-                x: desktop ? 80 : 40,
-                rotate: desktop ? -20 : -10,
-                duration: 1,
-                ease: 'power3.out',
-            },
-            '-=1',
-        )
+        .from(heroTextRef.current, {opacity: 0, y: desktop ? 30 : 20, duration: 0.8,}, '-=0.6')
+        .from(btnHeroRef.current, {opacity: 0, y: 20, duration: 0.8}, '-=0.5')
+        .from(heroPizzaRef.current, {opacity: 0, x: desktop ? 80 : 40, rotate: desktop ? -20 : -10, duration: 1, ease: 'power3.out'}, '-=1')
     }
 
     {/* ABOUT GSAP  */}
@@ -110,94 +79,55 @@ export default function Home() {
     const aboutIntroRef = useRef(null)
     const aboutSignatureRef = useRef(null)
 
-    const aboutGsapAnimation = () => {
+    const aboutGsap = () => {
+        if (!aboutRef.current) return
         const desktop = window.innerWidth >= 768
+        const el = aboutRef.current
 
-        if (!aboutRef) return
+        const tl = gsap.timeline({ paused: true })
 
+        tl.from(aboutSubtitleRef.current, {opacity: 0, y: 20, duration: 0.6, ease: 'power3.out',})
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: aboutRef.current,
-                start: 'top 75%',
-                once: true,
-            },
-        })
+        .from(aboutTitleRef.current, {opacity: 0, y: desktop ? 35 : 15, duration: 0.8, ease: 'power3.out'}, '-=0.3')
+        .from(aboutIntroRef.current, {opacity: 0, y: desktop ? 25 : 15, duration: 0.7, ease: 'power3.out'}, '-=0.35')
+        .from(aboutSignatureRef.current, {opacity: 0, scale: desktop ? 0.85 : 0.7, duration: 0.7, ease: 'back.out(1.7)'}, '-=0.2')
+        .from(document.querySelectorAll(`.${styles.statItem}`), {opacity: 0, y: 30, duration: 0.6,stagger: desktop ? 0.12 : 0.08, ease: 'power3.out'}, '-=0.25')
 
-        tl.from(aboutSubtitleRef.current, {
-            opacity: 0,
-            y: 20,
-            duration: 0.6,
-            ease: 'power3.out',
-        })
-
-        .from(aboutTitleRef.current, {
-                opacity: 0,
-                y: desktop ? 35 : 15,
-                duration: 0.8,
-                ease: 'power3.out',
-            },
-            '-=0.3',
-        )
-
-        .from(aboutIntroRef.current, {
-                opacity: 0,
-                y: desktop ? 25 : 15,
-                duration: 0.7,
-                ease: 'power3.out',
-            },
-            '-=0.35',
-        )
-
-        .from(aboutSignatureRef.current,
-            {
-                opacity: 0,
-                scale: desktop ? 0.85 : 0.7,
-                duration: 0.7,
-                ease: 'back.out(1.7)',
-            },
-            '-=0.2',
-        )
-
-        .from(document.querySelectorAll(`.${styles.statItem}`), {
-                opacity: 0,
-                y: 30,
-                duration: 0.6,
-                stagger: desktop ? 0.12 : 0.08,
-                ease: 'power3.out',
-            },
-            '-=0.25',
-        )
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                tl.play()
+                observer.disconnect()
+            }
+        }, { threshold: 0.5 })
+        observer.observe(el)
     }
 
     {/* Pizzas GSAP */}
 
     const pizzasRef = useRef(null)
-    const pizzasItemsRef = useRef(null)
+    const pizzasItemsRef = useRef<HTMLDivElement | null>(null)
 
-    const pizzasAnimationGsap = () => {
-        const desktop = window.innerWidth > 768
-
+    const pizzasGsap = () => {
         const pizzas = pizzasItemsRef.current
+        if (!pizzas) return
+
         const cards = pizzas.children
+        if (!cards.length) return
 
-        if (!pizzasRef && !cards) return
+        const el = pizzasRef.current
+        if (!el) return
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: pizzasRef.current,
-                start: 'top 75%',
-                once: true,
-            },
-        })
+        const tl = gsap.timeline({ paused: true })
 
-        tl.from(cards, {
-            opacity: 0,
-            y: desktop ? 20 : 20,
-            duration: 0.6,
-            stagger: 0.2,
-            ease: 'power3.out',
-        })
+        tl.from(cards, {opacity: 0, y: 20, duration: 0.6, stagger: 0.2, ease: 'power3.out'})
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                tl.play()
+                observer.disconnect()
+            }
+        }, { threshold: 0.5 })
+        observer.observe(el)
     }
 
     {/* Ingrédients GSAP */}
@@ -210,53 +140,25 @@ export default function Home() {
     const ingredientsTextRef = useRef(null)
 
     const ingredientsGsap = () => {
-
-        const desktop = window.innerWidth > 768
-
         if (!ingredientsRef.current) return
+        const desktop = window.innerWidth > 768
+        const el = ingredientsRef.current
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ingredientsRef.current,
-                start: 'top 75%',
-                once: true,
+        const tl = gsap.timeline({ paused: true })
+
+        tl.from(ingredientsSubtitleRef.current, {opacity: 0, y: desktop ? 20 : 15, duration: 0.8, ease: 'power2.out'}, '-=0.35')
+        tl.from(ingredientsTitleRef.current, {opacity: 0, y: desktop ? 25 : 15, duration: 0.6, ease: 'power3.out'}, '-=0.35')
+        tl.from(ingredientsLineRef.current, {opacity: 0, y: 20, duration: 0.7},  '-=0.35')
+        tl.from(ingredientsVisualRef.current, {opacity: 0, x: desktop ? -40 : -20, duration: 1, ease: 'power3.out'}, '-=0.25')
+        tl.from(ingredientsTextRef.current, {opacity: 0, x: desktop ? 40 : 20, duration: 1, ease: 'power3.out'}, '-=0.9')
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                tl.play()
+                observer.disconnect()
             }
-        })
-
-        tl.from(ingredientsSubtitleRef.current, {
-            opacity: 0,
-            y: desktop ? 20 : 15,
-            duration: 0.8,
-            ease: 'power2.out',
-        }, '-=0.35')
-
-        tl.from(ingredientsTitleRef.current, {
-            opacity: 0,
-            y: desktop ? 25 : 15,
-            duration: 0.6,
-            ease: 'power3.out',
-        }, '-=0.35')
-
-        tl.from(ingredientsLineRef.current, {
-            opacity: 0,
-            y: 20,
-            duration: 0.7,
-        },  '-=0.35')
-
-        .from(ingredientsVisualRef.current, {
-                opacity: 0,
-                x: desktop ? -40 : -20,
-                duration: 1,
-                ease: 'power3.out',
-            }, '-=0.25')
-
-        .from(ingredientsTextRef.current, {
-                opacity: 0,
-                x: desktop ? 40 : 20,
-                duration: 1,
-                ease: 'power3.out',
-            }, '-=0.9')
-
+        }, { threshold: 0.5 })
+        observer.observe(el)
     }
 
     {/* Benefits GSAP */}
@@ -264,16 +166,11 @@ export default function Home() {
     const benefitsRef = useRef(null)
 
     const benefitsGsap = () => {
-
+        if (!benefitsRef.current) return
         const desktop = window.innerWidth > 768
+        const el = benefitsRef.current
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: benefitsRef.current,
-                start: 'top 70%',
-                once: true
-            }
-        })
+        const tl = gsap.timeline({ paused: true })
 
         tl.from(document.querySelectorAll(`.${styles['benefits__item']}`), {
             opacity: 0,
@@ -282,14 +179,60 @@ export default function Home() {
             stagger: 0.12,
             ease: 'power3.out',
         })
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                tl.play()
+                observer.disconnect()
+            }
+        }, { threshold: 0.5 })
+        observer.observe(el)
+    }
+
+    // Gsap animation reviews
+
+    const reviewsRef = useRef<HTMLDivElement | null>(null)
+    const reviewsLabelRef = useRef<HTMLDivElement | null>(null)
+    const reviewsTitleRef = useRef<HTMLDivElement | null>(null)
+    const reviewsSubtitleRef = useRef<HTMLDivElement | null>(null)
+    const reviewsSummaryRef = useRef<HTMLDivElement | null>(null)
+    const reviewsCardRef = useRef<HTMLDivElement | null>(null)
+    const reviewsLinkRef = useRef<HTMLDivElement | null>(null)
+
+    const reviewsGsap = () => {
+        if (!reviewsRef.current) return
+
+        const desktop = window.innerWidth > 768
+
+        const reviews = reviewsCardRef.current
+
+        const cards = reviews?.children
+        if (!cards || !cards.length) return
+
+        const tl = gsap.timeline({ paused: true })
+
+        tl.from(reviewsLabelRef.current, { opacity: 0, y: desktop ? 30 : 20, duration: 0.6, ease: 'power3.out' })
+        tl.from(reviewsTitleRef.current, { opacity: 0, y: 0, x: desktop ? -60 : -30, duration: 0.6, ease: 'power3.out' }, '-=0.25')
+        tl.from(reviewsSubtitleRef.current, { opacity: 0, y: 0, x: desktop ? 60 : 30, duration: 0.6, ease: 'power3.out' }, '-=0.25')
+        tl.from(reviewsSummaryRef.current, { opacity: 0, y: desktop ? 30 : 20, x: 0, duration: 0.6, ease: 'power3.out' }, '-=0.35')
+        tl.from(cards, { opacity: 0, y: desktop ? 40 : 20, x: 0, stagger: desktop ? 0.2 : 0.4, duration: desktop ? 0.6 : 1, ease: 'power1.out' }, desktop ? '-=0.35' : '-=0.05')
+        tl.from(reviewsLinkRef.current, { opacity: 0, y: desktop ? 12 : 10, x: 0, duration: 0.6, ease: 'power3.out' }, '-=0.25')
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                tl.play()
+                observer.disconnect()
+            }
+        }, { threshold: 0.5 })
+        observer.observe(reviewsRef.current)
     }
 
     const pathname = usePathname()
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            heroGsapAnimation()
-            aboutGsapAnimation()
+            heroGsap()
+            aboutGsap()
             ingredientsGsap()
             benefitsGsap()
         })
@@ -298,14 +241,28 @@ export default function Home() {
     }, [pathname])
 
     useEffect(() => {
-        if (productsHome.length === 0) return
+        if (productsHome.length > 0) {
+            const ctx = gsap.context(() => {
+                pizzasGsap()
+            })
 
-        const ctx = gsap.context(() => {
-            pizzasAnimationGsap()
-        })
-
-        return () => ctx.revert()
+            return () => ctx.revert()
+        }
     }, [productsHome])
+
+    useEffect(() => {
+        if (testimonialsHome.length > 0) {
+            try {
+                const ctx = gsap.context(() => {
+                    reviewsGsap()
+                })
+                return () => ctx.revert()
+            } catch (err) {
+                console.error('erreur reviewsGsap:', err)
+            }
+        }
+    }, [testimonialsHome])
+
     return (
         <main className={styles.boutique}>
 
@@ -328,7 +285,7 @@ export default function Home() {
                 <div className={styles.aboutContainer}>
                     <div className={styles.aboutIntro}>
                         <span className={styles.aboutSubtitle} ref={aboutSubtitleRef}>PIZZERIA ARTISANALE</span>
-                        <h2 ref={aboutTitleRef}>Le goût de l’Italie,<br/>à deux pas de chez vous</h2>
+                        <h2 ref={aboutTitleRef}>Le goût de l'Italie,<br/>à deux pas de chez vous</h2>
                         <p ref={aboutIntroRef}>
                             Nous préparons des pizzas généreuses avec des ingrédients soigneusement sélectionnés,
                             une pâte travaillée avec attention et une cuisson maîtrisée pour un résultat savoureux à
@@ -571,13 +528,13 @@ export default function Home() {
             <Newsletter />
 
             {/* reviews */}
-            <section className={styles['reviews']}>
+            <section className={styles['reviews']} ref={reviewsRef}>
                 <div className={styles['reviews__header']}>
-                    <span className={styles['reviews__label']}>Témoignages</span>
-                    <h2 className={styles['reviews__title']}>Ce que disent nos clients</h2>
-                    <p className={styles['reviews__subtitle']}>Plus de 150 commandes, des clients satisfaits.</p>
+                    <span className={styles['reviews__label']} ref={reviewsLabelRef}>Témoignages</span>
+                    <h2 className={styles['reviews__title']} ref={reviewsTitleRef}>Ce que disent nos clients</h2>
+                    <p className={styles['reviews__subtitle']} ref={reviewsSubtitleRef}>Plus de 150 commandes, des clients satisfaits.</p>
 
-                    <div className={styles['reviews__summary']}>
+                    <div className={styles['reviews__summary']} ref={reviewsSummaryRef}>
                         <span className={styles['reviews__score']}>5</span>
                         <div className={styles['reviews__summary-detail']}>
                             <div className={styles['reviews__stars']}>
@@ -585,7 +542,7 @@ export default function Home() {
                                     <span key={index}></span>
                                 ))}
                             </div>
-                            <span className={styles['reviews__count']}>Basé sur { testimonials.length } avis</span>
+                            <span className={styles['reviews__count']}>Basé sur { testimonialsHome.length } avis</span>
                         </div>
                     </div>
                 </div>
@@ -594,9 +551,9 @@ export default function Home() {
                     <div className={styles['spinner']}>
                         <div className={styles['loader']}></div>
                     </div>
-                ) : testimonials.length > 0 ? (
-                    <div className={styles['reviews__grid']}>
-                        {testimonials.slice(0, 3).map((t) => (
+                ) : testimonialsHome.length > 0 ? (
+                    <div className={styles['reviews__grid']} ref={reviewsCardRef}>
+                        {testimonialsHome.slice(0, 3).map((t) => (
                             <div key={t.id} className={styles['reviews__card']}>
                                 <div className={styles['reviews__card-stars']}>
                                     {[1, 2, 3, 4, 5].map((n, index) => (
@@ -628,7 +585,7 @@ export default function Home() {
                     </div>
                 )}
 
-                <div className={styles['reviews__link']}>
+                <div className={styles['reviews__link']} ref={reviewsLinkRef}>
                     <Link href="/testimonials">Liste des commentaires</Link>
                 </div>
             </section>

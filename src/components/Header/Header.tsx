@@ -279,6 +279,9 @@ export default function Header({ className, ...rest }: HeaderProps) {
                                 </>
                             ) : (
                                 <>
+                                    <NavLink href="/">Accueil</NavLink>
+                                    <NavLink href="/pizzas">La carte</NavLink>
+                                    <NavLink href="/contact">Contact</NavLink>
                                     <NavLink href="/login" mobile>Connexion</NavLink>
                                     <NavLink href="/register" mobile>Inscription</NavLink>
                                 </>

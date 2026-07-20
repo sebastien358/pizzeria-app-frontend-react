@@ -42,7 +42,13 @@ export const useTestimonial = create<TestimonialState>()(
         limit: 0,
         pages: 0,
 
-        getItemsPerPage() {
+        getItemsHomePerPage: () => {
+            if (window.innerWidth >= 1600) return 3
+            if (window.innerWidth >= 767) return 2
+            return 2
+        },
+
+        getItemsPerPage: () => {
             if (window.innerWidth >= 1600) return 6
             if (window.innerWidth >= 767) return 6
             return 4
@@ -50,7 +56,7 @@ export const useTestimonial = create<TestimonialState>()(
 
         testimonialListHome: async () => {
             try {
-                set({ testimonialsHome: [], loadingTestimonial: true })
+                set({ testimonialsHome: [], limit: get().getItemsHomePerPage(), loadingTestimonial: true })
                 const data = await testimonialListHome()
                 set({ testimonialsHome: data, loadingTestimonial: false })
             } catch(err) {

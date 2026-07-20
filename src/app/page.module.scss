@@ -1020,7 +1020,7 @@ ABOUT
   }
 
   &__link {
-    margin-top: 30px;
+    margin-top: 70px;
     a {
       font-size: 14px;
       color: #e63946;
@@ -1072,7 +1072,7 @@ ABOUT
       font-size: 17px;
     }
     &__link {
-      margin-top: 30px;
+      margin-top: 70px;
       a {
         font-size: 14px;
       }
@@ -1179,7 +1179,7 @@ ABOUT
     }
 
     &__link {
-      margin-top: 20px;
+      margin-top: 40px;
     }
     &__link a {
       font-size: 12px;
@@ -1388,7 +1388,7 @@ BENEFITS
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
   max-width: 1100px;
   margin: 70px auto 80px auto;
-  padding: 30px 36px 30px 36px;
+  padding: 5px 36px 55px 36px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 28px;
@@ -1471,7 +1471,7 @@ BENEFITS
 
 @media (max-width: 1024px) {
   .benefits__list {
-    margin: 50px 20px 60px 20px;
+    margin: 10px 20px 60px 20px;
   }
 }
 
@@ -1492,7 +1492,7 @@ BENEFITS
   .benefits__list {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 20px 18px 20px 18px;
+    padding: 0 15px 40px 15px;
     margin: 40px 20px 40px 20px;
 
     border-radius: 16px;
