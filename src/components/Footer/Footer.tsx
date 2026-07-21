@@ -2,10 +2,24 @@ import styles from '@/components/Footer/Footer.module.scss'
 import Image from "next/image";
 
 import Pizza from '@/assets/images/hero-pizza.png'
+import LegalNotice from "@/components/legal-notice/LegalNotice";
+import {useState} from "react";
 
 type FooterProps = { className: string }
 
 export default function Footer({ className, ...rest }: FooterProps) {
+
+    {/* Open Legal Modal */}
+
+    const [ openLegalModal, setOpenLegalModal ] = useState(false)
+
+    const onClickOpenLegalModal = () => {
+        setOpenLegalModal(true)
+    }
+
+    const onClickCloseLegalModal = () => {
+        setOpenLegalModal(false)
+    }
     return (
         <footer className={`${styles.footer} ${className || ''}`} {...rest}>
             <section className={styles.footerMain}>
@@ -23,7 +37,7 @@ export default function Footer({ className, ...rest }: FooterProps) {
                     </div>
                 </div>
 
-                <div className={styles.footeMain__socials}>
+                <div className={styles.footerMain__socials}>
                     <a target="_blank" href="https://www.facebook.com">Facebook</a>
                     <a target="_blank" href="https://www.instagram.com">Instagram</a>
                     <a target="_blank" href="https://www.tiktok.com">TikTok</a>
@@ -53,9 +67,11 @@ export default function Footer({ className, ...rest }: FooterProps) {
 
                 <div className={styles.footerMain__bottom}>
                     <p>Copyright © 2026 Pizzeria. Tous droits réservés.</p>
-                    <span>Mentions légales</span>
+                    <span onClick={() => onClickOpenLegalModal()}>Mentions légales</span>
                 </div>
             </section>
+
+            <LegalNotice openLegalModal={openLegalModal} closeLegalModal={onClickCloseLegalModal} />
         </footer>
     )
 }

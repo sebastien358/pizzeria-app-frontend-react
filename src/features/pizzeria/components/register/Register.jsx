@@ -95,7 +95,7 @@ export default function Register() {
                         <div className={styles['input-wrap']}>
                             <label htmlFor='Votre email'></label>
                             <FontAwesomeIcon icon={faUser}/>
-                            <input {...register('email')} type="email" id="email" placeholder="Email"/>
+                            <input {...register('email')} type="email" id="email" placeholder="Email" />
                         </div>
                         {errors.email && <span className={styles['error-field']}>{errors.email.message}</span>}
                     </div>

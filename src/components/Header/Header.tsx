@@ -66,6 +66,19 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
     const [ openMenuMobile, setOpenMenuMobile ] = useState(false)
 
+    const mobileMenuRef = useRef<HTMLDivElement | null>(null)
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+                setOpenMenuMobile(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
     {/* Animation GSAP */}
 
     const headerRef = useRef(null)
@@ -246,7 +259,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
                 {/* Mobile */}
 
-                <section className={styles['mobile']} onMouseEnter={() => setOpenMenuMobile(true)} onMouseLeave={() => setOpenMenuMobile(false)}>
+                <section className={styles['mobile']} ref={mobileMenuRef} onClick={() => setOpenMenuMobile(prev => !prev)}>
                     <div className={styles['mobile__icon']}>
                         <FontAwesomeIcon icon={faBars} />
                         <div className={`${styles['mobile__menu']} ${openMenuMobile ? styles['mobile__menu__open'] : ''}`}>

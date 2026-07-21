@@ -27,6 +27,7 @@ interface ContactAdminState {
     pages: number
     totalContacts: number
 
+    getItemsPerPage: () => number
     contactAdminList: () => Promise<void>
     previousPage: () => Promise<void>
     nextPage: () => Promise<void>
@@ -47,9 +48,21 @@ export const useContactAdminStore = create<ContactAdminState>()(
         pages: 0,
         totalContacts: 0,
 
+        getItemsPerPage() {
+            if (window.innerWidth > 1600) {
+                return 12
+            } else if (window.innerWidth >= 1024) {
+                return 6
+            } else if (window.innerWidth >= 768) {
+                return 5
+            } else {
+                return 3
+            }
+        },
+
         contactAdminList: async () => {
             try {
-                set({ contacts: [], loading: true })
+                set({ contacts: [], limit: get().getItemsPerPage(), loading: true })
                 const currentPage = get().currentPage
                 const limit = get().limit
                 const data = await axiosContactAdminList(currentPage, limit)

@@ -273,7 +273,7 @@ export default function Home() {
                     <div className={styles.hero__text}>
                         <h1 ref={heroTitleRef}>Des pizzas artisanales, livrées chez vous 🍕</h1>
                         <p ref={heroTextRef}>Commandez en quelques clics et savourez une vraie pizza italienne.</p>
-                        <button ref={btnHeroRef} className={styles.btnHero}>Commander maintenant</button>
+                        <Link href="/pizzas" ref={btnHeroRef} className={styles.btnHero}>Commander maintenant</Link>
                     </div>
                 </div>
                 <Image ref={heroPizzaRef} src={hero} alt="Pizza" width={680} height={680} sizes="(max-width: 768px) 60vw, 680px" className={styles.heroPizza}/>

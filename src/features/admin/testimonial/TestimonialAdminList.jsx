@@ -53,17 +53,17 @@ export function TestimonialList() {
                                     <div key={testimonial.id} className={styles['contact__item']}>
                                         <div className={styles['contact__header']}>
                                             <div className={styles['contact__infos']}>
-                                    <span className={styles['contact__name']}>
-                                        {testimonial.firstname} {testimonial.lastname}
-                                    </span>
+                                                <span className={styles['contact__name']}>
+                                                    {testimonial.firstname} {testimonial.lastname}
+                                                </span>
                                                 <span className={styles['contact__note']}>
-                                        Note : {testimonial.rating}/5
-                                    </span>
+                                                    Note : {testimonial.rating}/5
+                                                </span>
                                             </div>
                                             <div className={styles['contact__button']}>
-                                    <span className={styles['is-read']}>
-                                        {testimonial.isRead ? '✅' : '🔴'}
-                                    </span>
+                                                <span className={styles['is-read']}>
+                                                    {testimonial.isRead ? '✅' : '🔴'}
+                                                </span>
                                                 <Link
                                                     href={`/admin/testimonials/${testimonial.id}`}
                                                     className={styles['contact__details']}
@@ -96,5 +96,4 @@ export function TestimonialList() {
             )}
         </>
     )
-
 }

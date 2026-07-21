@@ -416,11 +416,8 @@
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-
-
   justify-items: start;
   justify-content: start;
-
 }
 
 /* Overlay sombre */
@@ -471,6 +468,7 @@
 /* ===== BOUTON ===== */
 
 .btnHero {
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;

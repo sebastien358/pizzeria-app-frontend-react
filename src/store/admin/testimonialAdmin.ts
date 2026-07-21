@@ -28,6 +28,7 @@ interface TestimonialAdminState {
     pages: number
     term: string
 
+    getItemsPerPage: () => number
     testimonialAdminList: () => Promise<void>
     previousPage: () => void
     nextPage: () => void
@@ -48,13 +49,24 @@ export const useTestimonialAdmin = create<TestimonialAdminState>()(
         pages: 0,
         term: "",
 
+        getItemsPerPage() {
+            if (window.innerWidth > 1600) {
+                return 12
+            } else if (window.innerWidth >= 1024) {
+                return 6
+            } else if (window.innerWidth >= 768) {
+                return 5
+            } else {
+                return 3
+            }
+        },
+
         testimonialAdminList: async () => {
             try {
-                set({ testimonials: [], loading: true })
+                set({ testimonials: [], limit: get().getItemsPerPage(), loading: true })
                 const currentPage = get().currentPage
                 const limit = get().limit
                 const data = await axiosTestimonialAdminList(currentPage, limit)
-                console.log(data)
                 set({ testimonials: data.testimonials, pages: data.pages, countTestimonials: data.totalTestimonials, loading: false })
             } catch(err) {
                 set({ testimonials: [], loading: false })
@@ -132,7 +144,7 @@ export const useTestimonialAdmin = create<TestimonialAdminState>()(
         publishedTestimonial: async (id: string) => {
             try {
                 await axiosTestimonialAdminPublished(id)
-                await get().testimonialAdminList()
+                await get().testimonialDetails(id)
             } catch(err) {
                 console.error(err)
                 throw err

@@ -98,7 +98,7 @@ export default function Login() {
                         <div className={styles['input-wrap']}>
                             <label htmlFor="password">Mot de passe</label>
                             <FontAwesomeIcon icon={faLock} />
-                            <input type="password" {...register('password')} placeholder='Mot de passe' />
+                            <input type="password" {...register('password')}placeholder="••••••••" />
                         </div>
 
                         {errors.password && <span className={styles.errorField}>{errors.password.message}</span>}

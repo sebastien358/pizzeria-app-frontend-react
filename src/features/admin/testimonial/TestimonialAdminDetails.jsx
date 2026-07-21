@@ -4,7 +4,7 @@ import {useState} from "react";
 import {useRouter} from "next/navigation";
 
 
-export default function TestimonialAdminDetails({ loading, currentTestimonial, testimonialDelete, publishedTestimonial=publishedTestimonial, id }) {
+export default function TestimonialAdminDetails({ loading, currentTestimonial, testimonialDelete, publishedTestimonial, id }) {
 
     const [ openModalConfirm, setOpenModalConfirm ] = useState(false)
 

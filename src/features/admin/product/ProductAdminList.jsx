@@ -5,20 +5,47 @@ import styles from './ProductAdminList.module.scss'
 import InputSearch from "@/components/input-search/InputSearch";
 import {useProductAdmin} from "@/store/admin/productAdmin";
 import Pagination from "@/components/pagination/Pagination";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import NotFound from "@/assets/images/not-found.webp"
 import Image from "next/image";
+import ModalConfirm from "@/modal/modal-confirm/ModalConfirm";
 
 export default function ProductAdminList() {
-    const { productAdminList, searchAdminProduct, nextPage, previousPage, deleteProduct, loading, products, term, currentPage, pages, totalProducts } = useProductAdmin()
+
+    const {
+        productAdminList,
+        searchAdminProduct,
+        nextPage,
+        previousPage,
+        deleteProduct,
+        loading,
+        products,
+        term,
+        currentPage,
+        pages,
+        totalProducts
+    } = useProductAdmin()
 
     useEffect(() => {
         productAdminList()
     }, [])
 
+    const [ openModalConfirm, setOpenModalConfirm ] = useState(false)
+    const [ productId, setProductId ] = useState(null)
+
     const onClickDeleteProduct = async (id) => {
-        await deleteProduct(id)
+        setOpenModalConfirm(true)
+        setProductId(id)
+    }
+
+    const onClickDelete = async () => {
+        await deleteProduct(productId)
         await productAdminList()
+        setOpenModalConfirm(false)
+    }
+
+    const onClickCloseModalConfirm = () => {
+        setOpenModalConfirm(false)
     }
 
     return (
@@ -39,7 +66,13 @@ export default function ProductAdminList() {
 
                                 <div key={product.id} className={styles['product__list']}>
                                     <div className={styles['product__content']}>
-                                        <Image src={product.pictures[0]?.filename || NotFound} className={styles['img-product']} alt={"image pizzas"} width={200} height={200} />
+                                        <Image
+                                            src={product.pictures[0]?.filename || NotFound}
+                                            className={styles['img-product']}
+                                            alt={"image pizzas"}
+                                            width={200}
+                                            height={200}
+                                        />
                                         <h4>{product.title}</h4>
                                     </div>
                                     <div className={styles['product__buttons']}>
@@ -64,6 +97,11 @@ export default function ProductAdminList() {
                     )}
                 </section>
             )}
+            <ModalConfirm
+                openModalConfirm={openModalConfirm}
+                onClickCloseModalConfirm={onClickCloseModalConfirm}
+                onClickDelete={onClickDelete}
+            />
         </>
     )
 }
