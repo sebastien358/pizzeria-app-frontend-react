@@ -12,6 +12,7 @@ import Newsletter from "@/components/newsletter/Newsletter";
 import Ingredients from '@/assets/images/ingredients.png'
 import {usePathname} from "next/navigation";
 import gsap from 'gsap'
+import {useProductToCart} from "@/store/cartProduct";
 
 export default function Home() {
 
@@ -19,7 +20,11 @@ export default function Home() {
     const { productsHome, loading, productListHome } = useProductStore()
 
     {/* Testimonials */}
-    const { testimonialListHome, testimonialsHome, loadingTestimonial } = useTestimonial()
+    const { testimonialListHome, testimonialsHome, loadingTestimonial, averageRating } = useTestimonial()
+
+    {/* Cart */}
+
+    const { productToCart } = useProductToCart()
 
     useEffect(() => {
         productListHome()
@@ -41,11 +46,11 @@ export default function Home() {
             defaults[p.id] = p.productOption.find((po: any) => po.name === 'Grande') || p.productOption[0]
         })
         setSelectedOptions(defaults)
-    }, [productsHome]);
+    }, [productsHome])
 
-    {/* Add cart */}
-    const addProductToCart = (id: string | number) => {
-        console.log(id, selectedOptions[id])
+    {/* Add to cart */}
+    const addProductToCart = (id: number) => {
+        productToCart(id, selectedOptions[id])
     }
 
     {/* Hero GSAP */}
@@ -60,12 +65,7 @@ export default function Home() {
 
         const tl = gsap.timeline()
 
-        tl.from(heroTitleRef.current, {
-            opacity: 0,
-            y: desktop ? 40 : 30,
-            duration: 1,
-        })
-
+        tl.from(heroTitleRef.current, {opacity: 0, y: desktop ? 40 : 30, duration: 1})
         .from(heroTextRef.current, {opacity: 0, y: desktop ? 30 : 20, duration: 0.8,}, '-=0.6')
         .from(btnHeroRef.current, {opacity: 0, y: 20, duration: 0.8}, '-=0.5')
         .from(heroPizzaRef.current, {opacity: 0, x: desktop ? 80 : 40, rotate: desktop ? -20 : -10, duration: 1, ease: 'power3.out'}, '-=1')
@@ -315,7 +315,7 @@ export default function Home() {
                         </div>
 
                         <div className={styles.statItem}>
-                            <h3>0/5</h3>
+                            <h3>{averageRating}/5</h3>
                             <p>Avis clients</p>
                         </div>
                     </div>
@@ -525,6 +525,7 @@ export default function Home() {
             </section>
 
             {/* newsletter */}
+
             <Newsletter />
 
             {/* reviews */}
@@ -535,7 +536,7 @@ export default function Home() {
                     <p className={styles['reviews__subtitle']} ref={reviewsSubtitleRef}>Plus de 150 commandes, des clients satisfaits.</p>
 
                     <div className={styles['reviews__summary']} ref={reviewsSummaryRef}>
-                        <span className={styles['reviews__score']}>5</span>
+                        <span className={styles['reviews__score']}>{averageRating}/5</span>
                         <div className={styles['reviews__summary-detail']}>
                             <div className={styles['reviews__stars']}>
                                 {[1, 2, 3, 4, 5].map((n, index) => (

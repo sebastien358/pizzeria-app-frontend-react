@@ -74,7 +74,7 @@ export const useTestimonial = create<TestimonialState>()(
                 const limit = get().limit
                 const data = await testimonialList(currentPage, limit)
                 console.log(data)
-                set({ testimonials: data.testimonials, loadingTestimonial: false, countTestimonials: data.countTestimonials, pages: data.pages, averageRating: data.averageRating })
+                set({ testimonials: data.testimonials, loadingTestimonial: false, countTestimonials: data.countTestimonials,  pages: data.pages, averageRating: data.averageRating })
             } catch(err) {
                 set({ testimonials: [], loadingTestimonial: false })
                 console.error(err)
