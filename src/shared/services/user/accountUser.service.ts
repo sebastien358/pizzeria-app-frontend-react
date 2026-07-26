@@ -15,9 +15,9 @@ export async function axiosAccountUserDetails() {
     }
 }
 
-export async function axiosAccountUserEdit(id: number, data) {
+export async function axiosAccountUserEdit(id: number, data: { email: string; password: string }) {
     try {
-        const response = await axios.patch(`${BASE_URL}/api/user/account/edi/${id}`, data)
+        const response = await axios.patch(`${BASE_URL}/api/user/account/edit/${id}`, data)
         if (response.status <= 200 && response.status < 300) {
             return response.data
         }

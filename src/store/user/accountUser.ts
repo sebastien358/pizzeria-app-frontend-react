@@ -1,8 +1,19 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
 import {axiosAccountUserDetails, axiosAccountUserEdit} from "@/shared/services/user/accountUser.service";
+import axios from "axios";
 
-export const useAccountUserStore = create()(
+interface AccountUserState {
+    user: any
+    loading: boolean
+    error: string | null
+
+    accountUserDetails: () => Promise<void>
+    accountUserEdit: (id: number, data: any) => Promise<void>
+    clearError: () => void
+}
+
+export const useAccountUserStore = create<AccountUserState>()(
     persist((set, get) => ({
         user: null,
         loading: false,
@@ -23,7 +34,7 @@ export const useAccountUserStore = create()(
             try {
                 await axiosAccountUserEdit(id, data)
             } catch(err) {
-                const apiError = err?.response?.data
+                const apiError = axios.isAxiosError(err) ? err.response?.data : null
                 if (apiError?.type === 'ACCOUNT_ERROR_EDIT_USER') {
                     set({ error: apiError?.message || 'Les données n\'ont pas pu être modifiées' })
                 } else {
@@ -34,7 +45,6 @@ export const useAccountUserStore = create()(
         },
 
         clearError: () => {
-            console.log('clearError appelé')
             set({ error: null })
         },
 

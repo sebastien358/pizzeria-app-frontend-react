@@ -43,18 +43,18 @@ export default function Account() {
         }
     }, [user, reset]);
 
-    const [ successMessage, setSuccessMessage ] = useState(null)
+    const [ successMessage, setSuccessMessage ] = useState<string | null>(null)
 
     {/* Données de soumission du formulaire */}
 
-    const onSubmit = async (dataUser) => {
+    const onSubmit = async (dataUser: {email: string, password: string, passwordConfirm: string }) => {
         try {
             const data = {
                 email: dataUser.email,
-                password: dataUser.password
+                password: dataUser.password,
             }
             await accountUserEdit(user.id, data)
-            displaySuccessMessage('Les données ont été modifiées')
+            displaySuccessMessage()
         } catch(err) {
             displayErrorMessage()
             throw err

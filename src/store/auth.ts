@@ -105,7 +105,7 @@ export const useAuthStore = create<AuthState>()(
             }
         },
 
-        requestPassword: async (data) => {
+        requestPassword: async (data: any) => {
             try {
                 await axiosRequestPassword(data)
             } catch(err: any) {
