@@ -89,9 +89,9 @@ export const useProductAdmin = create<ProductAdminState>()(
 
         productAdminList: async () => {
             try {
-                const { getItemsPerPage, currentPage, limit } = get()
+                const { currentPage, limit } = get()
 
-                set({ products: [], loading: true, limit: getItemsPerPage() })
+                set({ products: [], limit: get().getItemsPerPage(), loading: true })
                 const data = await productAdminList(currentPage, limit)
 
                 set({ products: data.products, pages: data.pages, totalProducts: data.totalProducts, loading: false })
@@ -138,10 +138,10 @@ export const useProductAdmin = create<ProductAdminState>()(
                 formData.append('description', formValues.description)
                 formData.append('image', formValues.image)
 
-               formValues.productOption.forEach((po, index) => {
-                   formData.append(`productOption[${index}][name]`, po.name)
-                   formData.append(`productOption[${index}][price]`, po.price.toString())
-               })
+                formValues.productOption.forEach((po, index) => {
+                    formData.append(`productOption[${index}][name]`, po.name)
+                    formData.append(`productOption[${index}][price]`, po.price.toString())
+                })
 
                 const data = await axiosProductAdminNew(formData)
                 set({ products: data })
@@ -174,27 +174,27 @@ export const useProductAdmin = create<ProductAdminState>()(
             }
         },
 
-            deleteImage: async (productId: number, imageId: number) => {
-                try {
-                    await axiosDeleteImage(productId, imageId)  // vérifie le nom de la fonction importée
-                    set((state) => ({
-                        currentProduct: state.currentProduct ? {
-                            ...state.currentProduct,
-                            pictures: state.currentProduct.pictures.filter((pic) => pic.id !== imageId)
-                        } : null
-                    }))
-                } catch(err) {
-                    console.error(err)
-                    throw err
-                }
-            },
+        deleteImage: async (productId: number, imageId: number) => {
+            try {
+                await axiosDeleteImage(productId, imageId)  // vérifie le nom de la fonction importée
+                set((state) => ({
+                    currentProduct: state.currentProduct ? {
+                        ...state.currentProduct,
+                        pictures: state.currentProduct.pictures.filter((pic) => pic.id !== imageId)
+                    } : null
+                }))
+            } catch(err) {
+                console.error(err)
+                throw err
+            }
+        },
 
-        uploadImage: async (productId: number, file) => {
+        uploadImage: async (productId: number, file: File) => {
             try {
                 const formData = new FormData()
                 formData.append('image', file)
                 await uploadImage(productId, formData)
-                await get().productAdminDetails(productId)  // Tu penses quoi ce ca pour relancer l'image directement ?
+                await get().productAdminDetails(productId)
             } catch(err) {
                 console.error(err)
                 throw err

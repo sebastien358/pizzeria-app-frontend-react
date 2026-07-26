@@ -50,7 +50,7 @@ export const useTestimonialAdmin = create<TestimonialAdminState>()(
         term: "",
 
         getItemsPerPage() {
-            if (window.innerWidth > 1600) {
+            if (window.innerWidth >= 1600) {
                 return 12
             } else if (window.innerWidth >= 1024) {
                 return 6

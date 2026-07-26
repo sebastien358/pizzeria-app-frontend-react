@@ -163,7 +163,8 @@ export default function Header({ className, ...rest }: HeaderProps) {
                                 <div className={styles['header-user']} onMouseEnter={() => setMenuUser(true)} onMouseLeave={() => setMenuUser(false)}>
                                     <a className={styles.nav__link} href="#">Espace Client</a>
                                     <div className={`${styles['header-user__menu']} ${menuUser ? styles['header-user__menu__open'] : ''}`}>
-                                        <NavLink href="/user/profile/commands" dropdown>Mes commandes</NavLink>
+                                        <NavLink href="/user/commands" dropdown>Mes commandes</NavLink>
+                                        <NavLink href="/user/account" dropdown>Mon compte</NavLink>
                                     </div>
                                 </div>
                             </>
@@ -283,7 +284,8 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
                             {token && isUser() && !isAdmin() && (
                                 <>
-                                    <NavLink href="/user/profile/commands" mobile>Mes commandes</NavLink>
+                                    <NavLink href="/user/commands" mobile>Mes commandes</NavLink>
+                                    <NavLink href="/user/account" mobile>Mon compte</NavLink>
                                 </>
                             )}
 

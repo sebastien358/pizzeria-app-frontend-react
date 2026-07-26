@@ -40,19 +40,18 @@ export const useAuthStore = create<AuthState>()(
 
         setHasHydrated: (state) => set({ hasHydrated: state }),
 
-
         login: async (data: LoginData) => {
             try {
                 set({ error: null })
                 const { token } = await login(data)
                 set({ token: token })
 
-                // Écrit le token dans un cookie pour que le middleware puisse le lire
+                // Token dans un cookie pour que le middleware puisse le lire
                 document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`
 
                 await get().infoMe()
             } catch (err: any) {
-                set({ error: 'La connexion a échouée' })
+                set({ error: 'Identifiant ou mot de passe invalide' })
                 throw err
             }
         },
@@ -96,8 +95,12 @@ export const useAuthStore = create<AuthState>()(
             try {
                 return await emailExisting(email)
             } catch(err: any) {
-                set({ error: 'Votre email n\'existe pas dans nos données' })
-                console.error(err)
+                const apiError = err?.response?.data
+                if (apiError?.type === 'ERROR_EMAIL_EXISTING') {
+                    set({ error: apiError.message || 'Votre email n\'existe pas dans nos données' })
+                } else {
+                    set({ error: 'Votre email n\'existe pas dans nos données' })
+                }
                 throw err
             }
         },

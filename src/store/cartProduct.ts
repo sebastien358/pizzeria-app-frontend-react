@@ -43,10 +43,10 @@ export const useProductToCart = create<CartState>()(
             const productInCart = cart.find((p) => p.id === id && p.productOption.id === option.id)
 
             if (productInCart) {
-                set({cart: cart.map((p) => p.id === id && p.productOption.id === option.id ? { ...p, quantity: p.quantity + 1 } : p)})
+                set({ cart: cart.map((p) => p.id === id && p.productOption.id === option.id ? { ...p, quantity: p.quantity + 1 } : p) })
             } else {
                 set({
-                    cart: [...cart, { ...productExist, productOption: option, quantity: 1 }]
+                    cart: [ ...cart, { ...productExist, productOption: option, quantity: 1 } ]
                 })
             }
         },
@@ -58,12 +58,9 @@ export const useProductToCart = create<CartState>()(
             if (!productInCart) return
 
             if (productInCart.quantity > 1) {
-                set({cart: cart.map((p) => p.id === id ? { ...p, quantity: p.quantity - 1 } : p)
-                })
+                set({ cart: cart.map((p) => p.id === id ? { ...p, quantity: p.quantity - 1 } : p) })
             } else {
-                set({
-                    cart: cart.filter((p) => !(p.id === id))
-                })
+                set({ cart: cart.filter((p) => !(p.id === id)) })
             }
         }
     }), {

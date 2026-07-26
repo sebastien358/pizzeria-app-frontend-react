@@ -27,10 +27,12 @@ export default function Register() {
             .email({ message: 'Veuillez saisir une adresse e-mail valide' }),
         password: z
             .string()
-            .min(8, { message: 'Le mot de passe doit contenir au moins 8 caractères' }),
+            .min(8, { message: 'Le mot de passe doit contenir au moins 8 caractères' })
+            .max(50, { message: '50 caractères maximum' }),
         passwordConfirm: z
             .string()
             .min(8, { message: 'Le mot de passe doit contenir au moins 8 caractères' })
+            .max(50, { message: '50 caractères maximum' })
     }).refine((value) => value.passwordConfirm === value.password, {
         message: 'Les mots de passe ne correspondent pas',
         path: ['passwordConfirm']

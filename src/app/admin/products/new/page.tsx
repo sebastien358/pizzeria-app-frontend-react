@@ -1,5 +1,5 @@
-import ProductAdminNew from "@/features/admin/product/ProductAdminNew";
+import ProductAdminForm from "@/features/admin/product/ProductAdminForm"
 
 export default function page() {
-    return <ProductAdminNew currentProduct={null} productId={null} />
+    return <ProductAdminForm currentProduct={null} productId={null} />
 }

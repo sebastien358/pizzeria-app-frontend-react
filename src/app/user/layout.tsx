@@ -1,17 +1,18 @@
 "use client"
 
 import React, { useEffect } from "react"
-import { useRouter } from 'next/navigation'
-import { useAuthStore } from "@/store/auth"
+import {useAuthStore} from "@/store/auth";
+import {useRouter} from "next/navigation";
+
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter()
-    const { token, isAdmin, hasHydrated } = useAuthStore()
+    const { token, isUser, hasHydrated } = useAuthStore()
 
     useEffect(() => {
         if (!hasHydrated) return // attend que le store soit vraiment chargé
 
-        if (!token || !isAdmin()) {
+        if (!token || !isUser()) {
             router.push('/login')
         }
     }, [token, hasHydrated])

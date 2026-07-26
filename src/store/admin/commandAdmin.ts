@@ -21,6 +21,7 @@ interface CommandAdminState {
     pages: number
     countCommandsUnread: number
 
+    getItemsPerPage: () => number
     commandAdminList: () => Promise<void>
     previousPage: () => Promise<void>
     nextPage: () => Promise<void>
@@ -40,18 +41,23 @@ export const useCommandAdminStore = create<CommandAdminState>()(
         pages: 0,
         countCommandsUnread: 0,
 
+        getItemsPerPage() {
+            if (window.innerWidth >= 1600) {
+                return 4
+            } else if (window.innerWidth >= 1024) {
+                return 3
+            } else {
+                return 2
+            }
+        },
+
         commandAdminList: async () => {
             try {
-                set({ commands: [], loading: true })
+                set({ commands: [], limit: get().getItemsPerPage(), loading: true })
                 const currentPage = get().currentPage
                 const limit = get().limit
                 const data = await axiosCommandAdminList(currentPage, limit)
-
-                console.log(data)
                 set({ commands: data.commands, countCommandsUnread: data.countCommandsUnread, pages: data.pages, loading: false })
-
-                console.log(get().countCommandsUnread)
-
             } catch (err) {
                 set({ commands: [], loading: false })
                 console.error(err)

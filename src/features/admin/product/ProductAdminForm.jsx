@@ -1,6 +1,6 @@
 'use client'
 
-import styles from './ProductAdminNew.module.scss'
+import styles from './ProductAdminForm.module.scss'
 import {useFieldArray, useForm} from 'react-hook-form'
 import {zodResolver} from "@hookform/resolvers/zod"
 import {useProductAdmin} from "@/store/admin/productAdmin"
@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 
-export default function ProductAdminNew({ currentProduct, productId }) {
+export default function ProductAdminForm({ currentProduct, productId }) {
 
     {/* Valeurs d'un fichier attendu */}
 
@@ -38,20 +38,19 @@ export default function ProductAdminNew({ currentProduct, productId }) {
                 price: z.coerce.number().min(0.01, { message: 'Le prix est requis' })
             })
         )
-
     })
 
     {/* Use form */}
 
-    const { register, control, handleSubmit, setValue, reset, formState: { errors, isSubmitting } } = useForm({
+    const { register, handleSubmit, control, setValue, reset, formState: { errors, isSubmitting } } = useForm({
         resolver: zodResolver(schema),
-        defaultValues: {
+       defaultValues: {
             productOption: [
-                { name: 'Petite', price: '' },
-                { name: 'Moyenne', price: '' },
-                { name: 'Grande', price: '' }
+                {name: 'Petite', price: ''},
+                {name: 'Moyenne', price: ''},
+                {name: 'Grande', price: ''}
             ]
-        }
+       }
     })
 
     {/* Fields productOption */}
@@ -113,14 +112,14 @@ export default function ProductAdminNew({ currentProduct, productId }) {
 
     const onSubmit = async (formValues) => {
         try {
-        if (productId) {
-            await productAdminEdit(productId, formValues)
-            displayEditSuccessMessage()
-            await productAdminList()
-        } else {
-            await productAdminNew(formValues)
-            displaySuccessMessage()
-        }
+            if (productId) {
+                await productAdminEdit(productId, formValues)
+                displayEditSuccessMessage()
+                await productAdminList()
+            } else {
+                await productAdminNew(formValues)
+                displaySuccessMessage()
+            }
         } catch(err) {
             displayErrorMessage()
             throw err
@@ -160,7 +159,6 @@ export default function ProductAdminNew({ currentProduct, productId }) {
             clearMessage()
         }, 2000)
     }
-
 
     return (
         <main className={styles['product']}>
@@ -218,7 +216,6 @@ export default function ProductAdminNew({ currentProduct, productId }) {
                                     type="file"
                                     onChange={(e) => handleChangeFile(e)}
                                     className={styles['input-file__input']}
-                                    multiple
                                 />
                                 <span>{filename || '📎 Choisir une image'}</span>
                             </label>

@@ -23,6 +23,7 @@ interface CommandUserState {
     errorMessage: string | null
     limit: number
 
+    getItemsPerPage: () => number
     commandUserList: () => Promise<void>
     previousPage: () => void
     nextPage: () => void
@@ -45,11 +46,22 @@ export  const useCommandUser = create<CommandUserState>()(
         pages: 0,
         loading: false,
         errorMessage: null,
-        limit: 2,
+        limit: 0,
 
-        commandUserList: async () => {
+            getItemsPerPage() {
+                if (window.innerWidth >= 1600) {
+                    return 4
+                } else if (window.innerWidth >= 1024) {
+                    return 3
+                } else {
+                    return 2
+                }
+            },
+
+
+            commandUserList: async () => {
             try {
-                set({ commands: [], loading: true })
+                set({ commands: [], limit: get().getItemsPerPage(), loading: true })
                 const currentPage = get().currentPage
                 const limit = get().limit
                 const data = await axiosCommandUserList(currentPage, limit)

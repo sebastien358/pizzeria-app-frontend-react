@@ -17,7 +17,8 @@ import gsap from 'gsap'
 config.autoAddCss = false
 
 const schema = z.object({
-    email: z.string()
+    email: z
+        .string()
         .email({ message: 'Email invalide' }),
     password: z.string()
         .min(1, { message: 'Mot de passe requis' })
@@ -26,7 +27,7 @@ const schema = z.object({
 })
 
 export default function Login() {
-    const { login, emailExisting, error, clearError } = useAuthStore()
+    const { login, emailExisting, error, isUser, isAdmin, clearError } = useAuthStore()
 
     const displayError = (email = '') => {
         emailExisting(email)
@@ -37,15 +38,26 @@ export default function Login() {
 
     const [ success, setSuccess ] = useState(null)
 
+    const redirectForAdminOrUser = () => {
+        if (isAdmin()) {
+            router.push('/admin/commands')
+        } else if (isUser()) {
+            router.push('/user/commands')
+        } else {
+            router.push('/')
+        }
+    }
+
     const handleReset = () => {
         setSuccess('Connexion réussie !')
         setTimeout(() => {
+            redirectForAdminOrUser()
+            setSuccess(null)
             reset()
-            router.push('/')
         }, 2000)
     }
 
-    const {register, handleSubmit, reset, formState: {errors, isSubmitting}} = useForm({
+    const {register, handleSubmit, reset, formState: { errors, isSubmitting }} = useForm({
         resolver: zodResolver(schema)
     })
 
@@ -98,7 +110,7 @@ export default function Login() {
                         <div className={styles['input-wrap']}>
                             <label htmlFor="password">Mot de passe</label>
                             <FontAwesomeIcon icon={faLock} />
-                            <input type="password" {...register('password')}placeholder="••••••••" />
+                            <input type="password" {...register('password')} placeholder="••••••••" />
                         </div>
 
                         {errors.password && <span className={styles.errorField}>{errors.password.message}</span>}
@@ -115,7 +127,7 @@ export default function Login() {
                     {error && <p className={styles.errorMessage}>{error}</p>}
 
                     {/* button */}
-                    <button disabled={isSubmitting} className={styles.btnPrimary}>
+                    <button type={'submit'} disabled={isSubmitting} className={styles.btnPrimary}>
                         {isSubmitting ? 'Chargement...' : 'Soumettre'}
                     </button>
                 </form>
