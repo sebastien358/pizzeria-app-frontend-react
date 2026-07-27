@@ -1,6 +1,10 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
-import {axiosAccountUserDetails, axiosAccountUserEdit} from "@/shared/services/user/accountUser.service";
+import {
+    axiosAccountDeleteUser,
+    axiosAccountUserDetails,
+    axiosAccountUserEdit
+} from "@/shared/services/user/accountUser.service";
 import axios from "axios";
 
 interface AccountUserState {
@@ -10,6 +14,7 @@ interface AccountUserState {
 
     accountUserDetails: () => Promise<void>
     accountUserEdit: (id: number, data: any) => Promise<void>
+    accountDeleteUser: () => void
     clearError: () => void
 }
 
@@ -40,6 +45,14 @@ export const useAccountUserStore = create<AccountUserState>()(
                 } else {
                     set({ error: 'Les données n\'ont pas pu être modifiées' })
                 }
+                throw err
+            }
+        },
+
+        accountDeleteUser: async () => {
+            try {
+                await axiosAccountDeleteUser()
+            } catch (err) {
                 throw err
             }
         },

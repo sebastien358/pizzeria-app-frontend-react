@@ -363,6 +363,43 @@ $rouge: #dc2626;
     width: 25px;
     height: 25px;
   }
+  &__icon__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__icon__row__cart {
+    position: relative;
+  }
+
+  &__icon__row__cart svg {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__icon__row__cart--badge {
+    position: absolute;
+    height: 12px;
+    width: 12px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: -5px;
+    top: 0;
+  }
+
+  &__fa-bars {
+    position: relative;
+  }
+
   &__menu {
     position: absolute;
     top: 56px;

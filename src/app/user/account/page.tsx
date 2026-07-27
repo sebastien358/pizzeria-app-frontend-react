@@ -1,5 +1,5 @@
-import Account from '@/features/user/account/Account'
+import AccountUser from '@/features/user/account/AccountUser'
 
 export default function Page() {
-    return <Account />
+    return <AccountUser />
 }

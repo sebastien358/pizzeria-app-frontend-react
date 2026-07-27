@@ -13,6 +13,7 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import {useAuthStore} from "@/store/auth";
 import gsap from "gsap";
+import {useRouter} from "next/navigation";
 config.autoAddCss = false
 
 export default function Register() {
@@ -20,6 +21,8 @@ export default function Register() {
     const { registerUser, error, clearError } = useAuthStore()
 
     const [ successMessage, setSuccessMessage ] = useState(null)
+
+    const router = useRouter()
 
     const schema = z.object({
         email: z
@@ -42,8 +45,12 @@ export default function Register() {
         resolver: zodResolver(schema)
     })
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (dataUser) => {
         try {
+            const data = {
+                email: dataUser.email,
+                password: dataUser.password
+            }
             await registerUser(data)
             setSuccessMessage('Compte créé avec succès !')
             handleResetForm()
@@ -55,6 +62,7 @@ export default function Register() {
 
     const handleResetForm = () => {
         setTimeout(() => {
+            router.push('/login')
             setSuccessMessage(null)
             reset()
         }, 2000)

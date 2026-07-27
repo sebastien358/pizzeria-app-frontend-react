@@ -27,7 +27,7 @@ export default function TestimonialAdminDetails({ loading, currentTestimonial, t
 
     const router = useRouter()
 
-    const onClickDeleteTestimonial = async () => {
+    const onClickDelete = async () => {
         await testimonialDelete(id)
         router.push('/admin/testimonials')
     }
@@ -77,7 +77,7 @@ export default function TestimonialAdminDetails({ loading, currentTestimonial, t
                     <ModalConfirm
                         openModalConfirm={openModalConfirm}
                         onClickCloseModalConfirm={onClickCloseModalConfirm}
-                        onClickDeleteTestimonial={onClickDeleteTestimonial}
+                        onClickDelete={onClickDelete}
                     />
                 </section>
             )}

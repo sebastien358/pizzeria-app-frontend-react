@@ -27,3 +27,16 @@ export async function axiosAccountUserEdit(id: number, data: { email: string; pa
         throw err
     }
 }
+
+export async function axiosAccountDeleteUser() {
+    try {
+        const response = await axios.delete(`${BASE_URL}/api/user/account/delete`)
+        if (response.status === 200 || response.status === 204) {
+            return response.data
+        }
+        throw new Error(`Erreur de la supression d'un compte utilisateur : ${response.status}`)
+    } catch (err) {
+        console.error(err)
+        throw err
+    }
+}

@@ -42,6 +42,12 @@ export default function Header({ className, ...rest }: HeaderProps) {
         deleteProductToCart(id)
     }
 
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
     const router = useRouter()
 
     {/* Redirect to cart */}
@@ -56,7 +62,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
     const redirectToCheckout = () => {
         if (cart.length > 0 && token && isUser()) {
-            router.push('/checkout')
+            router.push('/user/command-form')
             return
         }
         router.push('/login')
@@ -151,6 +157,12 @@ export default function Header({ className, ...rest }: HeaderProps) {
                                         >
                                             Ajouter une pizza
                                         </NavLink>
+                                        <NavLink
+                                            href="/admin/account"
+                                            dropdown
+                                        >
+                                            Mon compte
+                                        </NavLink>
                                     </div>
                                 </div>
                             </>
@@ -204,7 +216,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
                             {cart.map((p) => (
                                 <div key={p.id} className={styles['header__menu__list']}>
                                     <div className={styles.header__menu__content}>
-                                        <Image src={p.pictures?.[0]?.filename || NotFound} alt={''} height={45} width={45} />
+                                        <Image src={p.pictures?.[0]?.filename || NotFound} alt={'Image pizza'} height={45} width={45} />
                                         <div className={styles.header__menu__text}>
                                             <p className={styles.productPrice}>
                                                  € <span className={styles.productQuantity}>x{p.quantity}</span>
@@ -247,10 +259,14 @@ export default function Header({ className, ...rest }: HeaderProps) {
                             </div>
 
                             <div className={styles.header__menu__buttons}>
-                                <button onClick={() => redirectToCart()} disabled={cart.length === 0} className={styles.btnCart}>
+                                <button
+                                    onClick={() => redirectToCart()}
+                                    disabled={mounted ? cart.length === 0 : false}
+                                    className={styles.btnCart}
+                                >
                                     Voir le panier
                                 </button>
-                                <button onClick={() => redirectToCheckout()} disabled={cart.length === 0} className={styles.btnPayment}>
+                                <button onClick={() => redirectToCheckout()} disabled={mounted ? cart.length === 0 : false} className={styles.btnPayment}>
                                     Commander
                                 </button>
                             </div>
@@ -260,9 +276,20 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
                 {/* Mobile */}
 
-                <section className={styles['mobile']} ref={mobileMenuRef} onClick={() => setOpenMenuMobile(prev => !prev)}>
+                <section className={styles['mobile']}>
                     <div className={styles['mobile__icon']}>
-                        <FontAwesomeIcon icon={faBars} />
+                        <div className={styles['mobile__icon__row']}>
+                            <div className={styles['mobile__icon__row__cart']}>
+                                <svg onClick={() => redirectToCart()} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.44C7.52 17.37 8.48 19 10 19h9v-2h-9l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03L23 6H6.21l-.94-2z" />
+                                </svg>
+                                <span className={styles['mobile__icon__row__cart--badge']}>{cart.length}</span>
+                            </div>
+                            <div className={styles['mobile__icon__fa-bars']} ref={mobileMenuRef} onClick={() => setOpenMenuMobile(prev => !prev)}>
+                                <FontAwesomeIcon icon={faBars} />
+                            </div>
+                        </div>
+
                         <div className={`${styles['mobile__menu']} ${openMenuMobile ? styles['mobile__menu__open'] : ''}`}>
 
                             {/* role admin */}
@@ -277,6 +304,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
                                     <NavLink href="/admin/testimonials" mobile>Liste des témoignages</NavLink>
                                     <NavLink href="/admin/products" mobile>Liste des pizzas</NavLink>
                                     <NavLink href="/admin/products/new" mobile>Ajouter une pizza</NavLink>
+                                    <NavLink href="/admin/account" mobile>Mon compte</NavLink>
                                 </>
                             )}
 

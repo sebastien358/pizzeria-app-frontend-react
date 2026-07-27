@@ -29,8 +29,11 @@ export const useProductToCart = create<CartState>()(
 
         totalCartPrice: () => {
             const cart = get().cart
-            const initialValue = 0;
-            return cart.reduce((acc, product) => acc + product.productOption.price * product.quantity, initialValue)
+            const initialValue = 0
+            return cart.reduce((acc, product) => {
+                const price = product.productOption?.price ?? 0
+                return acc + price * product.quantity
+            }, initialValue)
         },
 
         productToCart: (id: number, option) => {
