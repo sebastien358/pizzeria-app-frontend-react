@@ -158,6 +158,12 @@ export default function Header({ className, ...rest }: HeaderProps) {
                                             Ajouter une pizza
                                         </NavLink>
                                         <NavLink
+                                            href="/admin/clients"
+                                            dropdown
+                                        >
+                                            Liste des clients
+                                        </NavLink>
+                                        <NavLink
                                             href="/admin/account"
                                             dropdown
                                         >

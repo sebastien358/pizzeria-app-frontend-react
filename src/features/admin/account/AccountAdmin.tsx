@@ -44,13 +44,13 @@ export default function AccountAdmin() {
 
     const [ successMessage, setSuccessMessage ] = useState<string | null>(null)
 
-    const onSubmit = async (dataAdmin) => {
+    const onSubmit = async (dataAdmin: any) => {
         try {
             const data = {
                 email: dataAdmin.email,
                 password: dataAdmin.password
             }
-            await accountAdminEdit(user.id, data)
+            accountAdminEdit(user.id, data)
             displaySuccessMessage()
         } catch(err) {
             displayErrorMessage()

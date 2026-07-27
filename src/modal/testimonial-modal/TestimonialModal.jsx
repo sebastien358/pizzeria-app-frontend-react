@@ -51,10 +51,10 @@ export default function TestimonialModal({ openModal, closeModal }) {
 
     const [ filename, setFilename ] = useState(null)
 
-    const onChangeImage = (file) => {
-        const selectedFile = file[0]
-        setFilename(selectedFile?.name)
-        setValue('image', selectedFile, { shouldValidate: true })
+    const onChangeImage = (e) => {
+        const file = e?.target?.files[0]
+        setFilename(file?.name)
+        setValue('image', file, { shouldValidate: true })
     }
 
     const onSubmit = async (data) => {
@@ -128,7 +128,7 @@ export default function TestimonialModal({ openModal, closeModal }) {
                             <div className={styles['form-group']}>
                                 <div className={styles['input-file']}>
                                     <label className={styles['input-file__label']}>
-                                        <input type={'file'} className={styles['input-file__input']} onChange={(e) => onChangeImage(e.target.files)}/>
+                                        <input type={'file'} className={styles['input-file__input']} onChange={(e) => onChangeImage(e)}/>
                                         <span>{filename || '📎 Choisir une photo'}</span>
                                     </label>
                                 </div>

@@ -59,6 +59,7 @@ export const useTestimonial = create<TestimonialState>()(
             try {
                 set({ testimonialsHome: [], limit: get().getItemsHomePerPage(), loadingTestimonial: true })
                 const data = await testimonialListHome()
+                console.log(data)
                 set({ testimonialsHome: data, loadingTestimonial: false })
             } catch(err) {
                 set({ testimonialsHome: [], loadingTestimonial: false })

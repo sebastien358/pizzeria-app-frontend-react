@@ -15,7 +15,7 @@ export async function axiosAccountAdmin() {
     }
 }
 
-export async function axiosAccountAdminEdit(id: number, data) {
+export async function axiosAccountAdminEdit(id: number, data: {email: string, password: string}) {
     try {
         const response = await axios.patch(`${BASE_URL}/api/admin/account/edit/${id}`, data)
         if (response.status >= 200 && response.status < 300) {

@@ -8,6 +8,7 @@ import {
     login,
     registerUser
 } from "@/shared/services/auth.service";
+import axios from "axios";
 
 type User = { id: number; email: string; roles: string[] }
 
@@ -16,6 +17,7 @@ type LoginData = { email: string; password: string }
 type AuthState = {
     token: string | null
     user: User | null
+    userId: number | null
     loading: boolean
     error: string | null
     login: (data: LoginData) => Promise<void>
@@ -34,6 +36,7 @@ export const useAuthStore = create<AuthState>()(
     persist((set, get) => ({
         token: null,
         user: null,
+        userId: null,
         loading: false,
         error: null,
         hasHydrated: false,
@@ -42,16 +45,19 @@ export const useAuthStore = create<AuthState>()(
 
         login: async (data: LoginData) => {
             try {
-                set({ error: null })
+                set({ error: null, userId: null })
                 const { token } = await login(data)
                 set({ token: token })
-
                 // Token dans un cookie pour que le middleware puisse le lire
                 document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`
-
                 await get().infoMe()
             } catch (err: any) {
-                set({ error: 'Identifiant ou mot de passe invalide' })
+                const apiError = axios.isAxiosError(err) ? err?.response?.data : null
+                if (apiError?.message) {
+                    set({ error: apiError?.message || 'Identifiant ou mot de passe invalide' })
+                } else {
+                    set({ error: 'Identifiant ou mot de passe invalide' })
+                }
                 throw err
             }
         },
@@ -72,9 +78,9 @@ export const useAuthStore = create<AuthState>()(
 
         infoMe: async () => {
             try {
-                set({ user: null, error: null })
+                set({ user: null, userId: null })
                 const response = await infoMe()
-                set({ user: response })
+                set({ user: response, userId: response.id })
             } catch(err) {
                 console.error(err)
                 throw err
