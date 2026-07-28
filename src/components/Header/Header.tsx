@@ -126,7 +126,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
                             <>
                                 <div className={styles['header-admin']} onMouseEnter={() => setMenuAdmin(true)} onMouseLeave={() => setMenuAdmin(false)}>
                                     <a className={styles.nav__link} href="#">Espace pro</a>
-                                    <div className={`${styles['header-admin__menu']} ${menuAdmin ? styles['header-admin__menu__open' ]: ''}`}>
+                                    <div className={`${styles['header-admin__menu']} ${menuAdmin ? styles['header-admin__menu__open'] : ''}`}>
                                         <NavLink
                                             href="/admin/commands"
                                             dropdown

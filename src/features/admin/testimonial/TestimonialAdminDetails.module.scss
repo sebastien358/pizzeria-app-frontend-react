@@ -66,8 +66,18 @@
   }
   &__infos {
     display: flex;
+    align-items: stretch;
+    gap: 20px;
+  }
+  &__infos__description {
+    display: flex;
     flex-direction: column;
     gap: 0.4rem;
+  }
+  &__infos img {
+    height: 60px;
+    width: 60px;
+    border-radius: 3px;
   }
   &__name {
     font-weight: 600;
@@ -187,6 +197,16 @@
       align-items: stretch;
       gap: 0.1rem;
       height: auto;
+    }
+    &__infos {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    &__infos img {
+      height: 53px;
+      width: 53px;
+      border-radius: 3px;
     }
     &__response {
       width: 100%;

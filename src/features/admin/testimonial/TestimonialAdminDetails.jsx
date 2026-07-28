@@ -2,11 +2,14 @@ import styles from './TestimonialAdminDetails.module.scss'
 import ModalConfirm from "@/modal/modal-confirm/ModalConfirm"
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import Image from "next/image";
 
 
 export default function TestimonialAdminDetails({ loading, currentTestimonial, testimonialDelete, publishedTestimonial, id }) {
 
     const [ openModalConfirm, setOpenModalConfirm ] = useState(false)
+
+    console.log(currentTestimonial)
 
     const onClickOpenModalConfirm = () => {
         setOpenModalConfirm(true)
@@ -43,13 +46,18 @@ export default function TestimonialAdminDetails({ loading, currentTestimonial, t
                     <div className={styles['contact__item']}>
                         <div className={styles['contact__header']}>
                             <div className={styles['contact__infos']}>
-                                <p className={styles['contact__name']}>
-                                    {currentTestimonial.firstname} {currentTestimonial.lastname}
-                                </p>
-                                <p className={styles['contact__email']}>
-                                    <span>Date : {displayCreatedAt(currentTestimonial.createdAt)}</span>
-                                    <span>Note : {currentTestimonial.rating}/5</span>
-                                </p>
+                                <div className={styles['contact__infos__description']}>
+                                    <p className={styles['contact__name']}>
+                                        {currentTestimonial.firstname} {currentTestimonial.lastname}
+                                    </p>
+                                    <p className={styles['contact__email']}>
+                                        <span>Date : {displayCreatedAt(currentTestimonial.createdAt)}</span>
+                                        <span>Note : {currentTestimonial.rating}/5</span>
+                                    </p>
+                                </div>
+                                {currentTestimonial.pictures.length > 0 && (
+                                    <Image src={currentTestimonial?.pictures[0]?.url} alt={'Image du témoignage'} width={50} height={50} />
+                                )}
                             </div>
                             <div className={styles['contact__buttons']}>
                                 <button
