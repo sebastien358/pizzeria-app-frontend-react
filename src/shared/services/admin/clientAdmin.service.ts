@@ -2,13 +2,35 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string
 
-export async function axiosAdminClientsList() {
+export async function axiosAdminClientsList(currentPage: number, limit: number) {
     try {
-        const response = await axios.get(`${BASE_URL}/api/admin/client/list`)
+        const response = await axios.get(`${BASE_URL}/api/admin/client/list`, {
+            params: {
+                currentPage,
+                limit
+            }
+        })
         if (response.status >= 200 && response.status < 300) {
             return response.data
         }
         throw new Error(`Erreur de la récupération de la liste des clients : ${response.status}`)
+    } catch(err) {
+        console.error(err)
+        throw err
+    }
+}
+
+export async function axiosAdminClientsSearch(trimmed: string) {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/admin/client/search`, {
+            params: {
+                search: trimmed
+            }
+        })
+        if (response.status >= 200 && response.status < 300) {
+            return response.data
+        }
+        throw new Error(`Erreur de la recherche d'un client : ${response.status}`)
     } catch(err) {
         console.error(err)
         throw err

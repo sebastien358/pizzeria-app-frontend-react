@@ -6,11 +6,26 @@ import {useEffect, useState} from "react";
 import ModalConfirm from "@/modal/modal-confirm/ModalConfirm";
 import {useAuthStore} from "@/store/auth";
 import InputSearch from "@/components/input-search/InputSearch";
+import Pagination from "@/components/pagination/Pagination";
 
 
 export default function ClientAdminList() {
 
-    const { clientAdminList, clientAdminIsRead, clientIsVisible, clientAdminDelete, loading, clients } = useClientAdminStore()
+    const {
+        clientAdminList,
+        previousPage,
+        nextPage,
+        searchAdminClients,
+        clientAdminIsRead,
+        clientIsVisible,
+        clientAdminDelete,
+        term,
+        currentPage,
+        pages,
+        loading,
+        clients,
+        countClients
+    } = useClientAdminStore()
 
     const { userId } = useAuthStore()
 
@@ -18,10 +33,16 @@ export default function ClientAdminList() {
         clientAdminList()
     }, []);
 
+    const displayDate = (date: Date) => {
+        if (!date) return
+        const d = new Date(date)
+        return Intl.DateTimeFormat('fr-FR').format(d)
+    }
+
     {/* Afficher le client comme vu */}
 
     const onClickClientIsRead = async (id: number) => {
-        await clientAdminIsRead(id)
+        clientAdminIsRead(id)
     }
 
     {/* Modal Confirmation de suppression */}
@@ -59,11 +80,16 @@ export default function ClientAdminList() {
                 <section className={styles['spinner']}>
                     <span className={styles['spinner__loader']}></span>
                 </section>
-            ) : clients.length > 0 && (
+            ) : clients.length > 0 ? (
                 <section className={styles['page']}>
                     {/* Input Search */}
                     <div className={styles['input-search']}>
-
+                        <InputSearch
+                            search={searchAdminClients}
+                            term={term}
+                            count={countClients} activeSearch={'search-clients-admin'}
+                            placeholder={'Rechercher un client...'}
+                        />
                     </div>
 
                     {/* Clients */}
@@ -82,7 +108,7 @@ export default function ClientAdminList() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {!clients.length? (
+                                {!clients.length ? (
                                     <tr>
                                         <td colSpan={7} className={styles['empty']}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -108,6 +134,7 @@ export default function ClientAdminList() {
                                             </td>
                                             <td className={`${styles['col-date']} ${styles['text-muted']}`}>
                                                 <span className={styles['label']}>Inscrit le</span>
+                                                <span>{displayDate(c.createdAt)}</span>
                                             </td>
                                             <td className={styles['col-visible']} onClick={(e) => e.stopPropagation()}>
                                                 <span className={styles['label']}>Visible</span>
@@ -153,12 +180,30 @@ export default function ClientAdminList() {
                             </table>
                         </div>
                     </div>
+
+                    {pages > 1 && (
+                        <div className={styles['pagination']}>
+                            <Pagination
+                                currentPage={currentPage}
+                                pages={pages}
+                                previousPage={previousPage}
+                                nextPage={nextPage}
+                            />
+                        </div>
+                    )}
+
                     <ModalConfirm
                         openModalConfirm={openModalConfirm}
                         onClickCloseModalConfirm={onClickCloseModalConfirm}
                         onClickDelete={onClickDelete}
                     />
                 </section>
+
+
+            ) : (
+                <div className={styles['no-client']}>
+                    <p>Aucun client pour le moment.</p>
+                </div>
             )}
         </>
     )

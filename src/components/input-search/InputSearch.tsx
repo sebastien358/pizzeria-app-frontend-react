@@ -33,6 +33,9 @@ export default function InputSearch({ search, term, count, activeSearch, placeho
             case 'search-command-admin':
                 search(e.target.value)
                 break
+            case 'search-clients-admin':
+                search(e.target.value)
+                break
             default:
                 return ""
         }

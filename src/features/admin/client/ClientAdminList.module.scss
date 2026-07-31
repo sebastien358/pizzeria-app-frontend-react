@@ -213,7 +213,6 @@
       white-space: normal;
       overflow: visible;
       text-overflow: unset;
-
       &:last-child { border-bottom: none; }
     }
   }
@@ -236,4 +235,26 @@
 
   .col-id, .col-action { display: none; }
   .col-visible { text-align: unset; }
+}
+
+.pagination {
+  margin-top: 15px;
+}
+
+/* No Client */
+
+.no-client {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  p {
+    font-size: 15px;
+    @media (max-width: 991.98px) {
+      font-size: 14px;
+    }
+    @media (max-width: 767.98px) {
+      font-size: 13px;
+    }
+  }
 }
