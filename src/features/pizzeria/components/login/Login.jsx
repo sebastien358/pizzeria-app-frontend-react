@@ -14,6 +14,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLock, faUser} from "@fortawesome/free-solid-svg-icons";
 import gsap from 'gsap'
+import {useProductToCart} from "@/store/cartProduct";
 config.autoAddCss = false
 
 const schema = z.object({
@@ -27,7 +28,10 @@ const schema = z.object({
 })
 
 export default function Login() {
+
     const { login, emailExisting, error, isUser, isAdmin, clearError } = useAuthStore()
+
+    const { cart } = useProductToCart()
 
     const displayError = (email = '') => {
         emailExisting(email)
@@ -41,6 +45,10 @@ export default function Login() {
     const redirectForAdminOrUser = () => {
         if (isAdmin()) {
             router.push('/admin/commands')
+        } else if (isAdmin() && cart.length > 0) {
+            router.push('/cart')
+        } else if (isUser() && cart.length > 0) {
+            router.push('/cart')
         } else if (isUser()) {
             router.push('/user/commands')
         } else {

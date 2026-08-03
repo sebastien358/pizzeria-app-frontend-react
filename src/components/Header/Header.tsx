@@ -13,7 +13,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
-
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 
@@ -24,17 +23,26 @@ export default function Header({ className, ...rest }: HeaderProps) {
     const { token, isAdmin, isUser, logout } = useAuthStore()
     const { cart, deleteProductToCart, totalCartPrice } = useProductToCart()
 
+    const router = useRouter()
+
     {/* Panier */}
 
-    const [ cartOpen, setCartOpen ] = useState(false)
+    const [cartOpen, setCartOpen] = useState<boolean>(false)
 
     {/* Menu admin */}
 
-    const [ menuAdmin, setMenuAdmin ] = useState(false)
+    const [menuAdmin, setMenuAdmin] = useState<boolean>(false)
 
     {/* Menu user */}
 
-    const [ menuUser, setMenuUser ] = useState(false)
+    const [menuUser, setMenuUser] = useState<boolean>(false)
+
+    { /* Logout Client */ }
+
+    const disconnected = () => {
+       logout()
+        router.push('/login')
+    }
 
     {/* Delete products to cart */}
 
@@ -42,18 +50,16 @@ export default function Header({ className, ...rest }: HeaderProps) {
         deleteProductToCart(id)
     }
 
-    const [mounted, setMounted] = useState(false)
+    const [mounted, setMounted] = useState<boolean>(false)
 
     useEffect(() => {
         setMounted(true)
     }, [])
 
-    const router = useRouter()
-
     {/* Redirect to cart */}
 
     const redirectToCart = () => {
-        if (cart.length > 0) {
+        if (cart.length || cart.length > 0) {
             router.push('/cart')
         }
     }
@@ -70,7 +76,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
     {/* Mobile menu */}
 
-    const [ openMenuMobile, setOpenMenuMobile ] = useState(false)
+    const [openMenuMobile, setOpenMenuMobile] = useState(false)
 
     const mobileMenuRef = useRef<HTMLDivElement | null>(null)
 
@@ -192,7 +198,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
                         {token ? (
                             <>
-                                <a onClick={(e) => { e.preventDefault(); logout() }} className={styles.nav__link} href="#">Déconnexion</a>
+                                <a onClick={() => disconnected()} className={styles.nav__link} href="#">Déconnexion</a>
                             </>
                         ) : (
                             <>
@@ -327,7 +333,7 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
                             {token ? (
                                 <>
-                                    <a onClick={(e) => { e.preventDefault(); logout() }} className={styles.nav__link} href="#">Déconnexion</a>
+                                    <a onClick={() => disconnected()} className={styles.nav__link} href="#">Déconnexion</a>
                                 </>
                             ) : (
                                 <>
