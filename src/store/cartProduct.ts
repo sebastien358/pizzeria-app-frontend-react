@@ -21,6 +21,7 @@ export interface CartState {
     totalCartPrice: () => number
     productToCart: (id: number, option: CartProductOption) => void
     deleteProductToCart: (id: number) => void
+    resetCart: () => void
 }
 
 export const useProductToCart = create<CartState>()(
@@ -65,7 +66,9 @@ export const useProductToCart = create<CartState>()(
             } else {
                 set({ cart: cart.filter((p) => !(p.id === id)) })
             }
-        }
+        },
+
+        resetCart: () => set({ cart: [] })
     }), {
         name: 'product-to-cart-state',
         skipHydration: true

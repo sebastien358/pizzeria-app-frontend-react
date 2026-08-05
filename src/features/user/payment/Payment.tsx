@@ -1,18 +1,17 @@
 'use client';
 
 import styles from './Payment.module.scss'
-import {useCommandUser} from "@/store/user/commandUser";
-import OrderSummary from "@/features/user/payment/OrderSummary";
-import {useEffect, useRef, useState, useMemo, use} from 'react';
-import { useRouter } from 'next/navigation';
-import { loadStripe } from '@stripe/stripe-js';
-import type { Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
-import axios, {isAxiosError} from "axios";
-import to = gsap.to;
-import {isPortIsReserved} from "next/dist/lib/helpers/get-reserved-port";
+import {useCommandUser} from "@/store/user/commandUser"
+import OrderSummary from "@/features/user/payment/OrderSummary"
+import {useEffect, useRef, useState, useMemo} from 'react'
+import { useRouter } from 'next/navigation'
+import { loadStripe } from '@stripe/stripe-js'
+import type { Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js'
+import axios, {isAxiosError} from "axios"
+import {useProductToCart} from "@/store/cartProduct";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string;
-const KEY_STRIPE = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string
+const KEY_STRIPE = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 
 type CommandItems = {
     title: string;
@@ -50,7 +49,8 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
     const loading = useCommandUser((state) => state.loading)
     const storePendingCommand = useCommandUser((state) => state.pendingCommand)
     const resetCommandProfile = useCommandUser((state) => state.resetCommandProfile)
-    const resetCommandPending = useCommandUser((state) => state. resetCommandPending)
+    const resetCommandPending = useCommandUser((state) => state.resetCommandPending)
+    const resetCart = useProductToCart((state) => state.resetCart)
 
     const [isPaymentLoading, setIsPaymentLoading] = useState(false)
     const [successMessage, setSuccessMessageState] = useState<string | null>(null)
@@ -102,7 +102,10 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
     // Préparation du payload
 
     const resetCheckout = () => {
-        resetCommandProfile()
+        if (routeParamsId) {
+            resetCommandProfile()
+            return
+        }
         resetCommandPending()
     }
 
@@ -113,7 +116,6 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
         setSuccessMessageState(message)
         setTimeout(() => {
             router.push('/user/payment/finish')
-            resetCheckout()
             closeAlert()
         }, 4000)
     }
@@ -137,6 +139,8 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
         switch (apiError.type) {
             case 'SUCCESS_PAYMENT':
                 setSuccessMessage(apiError.message)
+                resetCheckout()
+                resetCart()
                 break
             case 'PRICE_MISMATCH':
             case 'ALREADY_PROCESSED':
