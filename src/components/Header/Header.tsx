@@ -324,6 +324,9 @@ export default function Header({ className, ...rest }: HeaderProps) {
 
                             {token && isUser() && !isAdmin() && (
                                 <>
+                                    <NavLink href="/" mobile>Accueil</NavLink>
+                                    <NavLink href="/pizzas" mobile>La carte</NavLink>
+                                    <NavLink href="/contact" mobile>Contact</NavLink>
                                     <NavLink href="/user/commands" mobile>Mes commandes</NavLink>
                                     <NavLink href="/user/account" mobile>Mon compte</NavLink>
                                 </>

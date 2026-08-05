@@ -3,11 +3,13 @@
 import styles from './Payment.module.scss'
 import {useCommandUser} from "@/store/user/commandUser";
 import OrderSummary from "@/features/user/payment/OrderSummary";
-import { useEffect, useRef, useState, useMemo } from 'react';
+import {useEffect, useRef, useState, useMemo, use} from 'react';
 import { useRouter } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import type { Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
-import axios from "axios";
+import axios, {isAxiosError} from "axios";
+import to = gsap.to;
+import {isPortIsReserved} from "next/dist/lib/helpers/get-reserved-port";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string;
 const KEY_STRIPE = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
@@ -59,8 +61,9 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
 
     const stripeRef = useRef<Stripe | null>(null)
     const stripeElementsRef = useRef<StripeElements | null>(null)
-    const cardStripeRef = useRef<StripeCardElement | null>(null)
+    const stripeCardElement = useRef<StripeCardElement | null>(null)
     const cardElementRef = useRef<HTMLDivElement | null>(null)
+
     const formRef = useRef<HTMLFormElement | null>(null)
 
     const selectedCommand = useMemo(() => {
@@ -82,30 +85,26 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
     const stripePayment = async () => {
         if (!KEY_STRIPE && !cardElementRef.current) return
 
-        stripeRef.current = await loadStripe(KEY_STRIPE);
-        stripeElementsRef.current = stripeRef.current!.elements();
+        stripeRef.current = await loadStripe(KEY_STRIPE)
+        stripeElementsRef.current = stripeRef.current!.elements()
 
-        cardStripeRef.current = stripeElementsRef.current.create('card', {
+        stripeCardElement.current = stripeElementsRef.current.create('card', {
             style: {
                 base: {
-                    fontSize: '14px',
+                    fontSize: '14px'
                 }
             }
         })
 
-        cardStripeRef.current.mount(cardElementRef.current!)
+        stripeCardElement.current.mount(cardElementRef.current!)
     }
 
     // Préparation du payload
 
-    const buildPayload = (token: string): Record<string, unknown> => {
-        return routeParamsId ? { token, profileId: commandProfile?.id } : { token, pendingId: pendingCommand?.id }
-    };
-
     const resetCheckout = () => {
         resetCommandProfile()
         resetCommandPending()
-    };
+    }
 
     // Messages
 
@@ -113,10 +112,11 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
         setErrorMessageState(null)
         setSuccessMessageState(message)
         setTimeout(() => {
-            router.push('/finish')
+            router.push('/user/payment/finish')
+            resetCheckout()
             closeAlert()
         }, 4000)
-    };
+    }
 
     const setErrorMessage = (message: string) => {
         setSuccessMessageState(null)
@@ -129,71 +129,75 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
     const closeAlert = () => {
         setSuccessMessageState(null)
         setErrorMessageState(null)
-    };
+    }
 
     // Gestion de la réponse serveur
 
-    const handlePaymentResponse = async (data: PaymentResponse) => {
-        switch (data.type) {
+    const handlePaymentResponse = async (apiError: PaymentResponse) => {
+        switch (apiError.type) {
             case 'SUCCESS_PAYMENT':
-                setSuccessMessage(data.message);
-                resetCheckout();
+                setSuccessMessage(apiError.message)
                 break
             case 'PRICE_MISMATCH':
-                setErrorMessage(data.message);
-                break
             case 'ALREADY_PROCESSED':
-                setErrorMessage(data.message);
-                resetCheckout();
-                break
             case 'ERROR_PAYMENT':
-                setErrorMessage(data.message);
+                setErrorMessage(apiError.message)
                 break
             case 'REQUIRES_ACTION': {
-                const { error } = await stripeRef.current!.confirmCardPayment(data.clientSecret);
+                if (!stripeRef.current) {
+                    setErrorMessage('Stripe pas chargé')
+                    break
+                }
+                const { error, paymentIntent } = await stripeRef.current.confirmCardPayment(apiError.clientSecret)
                 if (error) {
-                    setErrorMessage(error.message ?? '3DS échouée');
+                    setErrorMessage(error.message ?? '3DS échouée')
+                } else if (paymentIntent?.status === 'succeeded') {
+                    setSuccessMessage('Paiement validé')
+                    resetCheckout()
                 } else {
-                    setSuccessMessage('Paiement validé');
-                    resetCheckout();
+                    setErrorMessage('Paiement en attente')
                 }
                 break
             }
-            default: {
-                const exhaustiveCheck: never = data
+            default:
                 setErrorMessage('Réponse serveur inconnue')
-            }
+                break
         }
+    }
+
+    // Préparation du payload
+
+    const buildPayload = (token: string): Record<string, unknown> => {
+        return routeParamsId ? {token, profileId: profileCommandUser?.id} : {token, pendingId: pendingCommand?.id}
     }
 
     // Soumission du formulaire
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+        e.preventDefault()
         try {
-            if (!stripeRef.current || !cardStripeRef.current) {
-                setErrorMessage("Stripe n'est pas configuré correctement.")
+            if (!stripeRef.current || !stripeCardElement.current) {
+                setErrorMessage('Stripe n\'est pas configuré correctement.')
                 return
             }
 
-            setIsPaymentLoading(true);
+            setIsPaymentLoading(true)
 
-            const { error, token } = await stripeRef.current.createToken(cardStripeRef.current);
+            const {error, token} = await stripeRef.current.createToken(stripeCardElement.current)
             if (error || !token) {
-                setErrorMessage(error?.message || 'Erreur de la création du token.');
+                setErrorMessage('Erreur de la création du token')
                 return
             }
 
             const payload = buildPayload(token.id)
-
             const { data } = await axios.post<PaymentResponse>(`${BASE_URL}/api/payment`, payload)
             await handlePaymentResponse(data)
-        } catch (e) {
-            if (axios.isAxiosError(e)) {
-                const apiError = e.response?.data as ApiError
-                setErrorMessage(apiError?.error ?? 'Erreur serveur')
+        } catch (err: unknown) {
+            if (isAxiosError(err)) {
+                const apiError = err.response?.data
+                await handlePaymentResponse(apiError)
             }
+            throw e
         } finally {
             setIsPaymentLoading(false)
         }
@@ -220,40 +224,30 @@ export default function Payment({ profileCommandUser, routeParamsId }: PaymentPr
                             </p>
 
                             {/* Order Summary */}
-
                             <OrderSummary command={selectedCommand as any} />
 
                             {/* Form */}
-
-                            {KEY_STRIPE && selectedCommand ? (
-                                <form onSubmit={handleSubmit} ref={formRef}>
-                                    <div className={styles['form-group']}>
-                                        <label htmlFor="card-element" className={styles['payment__label']}>
-                                            Numéro de carte bancaire
-                                        </label>
-                                        <p className={styles['payment__hint']}>Carte Visa, Mastercard acceptées</p>
-                                        <div className={styles['card-element']} ref={cardElementRef}></div>
-                                    </div>
-
-                                    {successMessage || errorMessage && (
-                                        <>
-                                            {successMessage && <p className={styles['success-message']}>{successMessage}</p>}
-                                            {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
-                                        </>
-                                    )}
-
-                                    <div className={styles['payment__button']}>
-                                        <button type="submit" className={`${styles.btn} ${styles['btn-primary']}`} disabled={isPaymentLoading}>
-                                            {isPaymentLoading ? 'Traitement...' : 'Payer'}
-                                        </button>
-                                    </div>
-                                </form>
-                            ) : (
-                                <div className={styles['stripe-unavailable']}>
-                                    <p>Le paiement par carte est temporairement indisponible.</p>
-                                    <p>Merci de réessayer plus tard ou de nous contacter.</p>
+                            <form onSubmit={handleSubmit} ref={formRef}>
+                                <div className={styles['form-group']}>
+                                    <label htmlFor="card-element" className={styles['payment__label']}>
+                                        Numéro de carte bancaire
+                                    </label>
+                                    <p className={styles['payment__hint']}>Carte Visa, Mastercard acceptées</p>
+                                    <div className={styles['card-element']} ref={cardElementRef}></div>
                                 </div>
-                            )}
+
+                                {/* Success */}
+                                {successMessage && <p className={styles['success-message']}>{successMessage}</p>}
+
+                                {/* Error */}
+                                {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
+
+                                <div className={styles['payment__button']}>
+                                    <button type="submit" className={`${styles.btn} ${styles['btn-primary']}`} disabled={isPaymentLoading}>
+                                        {isPaymentLoading ? 'Traitement...' : 'Payer'}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </section>
