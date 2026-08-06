@@ -42,11 +42,11 @@
   &__card {
     background: white;
     border-radius: 12px;
-    padding: 20px;
+    padding: 20px 20px 20px 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    //gap: 15px;
     transition: transform 0.2s ease;
     &:hover {
       transform: translateY(-3px);
@@ -90,13 +90,13 @@
       color: #666;
     }
   }
+
   .command-user__status {
     display: flex;
     justify-content: space-between;
-    margin-top: 6px;
-
     p {
       font-size: 14px;
+      margin-top: 12px;
     }
 
     span {
@@ -136,8 +136,7 @@
 
   .command-user__buttons {
     display: flex;
-    gap: 8px;
-    margin-top: 3px;
+    column-gap: 8px;
     .btn {
       padding: 10px;
       border-radius: 8px;
@@ -146,14 +145,12 @@
       border: none;
       color: white;
       transition: 0.2s;
+      margin-top: 15px;
       &-command-paid {
         background: #16a34a;
         font-size: 11px;
         &:hover {
           background: #15803d;
-        }
-        &.no-button-payment {
-          display: none;
         }
       }
       &-delete {
@@ -162,13 +159,15 @@
         &:hover {
           background: #dc2626;
         }
-        &.no-button-payment {
-          display: none;
-        }
       }
     }
   }
 }
+
+.command-user__buttons .btn-command-disabled {
+  display: none;
+}
+
 
 @media (max-width: 767.98px) {
   .command-user {
@@ -176,12 +175,10 @@
     gap: 12px;
     &__card {
       padding: 15px;
-      gap: 12px;
     }
     &__status {
       display: flex;
       flex-direction: column;
-      row-gap: 10px;
     }
 
     .item-info {
@@ -196,17 +193,15 @@
     .command-user__status {
       display: flex;
       justify-content: space-between;
-      margin-top: 6px;
-
       p {
         font-size: 13px;
       }
     }
 
     .command-user__buttons {
-      gap: 5px;
       margin-top: 0;
       .btn {
+        margin-top: 12px;
         &-command-paid {
           background: #16a34a;
           font-size: 9px;

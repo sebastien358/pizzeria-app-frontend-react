@@ -34,34 +34,45 @@ export default function CommandUserList() {
 
     useEffect(() => {
         commandUserList()
-    }, []);
+    }, [])
 
     const formatedDate = (date: string) => {
         return new Date(date).toLocaleDateString('fr-FR', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
-        });
-    };
+        })
+    }
 
     const paymentStatus = (command: any) => {
-        return command.status === 'Payé' ? styles['status--success'] : styles['status--pending'];
-    };
+        switch (command.status) {
+            case 'Payé':
+                return  styles['status-paid']
+            case 'En attente':
+                return styles['status-pending']
+            default:
+                return styles['status-pending']
+        }
+    }
 
     const selectedPreparationStatus = (command: any) => {
         switch (command.preparationStatus) {
-            case 'Terminé':
-                return styles['status--success'];
+            case 'Livré':
+                return styles['status-delivered']
             case 'En cours':
-                return styles['status--warning'];
+                return styles['status-pending']
+            case 'Expédié':
+                return styles['status-shipped']
+            case 'Annulée':
+                return styles['status-failed']
             default:
-                return styles['status--pending'];
+                return styles['status-pending']
         }
-    };
+    }
 
     const statusCommandPaid = (command: any) => {
-        return command.status === 'Payé' ? styles['btn--disabled'] : '';
-    };
+        return command.status === 'Payé' ? styles['btn-command-disabled'] : ''
+    }
 
     // Loading
     if (loading) {
@@ -69,7 +80,7 @@ export default function CommandUserList() {
             <section className={styles.spinner}>
                 <span className={styles.loader}></span>
             </section>
-        );
+        )
     }
 
     // Commandes client
@@ -113,7 +124,7 @@ export default function CommandUserList() {
                         {/* Statut commande */}
                         <div className={styles['command-user__status']}>
                             <p>
-                                Paiement :{' '}
+                                Paiement: {' '}
                                 <span className={paymentStatus(command)}>{command.status}</span>
                             </p>
                             <p>
